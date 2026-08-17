@@ -1,4 +1,4 @@
-# Meterline — Schiphol taxi transfers
+# Taxi Service Go Aktaa — Schiphol transfers
 
 Static site: hand-written HTML, CSS and JavaScript, no build step and no
 framework. Three languages (English, Dutch, Arabic) with full right-to-left
@@ -25,23 +25,25 @@ never silent.
 
 ## 1. Formspree — the booking mail
 
-1. Sign up at [formspree.io](https://formspree.io) and create a form that
-   delivers to `taxiservice.goaktaa@gmail.com`.
-2. Copy its endpoint. It looks like `https://formspree.io/f/abcdwxyz`.
+1. Create a form at [formspree.io](https://formspree.io) — the *Send emails
+   to* dropdown only offers verified addresses, so add the destination under
+   **Account → Linked Emails** and click the confirmation mail first.
+2. Copy the form's endpoint. It looks like `https://formspree.io/f/abcdwxyz`.
 3. Open `app.js`, find the `MAIL` block at the top, and replace
    `https://formspree.io/f/YOUR-FORMSPREE-ID` with your endpoint.
 
 That is the only place it appears — the `<form action>` is set from it on
-load, so there is nothing to keep in sync.
+load, so there is nothing to keep in sync. Changing which inbox receives the
+mail is a Formspree setting; it does not change the endpoint or the code.
 
 Each booking arrives as one message, always in English regardless of the
 visitor's language, with a `Reply in` line telling you which language to
 answer in:
 
 ```
-Subject: Ride request ML-33MC — 2026-08-19 14:30
+Subject: Ride request GA-33MC — 2026-08-19 14:30
 
-Reference    ML-33MC          Passengers   2
+Reference    GA-33MC          Passengers   2
 Direction    from             Suitcases    2
 Pick-up      Schiphol Plaza, Arrivals 4
 Destination  Prinsengracht 263, Amsterdam
@@ -80,51 +82,72 @@ slip for a request that did not arrive.
 Every asset path in `index.html` is relative, so the site works both at a
 repository subpath and at a domain root — no changes needed between them.
 
-## 3. TransIP — the custom domain
+Get this working before touching the domain. A custom domain on a Pages site
+that isn't live yet only makes the errors harder to read.
 
-Once the domain is registered, two things have to line up.
+## 3. TransIP — the domain
 
-**On GitHub.** Settings → Pages → *Custom domain*: enter the domain and
-save. GitHub commits a file named `CNAME` to the repository containing just
-the domain, e.g.
+The site is set up to live on the **bare domain**, e.g. `goaktaa.nl`, with
+`www` redirecting to it. Replace `goaktaa.nl` below with whatever you
+actually register.
+
+### Register it
+
+TransIP control panel → **Domains** → search the name. `.nl` is the right
+choice for a Dutch taxi service; `.com` as well if you want to hold it. Buy
+only the domain — you do not need TransIP hosting, mail, or a website
+package, since GitHub Pages serves the site and Formspree handles the mail.
+
+### Point it at GitHub
+
+TransIP control panel → your domain → **DNS**. TransIP ships default records
+aimed at its own parking page: delete or overwrite the existing `@` and `www`
+entries, then set:
+
+| Type  | Name | TTL  | Value              |
+|-------|------|------|--------------------|
+| A     | @    | 3600 | 185.199.108.153    |
+| A     | @    | 3600 | 185.199.109.153    |
+| A     | @    | 3600 | 185.199.110.153    |
+| A     | @    | 3600 | 185.199.111.153    |
+| CNAME | www  | 3600 | `<you>.github.io.` |
+
+All four A records are needed — they are GitHub's Pages edge addresses, and
+four of them is how the redundancy works. Confirm them against GitHub's
+*Managing a custom domain for your GitHub Pages site* documentation before
+saving, since these addresses do change occasionally. IPv6 is optional: add
+`AAAA` records for `2606:50c0:8000::153` through `2606:50c0:8003::153`.
+
+Note the trailing dot on the CNAME value. TransIP's editor wants fully
+qualified names, and `<you>.github.io` without it can be read as a subdomain
+of your own domain.
+
+### Tell GitHub about it
+
+Repository → **Settings → Pages → Custom domain**: enter `goaktaa.nl` (the
+bare domain, no `www`) and save. GitHub verifies DNS, then commits a file
+named `CNAME` to the repository containing just:
 
 ```
-meterline.nl
+goaktaa.nl
 ```
 
-There is deliberately no `CNAME` file in this folder yet. Adding one for a
-domain that does not resolve makes Pages report a domain error, so let
-GitHub create it when you enter the real domain.
+There is deliberately no `CNAME` file in this folder. Adding one for a domain
+that does not resolve yet makes Pages report a domain error — let GitHub
+create it when you enter the real domain. With the bare domain set as the
+custom domain, GitHub redirects `www` to it automatically.
 
-**On TransIP.** Control panel → your domain → **DNS**. TransIP ships default
-records pointing at its own parking page — delete or overwrite the existing
-`@` and `www` entries, then add:
-
-| Type  | Name | TTL  | Value                  |
-|-------|------|------|------------------------|
-| A     | @    | 3600 | 185.199.108.153        |
-| A     | @    | 3600 | 185.199.109.153        |
-| A     | @    | 3600 | 185.199.110.153        |
-| A     | @    | 3600 | 185.199.111.153        |
-| CNAME | www  | 3600 | `<you>.github.io.`     |
-
-All four A records are needed; they are GitHub's Pages edge addresses.
-Confirm them against GitHub's *Managing a custom domain* documentation
-before you save, since these addresses do change occasionally. IPv6 is
-optional — add `AAAA` records for `2606:50c0:8000::153` through
-`2606:50c0:8003::153` if you want it.
-
-DNS takes anywhere from minutes to a few hours. When it resolves, return to
+DNS takes anywhere from minutes to a few hours. Once it resolves, return to
 Settings → Pages and tick **Enforce HTTPS**; GitHub issues the certificate
-itself.
+itself, free.
 
 ## Not included: payments
 
-Mollie is deliberately absent. Creating a Mollie payment requires a secret
-API key, and on a static host there is nowhere to keep one — a key in
-`app.js` is readable by every visitor and would be a leaked credential.
+Mollie is deliberately absent — there is nothing to sell yet, and a static
+host has nowhere to keep a secret API key. A Mollie key in `app.js` would be
+readable by every visitor, i.e. a leaked credential.
 
-If you sell packages later, there are two safe routes:
+If you sell packages later, two safe routes:
 
 - **Mollie payment links.** One link per package, made in the Mollie
   dashboard; the buttons on the site open them. No key in the code.
@@ -139,3 +162,6 @@ The taximeter face is Dutch hardware and stays Dutch in every language:
 (`TAXI`, `ARRIVALS 4`) stays as it is on the actual signs, and addresses stay
 in Latin script in all three languages because a Dutch driver has to read
 them.
+
+The wordmark is also never translated: **Go Aktaa** keeps its Latin letters
+and its Archivo face in Arabic, the way a wordmark should.

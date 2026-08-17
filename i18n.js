@@ -1,15 +1,15 @@
-/* Meterline — language switch for English, Dutch and Arabic.
+/* Taxi Service Go Aktaa — language switch for English, Dutch and Arabic.
    The taximeter face is deliberately never translated: it is a Dutch
    instrument, and reads VRIJ / Tarief / Afstand / Tijd in every language. */
 
-window.ML = (function () {
+window.I18N = (function () {
   'use strict';
 
   var DICT = {
 
     /* ── English ─────────────────────────────────────────── */
     en: {
-      'meta.title': 'Meterline — Metered taxis at Amsterdam Schiphol',
+      'meta.title': 'Taxi Service Go Aktaa — Metered taxis at Amsterdam Schiphol',
       'meta.desc': 'Licensed metered taxis to and from Amsterdam Schiphol. Book a car, meet your driver at Arrivals 4, pay what the taximeter reads.',
       'skip': 'Skip to booking',
       'brand.sub': 'Schiphol transfers',
@@ -134,7 +134,7 @@ window.ML = (function () {
 
     /* ── Nederlands ──────────────────────────────────────── */
     nl: {
-      'meta.title': 'Meterline — Taxi op de meter bij Amsterdam Schiphol',
+      'meta.title': 'Taxi Service Go Aktaa — Taxi op de meter bij Amsterdam Schiphol',
       'meta.desc': 'Taxi met vergunning van en naar Amsterdam Schiphol. Boek een auto, tref je chauffeur bij Aankomsthal 4, en betaal wat de taxameter aangeeft.',
       'skip': 'Naar het boekingsformulier',
       'brand.sub': 'Schiphol transfers',
@@ -259,7 +259,7 @@ window.ML = (function () {
 
     /* ── العربية ─────────────────────────────────────────── */
     ar: {
-      'meta.title': 'ميترلاين — تاكسي بالعدّاد في مطار أمستردام سخيبول',
+      'meta.title': 'Taxi Service Go Aktaa — تاكسي بالعدّاد في مطار أمستردام سخيبول',
       'meta.desc': 'تاكسي مرخّص من مطار أمستردام سخيبول وإليه. احجز سيارة، وقابل سائقك عند مخرج الوصول 4، وادفع ما يظهر على العدّاد.',
       'skip': 'انتقل إلى نموذج الحجز',
       'brand.sub': 'توصيل مطار سخيبول',
@@ -385,7 +385,7 @@ window.ML = (function () {
 
   var RTL = { ar: true };
   var LOCALE = { en: 'en-GB', nl: 'nl-NL', ar: 'ar-u-nu-latn' };
-  var STORE = 'meterline.lang';
+  var STORE = 'goaktaa.lang';
   var current = 'en';
 
   function t(key) {

@@ -1,4 +1,4 @@
-/* Meterline — booking form behaviour.
+/* Taxi Service Go Aktaa — booking form behaviour.
    No pricing anywhere: the fare comes off the taximeter, so the form only
    collects the ride, validates it, and prints a request slip.
    All copy comes from i18n.js, so the form re-speaks itself on language change. */
@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var t = window.ML.t;
+  var t = window.I18N.t;
 
   /* ── Where booking requests are delivered ─────────────────────
      Formspree relays the form to an inbox, so the site stays static
@@ -163,7 +163,7 @@
     var pool = 'ACDEFHJKLMNPRTUVWXY3479';
     var out = '';
     for (var i = 0; i < 4; i++) out += pool[Math.floor(Math.random() * pool.length)];
-    return 'ML-' + out;
+    return 'GA-' + out;
   }
 
   function selectedText(select) {
@@ -173,7 +173,7 @@
   function readableWhen() {
     var d = new Date(dateEl.value + 'T' + timeEl.value);
     if (isNaN(d)) return dateEl.value + ' · ' + timeEl.value;
-    var day = d.toLocaleDateString(window.ML.locale(), {
+    var day = d.toLocaleDateString(window.I18N.locale(), {
       weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
     });
     return day + ' · ' + timeEl.value;
@@ -266,12 +266,12 @@
       name: nameEl.value.trim(),
       phone: phoneEl.value.trim(),
       notes: notesEl.value.trim(),
-      lang: ({ en: 'English', nl: 'Dutch', ar: 'Arabic' })[window.ML.lang()]
+      lang: ({ en: 'English', nl: 'Dutch', ar: 'Arabic' })[window.I18N.lang()]
     };
 
     /* No endpoint yet: the form still runs, but say plainly nothing was sent. */
     if (!mailReady()) {
-      console.warn('Meterline: demo mode — no Formspree endpoint in app.js, so ' +
+      console.warn('Go Aktaa: demo mode — no Formspree endpoint in app.js, so ' +
         ride.ref + ' was not sent to ' + MAIL.inbox + '.');
       showReceipt(ride);
       return;
@@ -287,7 +287,7 @@
       if (res.ok) { showReceipt(ride); return; }
       showFailure();
       res.json().then(function (data) {
-        console.error('Meterline: Formspree rejected ' + ride.ref + '.', data);
+        console.error('Go Aktaa: Formspree rejected ' + ride.ref + '.', data);
       }, function () { /* no body to read */ });
     }, function () {
       sending(false);
