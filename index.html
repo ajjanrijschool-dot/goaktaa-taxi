@@ -14,11 +14,25 @@
 
 <a class="skip" href="#book" data-i18n="skip">Skip to booking</a>
 
-<!-- Contact strip: the two things a stranded traveller wants first. -->
-<div class="topbar">
-  <div class="wrap topbar__inner">
-    <p class="topbar__note" data-i18n="topbar.note">Dispatch open 24 hours, every day</p>
-    <div class="topbar__reach">
+<header class="masthead">
+  <div class="wrap masthead__top">
+
+    <!-- LOGO SLOT ────────────────────────────────────────────────
+         Drop your logo file into this folder, then replace the two
+         <span> lines below with one line:
+
+           <img class="brand__logo" src="logo.svg" alt="Taxi Service Go Aktaa">
+
+         SVG is best; a PNG at least 400px wide also works. The CSS
+         already sizes it, so nothing else needs changing.
+         ─────────────────────────────────────────────────────────── -->
+    <a class="brand" href="#top">
+      <span class="brand__lamp" aria-hidden="true"></span>
+      <span class="brand__name">Go Aktaa</span>
+      <span class="brand__sub" data-i18n="brand.sub">Schiphol transfers</span>
+    </a>
+
+    <div class="masthead__reach">
       <a class="reach" href="tel:+31613331111">
         <span class="reach__ico" aria-hidden="true">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1.5 3.5-2 1.5a8 8 0 0 0 3.5 3.5l1.5-2L14 10v3a1 1 0 0 1-1 1A11 11 0 0 1 2 3a1 1 0 0 1 1-1z"/></svg>
@@ -28,7 +42,10 @@
           <span data-i18n="topbar.call">Call us now</span>
         </span>
       </a>
-      <a class="reach" href="mailto:taxiservice.goaktaa@gmail.com">
+
+      <span class="masthead__rule" aria-hidden="true"></span>
+
+      <a class="reach reach--mail" href="mailto:taxiservice.goaktaa@gmail.com">
         <span class="reach__ico" aria-hidden="true">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3.5" width="13" height="9" rx="1"/><path d="M1.5 4.5 8 9l6.5-4.5"/></svg>
         </span>
@@ -38,31 +55,25 @@
         </span>
       </a>
     </div>
-  </div>
-</div>
 
-<header class="bar">
-  <div class="wrap bar__inner">
-    <a class="brand" href="#top">
-      <span class="brand__lamp" aria-hidden="true"></span>
-      <span class="brand__name">Go Aktaa</span>
-      <span class="brand__sub" data-i18n="brand.sub">Schiphol transfers</span>
-    </a>
-
-    <div class="bar__right">
-      <div class="lang" role="group" aria-label="Language" data-i18n-aria="lang.label">
-        <button type="button" class="lang__b" data-lang="en" aria-pressed="true">EN</button>
-        <button type="button" class="lang__b" data-lang="nl" aria-pressed="false">NL</button>
-        <button type="button" class="lang__b" data-lang="ar" aria-pressed="false" lang="ar">ع</button>
-      </div>
-      <nav class="bar__nav" aria-label="Sections">
-        <a href="#fare" data-i18n="nav.fare">The fare</a>
-        <a href="#meet" data-i18n="nav.meet">Meeting point</a>
-        <a href="#book" class="bar__cta" data-i18n="nav.cta">Book a taxi</a>
-      </nav>
+    <div class="lang" role="group" aria-label="Language" data-i18n-aria="lang.label">
+      <button type="button" class="lang__b" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" class="lang__b" data-lang="nl" aria-pressed="false">NL</button>
+      <button type="button" class="lang__b" data-lang="ar" aria-pressed="false" lang="ar">ع</button>
     </div>
   </div>
 </header>
+
+<nav class="mainnav" aria-label="Sections">
+  <div class="wrap mainnav__inner">
+    <a href="#top" class="is-here" data-i18n="nav.home">Home</a>
+    <a href="#book" data-i18n="nav.cta">Book a taxi</a>
+    <a href="#routes" data-i18n="nav.routes">Where we drive</a>
+    <a href="#fare" data-i18n="nav.fare">The fare</a>
+    <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
+    <a href="#meet" data-i18n="nav.meet">Meeting point</a>
+  </div>
+</nav>
 
 <main id="top">
 

@@ -76,53 +76,14 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
 }
 .eyebrow--light { color: #8FA9D8; }
 
-/* ── Contact strip ─────────────────────────────────────── */
-.topbar { background: var(--navy-deep); color: #C6D3E8; }
-.topbar__inner {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 1rem; min-height: 46px; flex-wrap: wrap;
-}
-.topbar__note {
-  font: 500 .6875rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
-  color: #8FA9D8;
-}
-.topbar__reach { display: flex; align-items: center; gap: 1.75rem; }
-.reach {
-  display: flex; align-items: center; gap: .625rem;
-  color: #fff; text-decoration: none; padding-block: .4375rem;
-}
-.reach:hover .reach__text strong { color: var(--amber); }
-.reach__ico {
-  flex: none; width: 26px; height: 26px; border-radius: 50%;
-  display: grid; place-items: center; color: var(--amber);
-  border: 1px solid rgba(245, 176, 46, .4);
-}
-.reach__ico svg { width: 13px; height: 13px; }
-.reach__text { display: flex; flex-direction: column; gap: .1875rem; line-height: 1.1; }
-.reach__text strong { font-size: .875rem; font-weight: 600; transition: color .15s ease; }
-.reach__text span { font-size: .6875rem; color: #93A8CC; }
-
-@media (max-width: 860px) {
-  .topbar__note { display: none; }
-  .topbar__inner { justify-content: center; }
-  .topbar__reach { gap: 1.25rem; }
-  .reach__text strong { font-size: .8125rem; }
-}
-@media (max-width: 620px) {
-  /* Keep the phone; the address is in the footer and the form covers mail. */
-  .topbar__reach .reach:last-child { display: none; }
+/* ── Masthead: logo, contact, language ─────────────────── */
+.masthead { background: var(--paper); }
+.masthead__top {
+  display: flex; align-items: center; gap: clamp(1rem, 3vw, 2.5rem);
+  min-height: 88px; padding-block: .875rem;
 }
 
-/* ── Top bar ───────────────────────────────────────────── */
-.bar {
-  position: sticky; top: 0; z-index: 40;
-  background: rgba(235, 239, 243, .88);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
-}
-.bar__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 68px; }
-
-.brand { display: flex; align-items: baseline; gap: .5rem; text-decoration: none; color: var(--ink); }
+.brand { display: flex; align-items: baseline; gap: .5rem; text-decoration: none; color: var(--ink); margin-inline-end: auto; }
 .brand__lamp {
   width: 26px; height: 12px; border-radius: 3px 3px 1px 1px;
   background: var(--amber);
@@ -130,40 +91,79 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
   align-self: center;
 }
 /* A wordmark never wraps. */
-.brand__name { font-family: var(--display); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.04em; white-space: nowrap; }
+.brand__name { font-family: var(--display); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.04em; white-space: nowrap; }
 .brand__sub { font: 500 .625rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+/* Sized for the logo file you drop in; replaces the wordmark spans. */
+.brand__logo { display: block; height: clamp(38px, 5vw, 52px); width: auto; }
 
-.bar__right { display: flex; align-items: center; gap: clamp(.875rem, 2vw, 1.5rem); }
-.bar__nav { display: flex; align-items: center; gap: 1.75rem; }
-.bar__nav a { font-size: .9375rem; text-decoration: none; color: var(--ink-soft); white-space: nowrap; }
-.bar__nav a:hover { color: var(--ink); }
-.bar__cta {
-  background: var(--navy); color: #fff !important;
-  padding: .625rem 1.125rem; border-radius: var(--r); font-weight: 500;
+.masthead__reach { display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 2rem); }
+.masthead__rule { width: 1px; align-self: stretch; background: var(--line); }
+.reach { display: flex; align-items: center; gap: .75rem; color: var(--ink); text-decoration: none; }
+.reach:hover .reach__text strong { color: var(--navy); }
+.reach__ico {
+  flex: none; width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center; color: var(--navy);
+  background: #EDF2FA;
 }
-.bar__cta:hover { background: var(--navy-deep); }
-/* Brand, language switch, three links and a button do not fit together
-   below roughly 900px — the secondary links go first, the descriptor with
-   them, so nothing has to wrap. */
-@media (max-width: 900px) {
+.reach__ico svg { width: 16px; height: 16px; }
+.reach__text { display: flex; flex-direction: column; gap: .25rem; line-height: 1.1; }
+.reach__text strong { font-size: .9375rem; font-weight: 600; transition: color .15s ease; }
+.reach__text span { font-size: .75rem; color: var(--ink-soft); }
+@media (prefers-reduced-motion: reduce) { .reach__text strong { transition: none; } }
+
+/* ── The colour bar ────────────────────────────────────── */
+.mainnav {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--navy);
+}
+.mainnav__inner { display: flex; align-items: stretch; overflow-x: auto; scrollbar-width: none; }
+.mainnav__inner::-webkit-scrollbar { display: none; }
+.mainnav a {
+  display: flex; align-items: center; white-space: nowrap;
+  padding: 1.0625rem clamp(.875rem, 1.8vw, 1.375rem);
+  font: 500 .8125rem/1 var(--body); letter-spacing: .06em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .82); text-decoration: none;
+  position: relative;
+}
+.mainnav a + a::before {
+  content: ""; position: absolute; inset-inline-start: 0; top: 50%;
+  transform: translateY(-50%); height: 15px; width: 1px;
+  background: rgba(255, 255, 255, .22);
+}
+.mainnav a:hover { color: #fff; background: rgba(255, 255, 255, .07); }
+.mainnav a.is-here { color: #fff; }
+.mainnav a.is-here::after {
+  content: ""; position: absolute; inset-inline: clamp(.875rem, 1.8vw, 1.375rem);
+  bottom: .625rem; height: 2px; background: var(--amber);
+}
+
+@media (max-width: 1040px) {
   .brand__sub { display: none; }
-  .bar__nav a:not(.bar__cta) { display: none; }
+  .reach--mail .reach__text strong { font-size: .875rem; }
 }
-/* The dock owns the call to action on phones, so the bar drops it. */
-@media (max-width: 700px) {
-  .bar__nav { display: none; }
+@media (max-width: 820px) {
+  /* The address is long; the phone is the one that matters at the kerb. */
+  .reach--mail, .masthead__rule { display: none; }
+}
+@media (max-width: 560px) {
+  .masthead__top { min-height: 0; gap: .875rem; flex-wrap: wrap; }
+  .reach__text span { display: none; }
+  .reach__text strong { font-size: .875rem; }
+  .mainnav a { padding-inline: .875rem; font-size: .75rem; }
 }
 
 /* ── Language switch ───────────────────────────────────── */
-.lang { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+/* Round like the reference's flags, but lettered: Arabic has no one flag,
+   and English is not only Britain. */
+.lang { display: inline-flex; gap: .375rem; }
 .lang__b {
-  appearance: none; background: transparent; cursor: pointer;
-  font: 500 .6875rem/1 var(--mono); letter-spacing: .1em;
-  color: var(--ink-soft); border: 0; border-inline-start: 1px solid var(--line);
-  padding: .5rem .625rem; min-width: 2.5rem;
+  appearance: none; cursor: pointer;
+  width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center;
+  font: 500 .6875rem/1 var(--mono); letter-spacing: .06em;
+  color: var(--ink-soft); background: #EDF2FA; border: 1px solid transparent;
 }
-.lang__b:first-child { border-inline-start: 0; }
-.lang__b:hover { color: var(--ink); background: rgba(21, 58, 138, .05); }
+.lang__b:hover { color: var(--ink); border-color: var(--line); }
 .lang__b[aria-pressed="true"] { background: var(--navy); color: #fff; }
 .lang__b[lang="ar"] { font-family: "IBM Plex Sans Arabic", var(--body); font-size: .9375rem; letter-spacing: 0; }
 
@@ -798,7 +798,7 @@ html[lang="ar"] .state__flag,
 html[lang="ar"] .facts dt,
 html[lang="ar"] .foot__h,
 html[lang="ar"] .fareline__tag { font-weight: 600; }
-html[lang="ar"] .topbar__note,
+html[lang="ar"] .mainnav a,
 html[lang="ar"] .reach__text span,
 html[lang="ar"] .board__head,
 html[lang="ar"] .board__flag,

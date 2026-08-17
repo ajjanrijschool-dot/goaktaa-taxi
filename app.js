@@ -459,6 +459,48 @@
     form.method = 'POST';
   }
 
+  /* ── Nav follows the scroll ────────────────────────────── */
+  (function scrollspy() {
+    var links = [].slice.call(document.querySelectorAll('.mainnav a[href^="#"]'));
+    var home = links[0];
+    /* #top is <main>, which wraps everything, so the sections are what get
+       tracked and Home simply means "above all of them". */
+    var watched = [];
+    links.forEach(function (a) {
+      var el = document.getElementById(a.getAttribute('href').slice(1));
+      if (a !== home && el && el.tagName !== 'MAIN') watched.push({ link: a, el: el });
+    });
+    if (!watched.length) return;
+
+    /* The section you are inside is the last one whose top has passed the
+       nav. Intersection ratios get this wrong when a tall section above
+       still overlaps the band. */
+    function update() {
+      var line = document.querySelector('.mainnav').getBoundingClientRect().height + 60;
+      var active = null;
+      watched.forEach(function (w) {
+        if (w.el.getBoundingClientRect().top <= line) active = w.link;
+      });
+      /* The last section plus the footer are shorter than the viewport, so it
+         can never reach the line on its own. Hitting the bottom means it. */
+      var doc = document.documentElement;
+      if (window.innerHeight + window.pageYOffset >= doc.scrollHeight - 2) {
+        active = watched[watched.length - 1].link;
+      }
+      links.forEach(function (a) { a.classList.toggle('is-here', a === (active || home)); });
+    }
+
+    var queued = false;
+    function onScroll() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; update(); });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }());
+
   /* Most of our rides start at the airport, so start there. */
   if (!pickup.value) pickup.value = SCHIPHOL_IN;
   paintPax();
