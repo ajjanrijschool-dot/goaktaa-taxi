@@ -42,8 +42,12 @@
   var phoneEl = document.getElementById('phone');
   var notesEl = document.getElementById('notes');
   var trapEl  = document.getElementById('gotcha');
-  var submit  = form.querySelector('button[type="submit"]');
   var failure = document.getElementById('formError');
+  var panel   = document.getElementById('book');
+  var nextBtn = document.getElementById('nextBtn');
+  var backBtn = document.getElementById('backBtn');
+  var sendBtn = document.getElementById('sendBtn');
+  var submit  = sendBtn;
 
   /* Addresses stay in Latin script in every language: a Dutch driver reads them. */
   var SCHIPHOL_IN  = 'Schiphol Plaza, Arrivals 4';
@@ -115,7 +119,9 @@
 
   function digits(value) { return (value.match(/\d/g) || []).length; }
 
-  function validate() {
+  /* Each step checks only its own fields, so nobody is told about a
+     problem on a pane they cannot see. */
+  function validate(step) {
     var bad = [];
 
     function check(el, ok, key) {
@@ -125,21 +131,26 @@
       bad.push(el);
     }
 
-    check(pickup, pickup.value.trim().length > 2, 'err.pickup');
-    check(dest, dest.value.trim().length > 2, 'err.dest');
-    check(nameEl, nameEl.value.trim().length > 1, 'err.name');
-    check(phoneEl, digits(phoneEl.value) >= 8, 'err.phone');
-    check(dateEl, !!dateEl.value && dateEl.value >= today, 'err.date');
+    if (step === 1) {
+      check(pickup, pickup.value.trim().length > 2, 'err.pickup');
+      check(dest, dest.value.trim().length > 2, 'err.dest');
+      check(dateEl, !!dateEl.value && dateEl.value >= today, 'err.date');
 
-    var timeOk = !!timeEl.value;
-    var sameDay = dateEl.value === today;
-    if (timeOk && sameDay) {
-      var now = new Date();
-      var mins = now.getHours() * 60 + now.getMinutes();
-      var parts = timeEl.value.split(':');
-      timeOk = (Number(parts[0]) * 60 + Number(parts[1])) > mins + 29;
+      var timeOk = !!timeEl.value;
+      var sameDay = dateEl.value === today;
+      if (timeOk && sameDay) {
+        var now = new Date();
+        var mins = now.getHours() * 60 + now.getMinutes();
+        var parts = timeEl.value.split(':');
+        timeOk = (Number(parts[0]) * 60 + Number(parts[1])) > mins + 29;
+      }
+      check(timeEl, timeOk, sameDay ? 'err.timeSoon' : 'err.time');
     }
-    check(timeEl, timeOk, sameDay ? 'err.timeSoon' : 'err.time');
+
+    if (step === 2) {
+      check(nameEl, nameEl.value.trim().length > 1, 'err.name');
+      check(phoneEl, digits(phoneEl.value) >= 8, 'err.phone');
+    }
 
     if (bad.length) {
       bad[0].focus();
@@ -147,6 +158,53 @@
     }
     return bad.length === 0;
   }
+
+  /* ── Steps ─────────────────────────────────────────────── */
+  var LAST_INPUT_STEP = 2;
+  var step = 1;
+
+  function paint() {
+    form.querySelectorAll('[data-pane]').forEach(function (pane) {
+      pane.hidden = Number(pane.dataset.pane) !== step;
+    });
+    document.querySelectorAll('.steps__i').forEach(function (item) {
+      var n = Number(item.dataset.step);
+      item.classList.toggle('is-now', n === step);
+      item.classList.toggle('is-done', n < step);
+      if (n === step) item.setAttribute('aria-current', 'step');
+      else item.removeAttribute('aria-current');
+    });
+    backBtn.hidden = step === 1 || step > LAST_INPUT_STEP;
+    nextBtn.hidden = step !== 1;
+    sendBtn.hidden = step !== 2;
+  }
+
+  function goStep(n, focusIt) {
+    step = n;
+    hideFailure();
+    paint();
+    panel.scrollIntoView({ block: 'start', behavior: motion() });
+    if (focusIt) {
+      var first = form.querySelector('[data-pane="' + n + '"] input, [data-pane="' + n + '"] select');
+      if (first) first.focus({ preventScroll: true });
+    }
+  }
+
+  nextBtn.addEventListener('click', function () {
+    if (validate(1)) goStep(2, true);
+  });
+
+  backBtn.addEventListener('click', function () {
+    goStep(1, true);
+  });
+
+  /* Enter in a step-1 field advances instead of submitting a half-filled form. */
+  form.addEventListener('keydown', function (event) {
+    if (event.key !== 'Enter') return;
+    if (event.target.tagName === 'TEXTAREA') return;
+    if (step > LAST_INPUT_STEP) return;
+    if (step === 1) { event.preventDefault(); nextBtn.click(); }
+  });
 
   function motion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
@@ -199,8 +257,10 @@
     renderReceipt(ride);
     form.hidden = true;
     receipt.hidden = false;
+    step = 3;
+    paint();
     receipt.focus();
-    document.getElementById('book').scrollIntoView({ block: 'start', behavior: motion() });
+    panel.scrollIntoView({ block: 'start', behavior: motion() });
   }
 
   /* ── Sending ───────────────────────────────────────────── */
@@ -252,7 +312,8 @@
     event.preventDefault();
     hideFailure();
     if (trapEl.value) return;      /* honeypot: only a bot fills this */
-    if (!validate()) return;
+    if (!validate(1)) { goStep(1, true); return; }
+    if (!validate(2)) return;
 
     var ride = {
       ref: reference(),
@@ -303,8 +364,7 @@
     pickup.value = SCHIPHOL_IN;
     form.querySelectorAll('.is-bad').forEach(function (el) { el.classList.remove('is-bad'); });
     form.querySelectorAll('.err').forEach(function (el) { el.textContent = ''; });
-    document.getElementById('book').scrollIntoView({ block: 'start' });
-    pickup.focus();
+    goStep(1, true);
   });
 
   /* Re-speak everything the dictionary can't reach on its own. */
@@ -325,4 +385,5 @@
 
   /* First load matches the default direction. */
   if (!pickup.value) pickup.value = SCHIPHOL_IN;
+  paint();
 }());

@@ -14,6 +14,33 @@
 
 <a class="skip" href="#book" data-i18n="skip">Skip to booking</a>
 
+<!-- Contact strip: the two things a stranded traveller wants first. -->
+<div class="topbar">
+  <div class="wrap topbar__inner">
+    <p class="topbar__note" data-i18n="topbar.note">Dispatch open 24 hours, every day</p>
+    <div class="topbar__reach">
+      <a class="reach" href="tel:+31613331111">
+        <span class="reach__ico" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1.5 3.5-2 1.5a8 8 0 0 0 3.5 3.5l1.5-2L14 10v3a1 1 0 0 1-1 1A11 11 0 0 1 2 3a1 1 0 0 1 1-1z"/></svg>
+        </span>
+        <span class="reach__text">
+          <strong dir="ltr">+31 6 1333 1111</strong>
+          <span data-i18n="topbar.call">Call us now</span>
+        </span>
+      </a>
+      <a class="reach" href="mailto:taxiservice.goaktaa@gmail.com">
+        <span class="reach__ico" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3.5" width="13" height="9" rx="1"/><path d="M1.5 4.5 8 9l6.5-4.5"/></svg>
+        </span>
+        <span class="reach__text">
+          <strong dir="ltr">taxiservice.goaktaa@gmail.com</strong>
+          <span data-i18n="topbar.mail">Mail us now</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+
 <header class="bar">
   <div class="wrap bar__inner">
     <a class="brand" href="#top">
@@ -149,24 +176,44 @@
     <div class="wrap">
       <div class="panel">
 
+        <!-- The rail sits outside the form so it can also mark the
+             confirmation, which replaces the form rather than living in it. -->
+        <ol class="steps" id="steps" aria-label="Booking steps" data-i18n-aria="steps.label">
+          <li class="steps__i is-now" data-step="1">
+            <span class="steps__n" aria-hidden="true">1</span>
+            <span class="steps__l" data-i18n="step.1">Route</span>
+          </li>
+          <li class="steps__i" data-step="2">
+            <span class="steps__n" aria-hidden="true">2</span>
+            <span class="steps__l" data-i18n="step.2">Your details</span>
+          </li>
+          <li class="steps__i" data-step="3">
+            <span class="steps__n" aria-hidden="true">3</span>
+            <span class="steps__l" data-i18n="step.3">Confirmation</span>
+          </li>
+        </ol>
+
         <!-- Formspree relays this to the inbox. The action is set from the
              endpoint in app.js so there is only one place to edit. -->
         <form class="form" id="bookingForm" name="booking" novalidate>
-          <header class="form__head">
-            <h2 data-i18n="form.h2">Book a taxi</h2>
-            <p data-i18n="form.sub">Takes a minute. We confirm by text within 15 minutes.</p>
-          </header>
 
-          <fieldset class="dir">
-            <legend data-i18n="form.direction">Direction</legend>
-            <div class="dir__set">
-              <label class="dir__opt"><input type="radio" name="direction" value="from" checked><span data-i18n="dir.from">From Schiphol</span></label>
-              <label class="dir__opt"><input type="radio" name="direction" value="to"><span data-i18n="dir.to">To Schiphol</span></label>
-              <label class="dir__opt"><input type="radio" name="direction" value="other"><span data-i18n="dir.other">Other route</span></label>
-            </div>
-          </fieldset>
+          <!-- ── Step 1: the route ──────────────────────────── -->
+          <section class="pane" data-pane="1">
+            <header class="form__head">
+              <h2 data-i18n="form.h2">Where are we taking you?</h2>
+              <p data-i18n="form.sub">No price to agree — the taximeter settles the fare on arrival.</p>
+            </header>
 
-          <div class="grid">
+            <fieldset class="dir">
+              <legend data-i18n="form.direction">Direction</legend>
+              <div class="dir__set">
+                <label class="dir__opt"><input type="radio" name="direction" value="from" checked><span data-i18n="dir.from">From Schiphol</span></label>
+                <label class="dir__opt"><input type="radio" name="direction" value="to"><span data-i18n="dir.to">To Schiphol</span></label>
+                <label class="dir__opt"><input type="radio" name="direction" value="other"><span data-i18n="dir.other">Other route</span></label>
+              </div>
+            </fieldset>
+
+            <div class="grid">
             <p class="field field--wide">
               <label for="pickup" data-i18n="f.pickup">Pick-up address</label>
               <input id="pickup" name="pickup" type="text" list="places" autocomplete="off"
@@ -232,7 +279,17 @@
                 <option value="4+" data-i18n="bags.many">4 or more</option>
               </select>
             </p>
+            </div>
+          </section>
 
+          <!-- ── Step 2: who to look for ─────────────────────── -->
+          <section class="pane" data-pane="2" hidden>
+            <header class="form__head">
+              <h2 data-i18n="form.h2b">Who is the driver looking for?</h2>
+              <p data-i18n="form.subb">Your name goes on the card at Arrivals 4.</p>
+            </header>
+
+            <div class="grid">
             <p class="field">
               <label for="name" data-i18n="f.name">Name</label>
               <input id="name" name="name" type="text" autocomplete="name"
@@ -258,13 +315,14 @@
               <label for="notes"><span data-i18n="f.notes">Anything the driver should know</span> <span class="opt" data-i18n="optional">optional</span></label>
               <textarea id="notes" name="notes" rows="3" placeholder="Child seat, wheelchair, bicycle, second stop…" data-i18n-ph="f.notes.ph"></textarea>
             </p>
-          </div>
+            </div>
 
-          <div class="fareline">
-            <span class="fareline__tag" data-i18n="fare.tag">Fare</span>
-            <p data-i18n="fare.note">Metered. Your driver starts the taximeter at pickup and you pay what it reads at the door,
-               within the national maximum taxi tariff. No booking fee, no surge pricing.</p>
-          </div>
+            <div class="fareline">
+              <span class="fareline__tag" data-i18n="fare.tag">Fare</span>
+              <p data-i18n="fare.note">Metered. Your driver starts the taximeter at pickup and you pay what it reads at the door,
+                 within the national maximum taxi tariff. No booking fee, no surge pricing.</p>
+            </div>
+          </section>
 
           <!-- Bots fill this in; people never see it. _gotcha is the name
                Formspree filters on, so spam is dropped server-side too. -->
@@ -274,7 +332,9 @@
           </p>
 
           <div class="form__foot">
-            <button class="btn btn--primary btn--big" type="submit" data-i18n="form.submit">Request this ride</button>
+            <button class="btn btn--ghost" type="button" id="backBtn" data-i18n="nav.back" hidden>Back</button>
+            <button class="btn btn--primary btn--big" type="button" id="nextBtn" data-i18n="nav.next">Continue</button>
+            <button class="btn btn--primary btn--big" type="submit" id="sendBtn" data-i18n="form.submit" hidden>Request this ride</button>
             <p class="form__note" data-i18n="form.note">No payment now. Nothing is charged until the ride is finished.</p>
           </div>
 
@@ -326,6 +386,36 @@
     </div>
   </section>
 
+  <!-- ── Destinations, read like a departures board ────────── -->
+  <section class="board" id="routes">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light" data-i18n="board.eyebrow">Where we drive</p>
+      <h2 class="board__title" data-i18n="board.title">Off the A4 and into the city.</h2>
+
+      <div class="board__panel">
+        <div class="board__head" aria-hidden="true">
+          <span data-i18n="board.h1">Destination</span>
+          <span data-i18n="board.h2">Drive</span>
+          <span data-i18n="board.h3">Distance</span>
+          <span data-i18n="board.h4">Status</span>
+        </div>
+        <ul class="board__list">
+          <li><span class="board__dest" data-i18n="city.ams">Amsterdam Centraal</span><span class="board__num">25 min</span><span class="board__num">20 km</span><span class="board__flag" data-i18n="board.open">Driving now</span></li>
+          <li><span class="board__dest" data-i18n="city.zuid">Amsterdam Zuid · WTC</span><span class="board__num">15 min</span><span class="board__num">12 km</span><span class="board__flag" data-i18n="board.open">Driving now</span></li>
+          <li><span class="board__dest" data-i18n="city.haarlem">Haarlem</span><span class="board__num">20 min</span><span class="board__num">18 km</span><span class="board__flag" data-i18n="board.open">Driving now</span></li>
+          <li><span class="board__dest" data-i18n="city.leiden">Leiden</span><span class="board__num">25 min</span><span class="board__num">27 km</span><span class="board__flag" data-i18n="board.open">Driving now</span></li>
+          <li><span class="board__dest" data-i18n="city.utrecht">Utrecht</span><span class="board__num">45 min</span><span class="board__num">55 km</span><span class="board__flag" data-i18n="board.open">Driving now</span></li>
+          <li><span class="board__dest" data-i18n="city.hague">Den Haag</span><span class="board__num">40 min</span><span class="board__num">45 km</span><span class="board__flag" data-i18n="board.open">Driving now</span></li>
+          <li><span class="board__dest" data-i18n="city.rotterdam">Rotterdam</span><span class="board__num">50 min</span><span class="board__num">70 km</span><span class="board__flag" data-i18n="board.open">Driving now</span></li>
+        </ul>
+      </div>
+
+      <p class="board__foot" data-i18n="board.foot">Typical driving times without traffic, measured from Schiphol Plaza. They are
+         not prices and not promises — the meter counts the trip you actually take. Anywhere else in the
+         Netherlands or Belgium: ask the dispatcher.</p>
+    </div>
+  </section>
+
   <!-- ── Fare ─────────────────────────────────────────────── -->
   <section class="fare" id="fare">
     <div class="wrap">
@@ -356,6 +446,38 @@
         window shows the exact rate before you step in. Need a fixed price for a long transfer instead?
         <a href="tel:+31613331111">Ask the dispatcher.</a>
       </p>
+    </div>
+  </section>
+
+  <!-- ── Reviews ───────────────────────────────────────────────
+       Honest empty state on purpose. When real reviews come in, delete
+       the .reviews__empty block and uncomment the template below it,
+       one <li> per review, using the customer's own words. Do not
+       invent them: a review nobody wrote is worth less than no review.
+       ───────────────────────────────────────────────────────── -->
+  <section class="reviews" id="reviews">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="reviews.eyebrow">Reviews</p>
+      <h2 class="reviews__title" data-i18n="reviews.title">Nothing here yet, and we won't invent any.</h2>
+
+      <div class="reviews__empty">
+        <p class="reviews__lede" data-i18n="reviews.lede">We started driving recently. Plenty of taxi sites open with
+           glowing quotes from nobody in particular; this one will show real ones or none at all.</p>
+        <p class="reviews__ask" data-i18n="reviews.ask">Rode with us? Tell us how it went and it goes straight on this page.</p>
+        <div class="reviews__actions">
+          <a class="btn btn--primary" href="mailto:taxiservice.goaktaa@gmail.com?subject=My%20ride" data-i18n="reviews.cta">Send us your review</a>
+          <a class="btn btn--ghost" href="tel:+31613331111" data-i18n="cta.call">Call +31 6 1333 1111</a>
+        </div>
+      </div>
+
+      <!-- Real reviews go here. Keep the name as the customer gave it.
+      <ul class="reviews__list">
+        <li class="review">
+          <p class="review__quote">Their words, unedited.</p>
+          <p class="review__who"><strong>First name</strong><span>Route · month year</span></p>
+        </li>
+      </ul>
+      -->
     </div>
   </section>
 
