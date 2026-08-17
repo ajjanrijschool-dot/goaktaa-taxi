@@ -27,8 +27,21 @@
          already sizes it, so nothing else needs changing.
          ─────────────────────────────────────────────────────────── -->
     <a class="brand" href="#top">
-      <span class="brand__lamp" aria-hidden="true"></span>
-      <span class="brand__name">Go Aktaa</span>
+      <svg class="brand__mark" viewBox="0 0 196 82" role="img" aria-label="TTAxi">
+        <title>TTAxi</title>
+        <!-- Roof light: the amber lamp already used across the site, sitting
+             on the two T's the way it sits on a car. -->
+        <path d="M24 18 L29 5 H59 L64 18 Z" fill="#F5B02E"/>
+        <rect x="22" y="16" width="44" height="6" rx="3" fill="#D8961F"/>
+        <!-- Wordmark -->
+        <text class="brand__word" x="8" y="70">TTAxi</text>
+        <!-- Pick-up to drop-off, straight and metered -->
+        <g fill="#153A8A">
+          <circle cx="152" cy="52" r="4.5"/>
+          <path d="M152 52 H178" stroke="#153A8A" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M177 45 L190 52 L177 59 Z"/>
+        </g>
+      </svg>
       <span class="brand__sub" data-i18n="brand.sub">Schiphol transfers</span>
     </a>
 
@@ -115,9 +128,13 @@
           </dl>
         </div>
         </div>
-        <figcaption data-i18n="meter.caption">
+        <figcaption class="shot__cap shot__cap--meter" data-i18n="meter.caption">
           The meter runs from pickup to drop-off. Until it starts there is no fare to show —
           this is what you watch instead of a checkout page.
+        </figcaption>
+        <figcaption class="shot__cap shot__cap--photo" data-i18n="hero.photo.caption">
+          The car and the driver waiting for you at Arrivals 4. What the ride costs comes off
+          the taximeter when you get there — there is no price to agree first.
         </figcaption>
       </figure>
     </div>

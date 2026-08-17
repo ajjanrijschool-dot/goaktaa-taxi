@@ -83,12 +83,13 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
   min-height: 88px; padding-block: .875rem;
 }
 
-.brand { display: flex; align-items: baseline; gap: .5rem; text-decoration: none; color: var(--ink); margin-inline-end: auto; }
-.brand__lamp {
-  width: 26px; height: 12px; border-radius: 3px 3px 1px 1px;
-  background: var(--amber);
-  box-shadow: inset 0 -3px 0 rgba(0,0,0,.14);
-  align-self: center;
+.brand { display: flex; align-items: center; gap: .75rem; text-decoration: none; color: var(--ink); margin-inline-end: auto; }
+/* The mark: roof light over the wordmark, route line beneath it. */
+.brand__mark { height: clamp(38px, 4.6vw, 50px); width: auto; display: block; flex: none; }
+.brand__word {
+  font-family: "Archivo", var(--display);
+  font-weight: 700; font-size: 48px; letter-spacing: -0.02em;
+  fill: var(--navy);
 }
 /* A wordmark never wraps. */
 .brand__name { font-family: var(--display); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.04em; white-space: nowrap; }
@@ -254,30 +255,13 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
   border-radius: 10px; background: #DCE7F5;
   box-shadow: 0 1px 2px rgba(14, 36, 79, .1), 0 26px 50px -30px rgba(14, 36, 79, .55);
 }
-/* Top-left, over the building glass: the bottom of the frame is where the
-   car and its plate are, and covering those defeats the point of the photo. */
-.shot--photo .meter__bezel {
-  position: absolute; z-index: 1;
-  inset-inline-start: clamp(.75rem, 2vw, 1.25rem);
-  top: clamp(.75rem, 2vw, 1.25rem);
-  width: min(72%, 17rem);
-  padding: .75rem .875rem .6875rem;
-  border-radius: 8px;
-  background: linear-gradient(rgba(24, 30, 38, .93), rgba(11, 14, 18, .95));
-  backdrop-filter: blur(8px);
-}
-.shot--photo .meter__head { padding-bottom: .5rem; font-size: .5625rem; }
-.shot--photo .meter__flag { padding: .1875rem .375rem; }
-.shot--photo .meter__readout { padding: .75rem 0 .625rem; }
-.shot--photo .meter__value { font-size: clamp(1.5rem, 4vw, 2.125rem); }
-.shot--photo .meter__cur { font-size: .625rem; }
-.shot--photo .meter__rows { padding-top: .5rem; gap: .375rem; }
-.shot--photo .meter__rows dt { font-size: .5rem; margin-bottom: .1875rem; }
-.shot--photo .meter__rows dd { font-size: .6875rem; }
-@media (max-width: 520px) {
-  .shot--photo .meter__rows { display: none; }
-  .shot--photo .meter__bezel { width: min(88%, 15rem); }
-}
+/* With a photo, the meter comes off it entirely — the car is the picture. */
+.shot--photo .meter__bezel { display: none; }
+
+/* One caption for the meter, another for the photo. */
+.shot__cap--photo { display: none; }
+.shot--photo .shot__cap--photo { display: block; }
+.shot--photo .shot__cap--meter { display: none; }
 
 .meter figcaption {
   margin-top: 1rem; font-size: .875rem; line-height: 1.55; color: var(--ink-soft);
