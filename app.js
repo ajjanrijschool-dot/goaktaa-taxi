@@ -48,6 +48,19 @@
   var backBtn = document.getElementById('backBtn');
   var sendBtn = document.getElementById('sendBtn');
   var submit  = sendBtn;
+  var bookcard = document.getElementById('bookcard');
+  var confirmPanel = document.getElementById('confirmPanel');
+  var formFoot = document.getElementById('formFoot');
+  var swapBtn = document.getElementById('swapBtn');
+  var viaBtn  = document.getElementById('viaBtn');
+  var viaOff  = document.getElementById('viaOff');
+  var viaWrap = document.getElementById('viaWrap');
+  var viaEl   = document.getElementById('via');
+  var retEl   = document.getElementById('ret');
+  var retWrap = document.getElementById('retWrap');
+  var retDate = document.getElementById('retDate');
+  var retTime = document.getElementById('retTime');
+  var paxHint = document.getElementById('paxHint');
 
   /* Addresses stay in Latin script in every language: a Dutch driver reads them. */
   var SCHIPHOL_IN  = 'Schiphol Plaza, Arrivals 4';
@@ -74,45 +87,101 @@
   var today = localDate(new Date());
   dateEl.min = today;
 
-  /* ── Direction shortcut ────────────────────────────────── */
-  function isPreset(value) { return PRESETS.indexOf(value.trim()) !== -1; }
+  /* ── Swap, via stop, return leg, passenger count ───────── */
+  swapBtn.addEventListener('click', function () {
+    var held = pickup.value;
+    pickup.value = dest.value;
+    dest.value = held;
+    /* Leaving Schiphol becomes going to it, so keep the default useful. */
+    if (!pickup.value && !dest.value) pickup.value = SCHIPHOL_IN;
+    else if (!dest.value && pickup.value === SCHIPHOL_IN) dest.value = '';
+    clearError(pickup);
+    clearError(dest);
+    pickup.focus();
+  });
 
-  form.querySelectorAll('input[name="direction"]').forEach(function (radio) {
-    radio.addEventListener('change', function () {
-      if (radio.value === 'from') {
-        pickup.value = SCHIPHOL_IN;
-        if (isPreset(dest.value)) dest.value = '';
-      } else if (radio.value === 'to') {
-        dest.value = SCHIPHOL_OUT;
-        if (isPreset(pickup.value)) pickup.value = '';
-      } else {
-        if (isPreset(pickup.value)) pickup.value = '';
-        if (isPreset(dest.value)) dest.value = '';
-      }
-      clearError(pickup);
-      clearError(dest);
+  viaBtn.addEventListener('click', function () {
+    viaWrap.hidden = false;
+    viaBtn.hidden = true;
+    viaEl.focus();
+  });
+
+  viaOff.addEventListener('click', function () {
+    viaEl.value = '';
+    viaWrap.hidden = true;
+    viaBtn.hidden = false;
+    viaBtn.focus();
+  });
+
+  retEl.addEventListener('change', function () {
+    retWrap.hidden = !retEl.checked;
+    if (retEl.checked) {
+      if (!retDate.value) retDate.value = dateEl.value;
+      retDate.focus();
+    } else {
+      clearError(retDate);
+      clearError(retTime);
+    }
+  });
+
+  function paxCount() {
+    var n = parseInt(paxEl.value, 10);
+    if (isNaN(n)) n = 1;
+    return Math.min(8, Math.max(1, n));
+  }
+
+  function paintPax() {
+    var n = paxCount();
+    paxEl.value = String(n);
+    paxHint.hidden = n < 5;
+    form.querySelector('[data-pax="-1"]').disabled = n <= 1;
+    form.querySelector('[data-pax="1"]').disabled = n >= 8;
+  }
+
+  form.querySelectorAll('[data-pax]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      paxEl.value = String(paxCount() + Number(btn.dataset.pax));
+      paintPax();
     });
   });
+  paxEl.addEventListener('input', paintPax);
+  paxEl.addEventListener('blur', paintPax);
+
+  /* Derived, not asked: the addresses already say which way you are going. */
+  function direction() {
+    var at = /schiphol/i;
+    if (at.test(pickup.value)) return 'from Schiphol';
+    if (at.test(dest.value)) return 'to Schiphol';
+    return 'other route';
+  }
+
+  function paxLabel() {
+    var n = paxCount();
+    return n === 1 ? t('pax.one') : t('pax.n').replace('{n}', String(n));
+  }
 
   flight.addEventListener('input', function () {
     flight.value = flight.value.toUpperCase().replace(/[^A-Z0-9 ]/g, '');
   });
 
   /* ── Validation ────────────────────────────────────────── */
-  function field(el) { return el.closest('.field'); }
+  /* Fields live in three shapes now: .field wrappers on step 2, .route__leg
+     for the address pills, .ctl for the time and passenger controls. */
+  function field(el) { return el.closest('.field, .route__leg, .ctl'); }
 
   function setError(el, message) {
     var slot = form.querySelector('[data-err-for="' + el.id + '"]');
     if (slot) slot.textContent = message;
-    field(el).classList.add('is-bad');
+    var wrap = field(el);
+    if (wrap) wrap.classList.add('is-bad');
     el.setAttribute('aria-invalid', 'true');
-    el.dataset.errKey = '';
   }
 
   function clearError(el) {
     var slot = form.querySelector('[data-err-for="' + el.id + '"]');
     if (slot) slot.textContent = '';
-    field(el).classList.remove('is-bad');
+    var wrap = field(el);
+    if (wrap) wrap.classList.remove('is-bad');
     el.removeAttribute('aria-invalid');
     delete el.dataset.errKey;
   }
@@ -145,6 +214,11 @@
         timeOk = (Number(parts[0]) * 60 + Number(parts[1])) > mins + 29;
       }
       check(timeEl, timeOk, sameDay ? 'err.timeSoon' : 'err.time');
+
+      if (retEl.checked) {
+        check(retDate, !!retDate.value && retDate.value >= (dateEl.value || today), 'err.retDate');
+        check(retTime, !!retTime.value, 'err.retTime');
+      }
     }
 
     if (step === 2) {
@@ -174,9 +248,10 @@
       if (n === step) item.setAttribute('aria-current', 'step');
       else item.removeAttribute('aria-current');
     });
-    backBtn.hidden = step === 1 || step > LAST_INPUT_STEP;
-    nextBtn.hidden = step !== 1;
-    sendBtn.hidden = step !== 2;
+    /* Step 1 carries its own Continue inside the controls row. */
+    formFoot.hidden = step !== 2;
+    bookcard.hidden = step > LAST_INPUT_STEP;
+    confirmPanel.hidden = step <= LAST_INPUT_STEP;
   }
 
   function goStep(n, focusIt) {
@@ -212,7 +287,7 @@
 
   form.querySelectorAll('input, select, textarea').forEach(function (el) {
     el.addEventListener('input', function () {
-      if (field(el) && field(el).classList.contains('is-bad')) clearError(el);
+      if (el.hasAttribute('aria-invalid')) clearError(el);
     });
   });
 
@@ -243,10 +318,10 @@
 
   function renderReceipt(ride) {
     put('rRef', ride.ref);
-    put('rPickup', ride.pickup);
+    put('rPickup', ride.pickup + (ride.via ? ' → ' + ride.via : ''));
     put('rDest', ride.dest);
     put('rWhen', readableWhen());
-    put('rPax', selectedText(paxEl));
+    put('rPax', paxLabel());
     put('rBags', bagsEl.value ? selectedText(bagsEl) : t('r.tbc'));
     put('rFlight', ride.flight || t('r.notgiven'));
     put('rContact', ride.name + ' · ' + ride.phone);
@@ -255,8 +330,6 @@
   function showReceipt(ride) {
     lastRide = ride;
     renderReceipt(ride);
-    form.hidden = true;
-    receipt.hidden = false;
     step = 3;
     paint();
     receipt.focus();
@@ -280,11 +353,6 @@
     failure.textContent = '';
   }
 
-  function direction() {
-    var picked = form.querySelector('input[name="direction"]:checked');
-    return picked ? picked.value : 'other';
-  }
-
   /* The dispatcher reads one language whatever the visitor picked, so the
      labels here stay English. _subject and _gotcha are Formspree's own. */
   function payload(ride) {
@@ -294,9 +362,11 @@
       Reference: ride.ref,
       Direction: direction(),
       'Pick-up': ride.pickup,
+      Via: ride.via || 'no stop',
       Destination: ride.dest,
       Date: ride.date,
       Time: ride.time + ' (Amsterdam)',
+      'Return trip': ride.ret ? (ride.retDate + ' ' + ride.retTime) : 'one way',
       Passengers: ride.pax,
       Suitcases: ride.bags || 'not stated',
       Flight: ride.flight || 'not given',
@@ -318,10 +388,14 @@
     var ride = {
       ref: reference(),
       pickup: pickup.value.trim(),
+      via: viaWrap.hidden ? '' : viaEl.value.trim(),
       dest: dest.value.trim(),
       date: dateEl.value,
       time: timeEl.value,
-      pax: paxEl.value,
+      ret: retEl.checked,
+      retDate: retDate.value,
+      retTime: retTime.value,
+      pax: String(paxCount()),
       bags: bagsEl.value === 'hand' ? 'hand luggage only' : bagsEl.value,
       flight: flight.value.trim(),
       name: nameEl.value.trim(),
@@ -357,11 +431,13 @@
   });
 
   again.addEventListener('click', function () {
-    receipt.hidden = true;
-    form.hidden = false;
     lastRide = null;
     form.reset();
     pickup.value = SCHIPHOL_IN;
+    viaWrap.hidden = true;
+    viaBtn.hidden = false;
+    retWrap.hidden = true;
+    paintPax();
     form.querySelectorAll('.is-bad').forEach(function (el) { el.classList.remove('is-bad'); });
     form.querySelectorAll('.err').forEach(function (el) { el.textContent = ''; });
     goStep(1, true);
@@ -383,7 +459,8 @@
     form.method = 'POST';
   }
 
-  /* First load matches the default direction. */
+  /* Most of our rides start at the airport, so start there. */
   if (!pickup.value) pickup.value = SCHIPHOL_IN;
+  paintPax();
   paint();
 }());

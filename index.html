@@ -174,10 +174,9 @@
   <!-- ── Booking ──────────────────────────────────────────── -->
   <section class="book" id="book">
     <div class="wrap">
-      <div class="panel">
 
-        <!-- The rail sits outside the form so it can also mark the
-             confirmation, which replaces the form rather than living in it. -->
+        <!-- The rail sits above both cards: it marks the confirmation too,
+             and the confirmation replaces the form rather than living in it. -->
         <ol class="steps" id="steps" aria-label="Booking steps" data-i18n-aria="steps.label">
           <li class="steps__i is-now" data-step="1">
             <span class="steps__n" aria-hidden="true">1</span>
@@ -193,40 +192,20 @@
           </li>
         </ol>
 
+      <!-- The working card: taxi yellow, because this is the part that
+           behaves like the roof light rather than like paperwork. -->
+      <div class="bookcard" id="bookcard">
+
         <!-- Formspree relays this to the inbox. The action is set from the
              endpoint in app.js so there is only one place to edit. -->
         <form class="form" id="bookingForm" name="booking" novalidate>
 
           <!-- ── Step 1: the route ──────────────────────────── -->
           <section class="pane" data-pane="1">
-            <header class="form__head">
+            <header class="bookcard__head">
               <h2 data-i18n="form.h2">Where are we taking you?</h2>
               <p data-i18n="form.sub">No price to agree — the taximeter settles the fare on arrival.</p>
             </header>
-
-            <fieldset class="dir">
-              <legend data-i18n="form.direction">Direction</legend>
-              <div class="dir__set">
-                <label class="dir__opt"><input type="radio" name="direction" value="from" checked><span data-i18n="dir.from">From Schiphol</span></label>
-                <label class="dir__opt"><input type="radio" name="direction" value="to"><span data-i18n="dir.to">To Schiphol</span></label>
-                <label class="dir__opt"><input type="radio" name="direction" value="other"><span data-i18n="dir.other">Other route</span></label>
-              </div>
-            </fieldset>
-
-            <div class="grid">
-            <p class="field field--wide">
-              <label for="pickup" data-i18n="f.pickup">Pick-up address</label>
-              <input id="pickup" name="pickup" type="text" list="places" autocomplete="off"
-                     placeholder="Schiphol Plaza, Arrivals 4" required>
-              <span class="err" data-err-for="pickup"></span>
-            </p>
-
-            <p class="field field--wide">
-              <label for="dest" data-i18n="f.dest">Destination</label>
-              <input id="dest" name="destination" type="text" list="places" autocomplete="off"
-                     placeholder="Street, number, city" data-i18n-ph="f.dest.ph" required>
-              <span class="err" data-err-for="dest"></span>
-            </p>
 
             <datalist id="places">
               <option value="Schiphol Plaza, Arrivals 4"></option>
@@ -241,33 +220,120 @@
               <option value="Rotterdam"></option>
             </datalist>
 
-            <p class="field">
-              <label for="date" data-i18n="f.date">Date</label>
-              <input id="date" name="date" type="date" required>
-              <span class="err" data-err-for="date"></span>
-            </p>
+            <!-- Route row -->
+            <div class="route">
+              <div class="route__leg">
+                <div class="pill">
+                  <label class="pill__lab" for="pickup" data-i18n="f.from">From</label>
+                  <input id="pickup" name="pickup" type="text" list="places" autocomplete="off"
+                         placeholder="Schiphol Plaza, Arrivals 4" required>
+                </div>
+                <span class="err" data-err-for="pickup"></span>
+              </div>
 
-            <p class="field">
-              <label for="time" data-i18n="f.time">Pick-up time</label>
-              <input id="time" name="time" type="time" required>
-              <span class="hint" data-i18n="f.time.hint">Local time in Amsterdam.</span>
-              <span class="err" data-err-for="time"></span>
-            </p>
+              <div class="route__mid">
+                <button type="button" class="swap" id="swapBtn" aria-label="Swap pick-up and destination" data-i18n-aria="f.swap">
+                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                    <path d="M3 7h12l-3-3M17 13H5l3 3"/>
+                  </svg>
+                </button>
+                <button type="button" class="viabtn" id="viaBtn" data-i18n="f.addstop">+ Add a stop</button>
+              </div>
 
-            <p class="field">
-              <label for="pax" data-i18n="f.pax">Passengers</label>
-              <select id="pax" name="passengers" required>
-                <option value="1" data-i18n="pax.1">1 passenger</option>
-                <option value="2" selected data-i18n="pax.2">2 passengers</option>
-                <option value="3" data-i18n="pax.3">3 passengers</option>
-                <option value="4" data-i18n="pax.4">4 passengers</option>
-                <option value="5" data-i18n="pax.5">5 — minivan</option>
-                <option value="6" data-i18n="pax.6">6 — minivan</option>
-                <option value="7" data-i18n="pax.7">7 — minivan</option>
-                <option value="8" data-i18n="pax.8">8 — minivan</option>
-              </select>
-            </p>
+              <div class="route__leg">
+                <div class="pill">
+                  <label class="pill__lab" for="dest" data-i18n="f.to">To</label>
+                  <input id="dest" name="destination" type="text" list="places" autocomplete="off"
+                         placeholder="Street, number, city" data-i18n-ph="f.dest.ph" required>
+                </div>
+                <span class="err" data-err-for="dest"></span>
+              </div>
+            </div>
 
+            <!-- Optional intermediate stop -->
+            <div class="via" id="viaWrap" hidden>
+              <div class="pill">
+                <label class="pill__lab" for="via" data-i18n="f.via">Via</label>
+                <input id="via" name="via" type="text" list="places" autocomplete="off"
+                       placeholder="Street, number, city" data-i18n-ph="f.dest.ph">
+              </div>
+              <button type="button" class="viabtn viabtn--off" id="viaOff" data-i18n="f.removestop">Remove stop</button>
+            </div>
+
+            <!-- Controls row -->
+            <div class="controls">
+              <div class="ctl">
+                <span class="ctl__lab" data-i18n="f.when">Pick-up time</span>
+                <div class="pill pill--split">
+                  <label class="pill__seg">
+                    <span class="sr" data-i18n="f.date">Date</span>
+                    <input id="date" name="date" type="date" required>
+                  </label>
+                  <label class="pill__seg">
+                    <span class="sr" data-i18n="f.time">Pick-up time</span>
+                    <input id="time" name="time" type="time" required>
+                  </label>
+                </div>
+                <span class="err" data-err-for="date"></span>
+                <span class="err" data-err-for="time"></span>
+              </div>
+
+              <div class="ctl ctl--tight">
+                <span class="ctl__lab" data-i18n="f.return">Return trip</span>
+                <label class="switch">
+                  <input type="checkbox" id="ret" name="return-trip" value="yes">
+                  <span class="switch__dot" aria-hidden="true"></span>
+                </label>
+              </div>
+
+              <div class="ctl ctl--tight">
+                <span class="ctl__lab" data-i18n="f.pax">Passengers</span>
+                <div class="stepper">
+                  <button type="button" data-pax="-1" aria-label="Fewer passengers" data-i18n-aria="pax.less">−</button>
+                  <input id="pax" name="passengers" type="number" min="1" max="8" step="1" value="2" inputmode="numeric">
+                  <button type="button" data-pax="1" aria-label="More passengers" data-i18n-aria="pax.more">+</button>
+                </div>
+                <span class="ctl__hint" id="paxHint" hidden data-i18n="pax.minivan">Minivan</span>
+              </div>
+
+              <div class="ctl ctl--go">
+                <button class="btn btn--go" type="button" id="nextBtn">
+                  <span data-i18n="nav.next">Continue</span>
+                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 10h13l-4-4M16 10l-4 4"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Return leg, revealed by the toggle -->
+            <div class="controls controls--return" id="retWrap" hidden>
+              <div class="ctl">
+                <span class="ctl__lab" data-i18n="f.returnwhen">Return pick-up</span>
+                <div class="pill pill--split">
+                  <label class="pill__seg">
+                    <span class="sr" data-i18n="f.date">Date</span>
+                    <input id="retDate" name="return-date" type="date">
+                  </label>
+                  <label class="pill__seg">
+                    <span class="sr" data-i18n="f.time">Pick-up time</span>
+                    <input id="retTime" name="return-time" type="time">
+                  </label>
+                </div>
+                <span class="err" data-err-for="retDate"></span>
+                <span class="err" data-err-for="retTime"></span>
+              </div>
+            </div>
+
+            <p class="bookcard__note" data-i18n="f.time.hint">Local time in Amsterdam.</p>
+          </section>
+
+          <!-- ── Step 2: who to look for ─────────────────────── -->
+          <section class="pane" data-pane="2" hidden>
+            <header class="bookcard__head">
+              <h2 data-i18n="form.h2b">Who is the driver looking for?</h2>
+              <p data-i18n="form.subb">Your name goes on the card at Arrivals 4.</p>
+            </header>
+
+            <div class="grid">
             <p class="field">
               <label for="bags"><span data-i18n="f.bags">Suitcases</span> <span class="opt" data-i18n="optional">optional</span></label>
               <select id="bags" name="suitcases">
@@ -279,17 +345,7 @@
                 <option value="4+" data-i18n="bags.many">4 or more</option>
               </select>
             </p>
-            </div>
-          </section>
 
-          <!-- ── Step 2: who to look for ─────────────────────── -->
-          <section class="pane" data-pane="2" hidden>
-            <header class="form__head">
-              <h2 data-i18n="form.h2b">Who is the driver looking for?</h2>
-              <p data-i18n="form.subb">Your name goes on the card at Arrivals 4.</p>
-            </header>
-
-            <div class="grid">
             <p class="field">
               <label for="name" data-i18n="f.name">Name</label>
               <input id="name" name="name" type="text" autocomplete="name"
@@ -331,18 +387,21 @@
             <input id="gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
           </p>
 
-          <div class="form__foot">
-            <button class="btn btn--ghost" type="button" id="backBtn" data-i18n="nav.back" hidden>Back</button>
-            <button class="btn btn--primary btn--big" type="button" id="nextBtn" data-i18n="nav.next">Continue</button>
-            <button class="btn btn--primary btn--big" type="submit" id="sendBtn" data-i18n="form.submit" hidden>Request this ride</button>
+          <!-- Step 1 has its own Continue inside the controls row, so this
+               foot only carries the step-2 pair. -->
+          <div class="form__foot" id="formFoot" hidden>
+            <button class="btn btn--ghost" type="button" id="backBtn" data-i18n="nav.back">Back</button>
+            <button class="btn btn--go btn--big" type="submit" id="sendBtn" data-i18n="form.submit">Request this ride</button>
             <p class="form__note" data-i18n="form.note">No payment now. Nothing is charged until the ride is finished.</p>
           </div>
 
           <p class="form__error" id="formError" role="alert" hidden></p>
         </form>
+      </div>
 
-        <!-- confirmation, printed as a meter receipt -->
-        <div class="receipt" id="receipt" hidden tabindex="-1">
+      <!-- The confirmation is paperwork, so it gets the paper card. -->
+      <div class="panel" id="confirmPanel" hidden>
+        <div class="receipt" id="receipt" tabindex="-1">
           <div class="receipt__paper">
             <p class="receipt__logo">GO AKTAA</p>
             <p class="receipt__kicker" data-i18n="r.kicker">RIDE REQUEST RECEIVED</p>
@@ -381,8 +440,8 @@
             <button class="btn btn--ghost" type="button" id="againBtn" data-i18n="r.again">Book another ride</button>
           </div>
         </div>
-
       </div>
+
     </div>
   </section>
 
