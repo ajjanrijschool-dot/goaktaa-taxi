@@ -66,80 +66,70 @@ slip for a request that did not arrive.
 
 ## 2. GitHub Pages — the hosting
 
-1. Create a repository on github.com and push this folder to it:
-
-   ```
-   git remote add origin https://github.com/<you>/<repo>.git
-   git push -u origin main
-   ```
-
-2. In the repository: **Settings → Pages**.
-3. Under *Build and deployment*, set **Source** to `Deploy from a branch`,
-   branch `main`, folder `/ (root)`. Save.
-4. A minute later the site is live at
-   `https://<you>.github.io/<repo>/`.
-
-Every asset path in `index.html` is relative, so the site works both at a
-repository subpath and at a domain root — no changes needed between them.
-
-Get this working before touching the domain. A custom domain on a Pages site
-that isn't live yet only makes the errors harder to read.
-
-## 3. TransIP — the domain
-
-The site is set up to live on the **bare domain**, e.g. `goaktaa.nl`, with
-`www` redirecting to it. Replace `goaktaa.nl` below with whatever you
-actually register.
-
-### Register it
-
-TransIP control panel → **Domains** → search the name. `.nl` is the right
-choice for a Dutch taxi service; `.com` as well if you want to hold it. Buy
-only the domain — you do not need TransIP hosting, mail, or a website
-package, since GitHub Pages serves the site and Formspree handles the mail.
-
-### Point it at GitHub
-
-TransIP control panel → your domain → **DNS**. TransIP ships default records
-aimed at its own parking page: delete or overwrite the existing `@` and `www`
-entries, then set:
-
-| Type  | Name | TTL  | Value              |
-|-------|------|------|--------------------|
-| A     | @    | 3600 | 185.199.108.153    |
-| A     | @    | 3600 | 185.199.109.153    |
-| A     | @    | 3600 | 185.199.110.153    |
-| A     | @    | 3600 | 185.199.111.153    |
-| CNAME | www  | 3600 | `<you>.github.io.` |
-
-All four A records are needed — they are GitHub's Pages edge addresses, and
-four of them is how the redundancy works. Confirm them against GitHub's
-*Managing a custom domain for your GitHub Pages site* documentation before
-saving, since these addresses do change occasionally. IPv6 is optional: add
-`AAAA` records for `2606:50c0:8000::153` through `2606:50c0:8003::153`.
-
-Note the trailing dot on the CNAME value. TransIP's editor wants fully
-qualified names, and `<you>.github.io` without it can be read as a subdomain
-of your own domain.
-
-### Tell GitHub about it
-
-Repository → **Settings → Pages → Custom domain**: enter `goaktaa.nl` (the
-bare domain, no `www`) and save. GitHub verifies DNS, then commits a file
-named `CNAME` to the repository containing just:
+The repository is <https://github.com/ajjanrijschool-dot/goaktaa-taxi>, and
+`main` is what Pages serves. To publish a change:
 
 ```
-goaktaa.nl
+git add -A
+git commit -m "what changed"
+git push
 ```
 
-There is deliberately no `CNAME` file in this folder. Adding one for a domain
-that does not resolve yet makes Pages report a domain error — let GitHub
-create it when you enter the real domain. With the bare domain set as the
-custom domain, GitHub redirects `www` to it automatically.
+Pages rebuilds within a minute or so. Settings for it live under
+**Settings → Pages**: source is `Deploy from a branch`, branch `main`,
+folder `/ (root)`.
 
-DNS takes anywhere from minutes to a few hours. Once it resolves, return to
-Settings → Pages and tick **Enforce HTTPS**; GitHub issues the certificate
-itself, free.
+Without the custom domain the site answers at
+`https://ajjanrijschool-dot.github.io/goaktaa-taxi/`. Every asset path in
+`index.html` is relative, so it works identically there and at the domain
+root — nothing to change between them.
+
+## 3. The domain — taxiservicegoaktaa.nl
+
+Registered at TransIP, which is also the DNS operator. The site lives on the
+**bare domain**, with `www` redirecting to it.
+
+### DNS, as configured at TransIP
+
+Control panel → `taxiservicegoaktaa.nl` → **DNS**:
+
+| Type  | Name | TTL   | Value                        |
+|-------|------|-------|------------------------------|
+| A     | @    | 1 Uur | 185.199.108.153              |
+| A     | @    | 1 Uur | 185.199.109.153              |
+| A     | @    | 1 Uur | 185.199.110.153              |
+| A     | @    | 1 Uur | 185.199.111.153              |
+| CNAME | www  | 1 Uur | `ajjanrijschool-dot.github.io.` |
+| TXT   | @    | 1 Uur | `v=spf1 ~all`                |
+| TXT   | _dmarc | 1 Uur | `v=DMARC1; p=none;`        |
+
+All four A records are GitHub's Pages edge addresses; four of them is how the
+redundancy works. Records with the same name and type must share one TTL —
+TransIP refuses the save otherwise.
+
+Deleted from TransIP's defaults, and worth keeping deleted:
+
+- The `AAAA` record pointing at TransIP's parking address. A stale AAAA is
+  the classic half-broken setup: IPv6 visitors reach the old host while
+  everyone else sees the real site. To add IPv6 properly, use GitHub's
+  `2606:50c0:8000::153` through `2606:50c0:8003::153`.
+- The `MX` record, which pointed mail at `@`. With `@` on GitHub, mail sent
+  to this domain would reach web servers that do not handle mail. There is no
+  mail on the domain: Formspree delivers booking requests to Gmail. Before
+  ever using an address at this domain, point `MX` at a real mail provider.
+
+DNSSEC stays enabled — safe, because TransIP remains the DNS operator. It
+would need attention only if the nameservers moved elsewhere.
+
+### GitHub's side
+
+Repository → **Settings → Pages → Custom domain**: `taxiservicegoaktaa.nl`,
+no `www`. GitHub verifies DNS and commits a `CNAME` file containing just the
+domain, then redirects `www` to it automatically. Once it resolves, tick
+**Enforce HTTPS** — GitHub issues and renews the certificate free.
+
+Do not hand-write the `CNAME` file. Letting GitHub create it keeps the file
+and the Pages setting from disagreeing.
 
 ## Not included: payments
 
