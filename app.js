@@ -459,6 +459,25 @@
     form.method = 'POST';
   }
 
+  /* ── City cards fill the form in ───────────────────────── */
+  document.querySelectorAll('[data-dest]').forEach(function (card) {
+    card.addEventListener('click', function (event) {
+      event.preventDefault();
+      /* Coming from a city card, you are almost certainly leaving the airport. */
+      if (!pickup.value.trim()) pickup.value = SCHIPHOL_IN;
+      dest.value = card.dataset.dest;
+      clearError(dest);
+      if (step > LAST_INPUT_STEP) {
+        form.reset();
+        pickup.value = SCHIPHOL_IN;
+        dest.value = card.dataset.dest;
+        paintPax();
+      }
+      goStep(1, false);
+      dest.focus({ preventScroll: true });
+    });
+  });
+
   /* ── Nav follows the scroll ────────────────────────────── */
   (function scrollspy() {
     var links = [].slice.call(document.querySelectorAll('.mainnav a[href^="#"]'));

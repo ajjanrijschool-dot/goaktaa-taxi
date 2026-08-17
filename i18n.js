@@ -156,6 +156,14 @@ window.I18N = (function () {
       'city.hague': 'Den Haag',
       'city.rotterdam': 'Rotterdam',
 
+      'svc.eyebrow': 'Our services',
+      'svc.title': 'Every ride starts at the kerb.',
+      'svc.ams': 'Taxi Amsterdam',
+      'svc.rtm': 'Taxi Rotterdam',
+      'svc.dh': 'Taxi Den Haag',
+      'svc.fromap': 'From Schiphol',
+      'svc.foot': 'Pick a city and its name lands in the booking form. Anywhere else in the Netherlands works the same way — type the address and the meter does the rest.',
+
       'reviews.eyebrow': 'Reviews',
       'reviews.title': 'Nothing here yet, and we won’t invent any.',
       'reviews.lede': 'We started driving recently. Plenty of taxi sites open with glowing quotes from nobody in particular; this one will show real ones or none at all.',
@@ -327,6 +335,14 @@ window.I18N = (function () {
       'city.hague': 'Den Haag',
       'city.rotterdam': 'Rotterdam',
 
+      'svc.eyebrow': 'Onze diensten',
+      'svc.title': 'Elke rit begint aan de stoep.',
+      'svc.ams': 'Taxi Amsterdam',
+      'svc.rtm': 'Taxi Rotterdam',
+      'svc.dh': 'Taxi Den Haag',
+      'svc.fromap': 'Vanaf Schiphol',
+      'svc.foot': 'Kies een stad en de naam staat meteen in het boekingsformulier. Elders in Nederland werkt het net zo — vul het adres in en de meter doet de rest.',
+
       'reviews.eyebrow': 'Beoordelingen',
       'reviews.title': 'Nog niets, en we verzinnen niets.',
       'reviews.lede': 'We rijden sinds kort. Genoeg taxisites beginnen met loftuitingen van niemand in het bijzonder; hier komen echte te staan, of geen.',
@@ -497,6 +513,14 @@ window.I18N = (function () {
       'city.utrecht': 'أوترخت',
       'city.hague': 'لاهاي',
       'city.rotterdam': 'روتردام',
+
+      'svc.eyebrow': 'خدماتنا',
+      'svc.title': 'كل رحلة تبدأ عند الرصيف.',
+      'svc.ams': 'تاكسي أمستردام',
+      'svc.rtm': 'تاكسي روتردام',
+      'svc.dh': 'تاكسي لاهاي',
+      'svc.fromap': 'من سخيبول',
+      'svc.foot': 'اختر مدينة وسيظهر اسمها مباشرة في نموذج الحجز. وأي مكان آخر في هولندا يعمل بالطريقة نفسها — اكتب العنوان والعدّاد يتكفّل بالباقي.',
 
       'reviews.eyebrow': 'التقييمات',
       'reviews.title': 'لا شيء هنا بعد، ولن نختلق شيئاً.',
