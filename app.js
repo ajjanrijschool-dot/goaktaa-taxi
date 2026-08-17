@@ -459,6 +459,22 @@
     form.method = 'POST';
   }
 
+  /* The hero photo, if there is one, takes over and the meter moves
+     into its corner. Without car.jpg nothing changes. */
+  (function heroPhoto() {
+    var shot = document.getElementById('heroShot');
+    if (!shot) return;
+    var img = shot.querySelector('.shot__photo');
+    if (!img) return;
+    function reveal() {
+      if (!img.naturalWidth) return;
+      img.hidden = false;
+      shot.classList.add('shot--photo');
+    }
+    if (img.complete) reveal();
+    else img.addEventListener('load', reveal);
+  }());
+
   /* ── A photo replaces its drawing, once one exists ─────────
      Drop amsterdam.jpg / rotterdam.jpg / denhaag.jpg beside index.html
      and the cards switch over. Until then the drawing stays and nothing

@@ -242,6 +242,38 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
 .meter__rows dt { font: 500 .5625rem/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #6B7683; margin-bottom: .375rem; }
 .meter__rows dd { margin: 0; font: 500 .875rem/1 var(--mono); color: #C7D0DA; }
 
+/* ── Hero photo, with the meter inset into it ──────────── */
+/* The frame is what the meter is positioned against — the figure itself
+   includes the caption, so anchoring to it drops the meter onto the text. */
+.shot__frame { position: relative; }
+.shot__photo {
+  display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: 10px; background: #DCE7F5;
+  box-shadow: 0 1px 2px rgba(14, 36, 79, .1), 0 26px 50px -30px rgba(14, 36, 79, .55);
+}
+.shot--photo .meter__bezel {
+  position: absolute; z-index: 1;
+  inset-inline-start: clamp(.75rem, 2vw, 1.25rem);
+  bottom: clamp(.75rem, 2vw, 1.25rem);
+  width: min(80%, 19rem);
+  padding: .75rem .875rem .6875rem;
+  border-radius: 8px;
+  background: linear-gradient(rgba(24, 30, 38, .93), rgba(11, 14, 18, .95));
+  backdrop-filter: blur(8px);
+}
+.shot--photo .meter__head { padding-bottom: .5rem; font-size: .5625rem; }
+.shot--photo .meter__flag { padding: .1875rem .375rem; }
+.shot--photo .meter__readout { padding: .75rem 0 .625rem; }
+.shot--photo .meter__value { font-size: clamp(1.5rem, 4vw, 2.125rem); }
+.shot--photo .meter__cur { font-size: .625rem; }
+.shot--photo .meter__rows { padding-top: .5rem; gap: .375rem; }
+.shot--photo .meter__rows dt { font-size: .5rem; margin-bottom: .1875rem; }
+.shot--photo .meter__rows dd { font-size: .6875rem; }
+@media (max-width: 520px) {
+  .shot--photo .meter__rows { display: none; }
+  .shot--photo .meter__bezel { width: min(88%, 15rem); }
+}
+
 .meter figcaption {
   margin-top: 1rem; font-size: .875rem; line-height: 1.55; color: var(--ink-soft);
   border-inline-start: 2px solid var(--amber); padding-inline-start: .875rem;

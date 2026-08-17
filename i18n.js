@@ -27,6 +27,7 @@ window.I18N = (function () {
       'hero.eyebrow': 'Amsterdam Schiphol · 24 hours',
       'hero.h1': 'A licensed taxi, already parked when you land.',
       'hero.lede': 'We drive to and from Schiphol on the meter. Your driver tracks your flight, waits at Arrivals 4, and the taximeter decides the fare — not a pop-up quote.',
+      'hero.photo.alt': 'The car and driver that meet you at Schiphol',
       'meter.caption': 'The meter runs from pickup to drop-off. Until it starts there is no fare to show — this is what you watch instead of a checkout page.',
       'trust.label': 'Credentials',
       'trust.1': 'TX-keur certified drivers',
@@ -206,6 +207,7 @@ window.I18N = (function () {
       'hero.eyebrow': 'Amsterdam Schiphol · 24 uur',
       'hero.h1': 'Een taxi met vergunning, al geparkeerd als je landt.',
       'hero.lede': 'Wij rijden van en naar Schiphol op de meter. Je chauffeur volgt je vlucht, wacht bij Aankomsthal 4, en de taxameter bepaalt het tarief — geen prijs uit een pop-up.',
+      'hero.photo.alt': 'De auto en chauffeur die je op Schiphol opwachten',
       'meter.caption': 'De meter loopt van instap tot bestemming. Tot hij start is er geen tarief om te tonen — dit is wat je ziet in plaats van een afrekenpagina.',
       'trust.label': 'Papieren',
       'trust.1': 'Chauffeurs met TX-keur',
@@ -385,6 +387,7 @@ window.I18N = (function () {
       'hero.eyebrow': 'أمستردام سخيبول · 24 ساعة',
       'hero.h1': 'تاكسي مرخّص، واقف في انتظارك قبل أن تهبط.',
       'hero.lede': 'نوصلك من سخيبول وإليه بالعدّاد. سائقك يتابع رحلتك، وينتظرك عند مخرج الوصول 4، والعدّاد هو من يحدد الأجرة — لا سعر يقفز لك في نافذة.',
+      'hero.photo.alt': 'السيارة والسائق اللذان ينتظرانك في سخيبول',
       'meter.caption': 'العدّاد يعمل من لحظة الركوب حتى الوصول. وقبل أن يبدأ لا توجد أجرة لنعرضها — هذا ما تراه بدلاً من صفحة دفع.',
       'trust.label': 'التراخيص',
       'trust.1': 'سائقون بشهادة TX-keur',
@@ -580,6 +583,9 @@ window.I18N = (function () {
     });
     document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
       el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
+    });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
+      el.alt = t(el.getAttribute('data-i18n-alt'));
     });
 
     document.querySelectorAll('.lang__b').forEach(function (b) {

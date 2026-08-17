@@ -93,8 +93,12 @@
         </div>
       </div>
 
-      <!-- signature element: the taximeter. Its face is hardware — always Dutch. -->
-      <figure class="meter">
+      <!-- Save your car photo as car.jpg beside index.html and it becomes the
+           hero image, with the meter tucked into its corner. Without the file
+           the meter stands alone, exactly as before. -->
+      <figure class="meter shot" id="heroShot">
+        <div class="shot__frame">
+        <img class="shot__photo" src="car.jpg" alt="" data-i18n-alt="hero.photo.alt" hidden>
         <div class="meter__bezel" lang="nl" dir="ltr">
           <div class="meter__head">
             <span>TAXAMETER</span>
@@ -109,6 +113,7 @@
             <div><dt>Afstand</dt><dd>0.00 km</dd></div>
             <div><dt>Tijd</dt><dd>00:00</dd></div>
           </dl>
+        </div>
         </div>
         <figcaption data-i18n="meter.caption">
           The meter runs from pickup to drop-off. Until it starts there is no fare to show —
