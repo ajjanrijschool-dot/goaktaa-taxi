@@ -487,13 +487,13 @@
   </section>
 
   <!-- ── Services ──────────────────────────────────────────────
-       The artwork is drawn here, not photographed, so there is nothing
-       to license. To use a real photo instead, replace the <svg> inside
-       .svc__art with:
+       Each card holds a photo and a drawing. The drawing shows until a
+       photo actually loads, so the page is never broken and never waits
+       on anything.
 
-         <img src="amsterdam.jpg" alt="Amsterdam" loading="lazy">
-
-       Keep it around 4:3 and at least 800px wide. The CSS crops it.
+       To use photos: put amsterdam.jpg, rotterdam.jpg and denhaag.jpg
+       in this folder. That is the whole job — no code changes. Roughly
+       4:3, at least 800px wide, and photos you are licensed to use.
        ───────────────────────────────────────────────────────── -->
   <section class="svcs" id="services">
     <div class="wrap">
@@ -504,7 +504,8 @@
         <li class="svc">
           <a href="#book" data-dest="Amsterdam Centraal">
             <span class="svc__art">
-              <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
+              <img class="svc__photo" src="amsterdam.jpg" alt="" hidden>
+              <svg class="svc__draw" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
                 <defs>
                   <linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0" stop-color="#D5E2F3"/><stop offset="1" stop-color="#F2F6FA"/>
@@ -576,7 +577,8 @@
         <li class="svc">
           <a href="#book" data-dest="Rotterdam">
             <span class="svc__art">
-              <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
+              <img class="svc__photo" src="rotterdam.jpg" alt="" hidden>
+              <svg class="svc__draw" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
                 <defs>
                   <linearGradient id="skyR" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0" stop-color="#C9D8EE"/><stop offset="1" stop-color="#EFF4F9"/>
@@ -623,7 +625,8 @@
         <li class="svc">
           <a href="#book" data-dest="Den Haag">
             <span class="svc__art">
-              <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
+              <img class="svc__photo" src="denhaag.jpg" alt="" hidden>
+              <svg class="svc__draw" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
                 <defs>
                   <linearGradient id="skyH" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0" stop-color="#D2E0F2"/><stop offset="1" stop-color="#F1F5FA"/>

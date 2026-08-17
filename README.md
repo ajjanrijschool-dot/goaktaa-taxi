@@ -131,6 +131,36 @@ domain, then redirects `www` to it automatically. Once it resolves, tick
 Do not hand-write the `CNAME` file. Letting GitHub create it keeps the file
 and the Pages setting from disagreeing.
 
+## City photos
+
+The three service cards ship with drawn skylines. To use photographs
+instead, put these files next to `index.html`:
+
+```
+amsterdam.jpg
+rotterdam.jpg
+denhaag.jpg
+```
+
+That is the whole job — no code changes. Each card checks for its photo
+and swaps it in; any card without one keeps its drawing, so you can add
+them one at a time and the page is never half-broken.
+
+Roughly 4:3, at least 800px wide, and keep them under about 300KB each so
+the page stays quick. Other formats work if you rename them to `.jpg`, or
+tell me and I'll widen it.
+
+**Use photos you are allowed to use.** Images found through a search
+engine are usually licensed stock, and agencies do bill businesses that
+publish them — the invoice would come to this company. Safe sources:
+
+- Photographs you or a driver took. A real car at a real address beats any
+  stock skyline for trust, and costs nothing.
+- [Unsplash](https://unsplash.com) and [Pexels](https://pexels.com) —
+  free for commercial use, no attribution required.
+- Wikimedia Commons — free, but most images require crediting the
+  photographer, so read each one's licence.
+
 ## Not included: payments
 
 Mollie is deliberately absent — there is nothing to sell yet, and a static

@@ -459,6 +459,21 @@
     form.method = 'POST';
   }
 
+  /* ── A photo replaces its drawing, once one exists ─────────
+     Drop amsterdam.jpg / rotterdam.jpg / denhaag.jpg beside index.html
+     and the cards switch over. Until then the drawing stays and nothing
+     looks broken. */
+  document.querySelectorAll('.svc__photo').forEach(function (img) {
+    function reveal() {
+      if (!img.naturalWidth) return;
+      img.hidden = false;
+      var drawing = img.parentNode.querySelector('.svc__draw');
+      if (drawing) drawing.remove();
+    }
+    if (img.complete) reveal();
+    else img.addEventListener('load', reveal);
+  });
+
   /* ── City cards fill the form in ───────────────────────── */
   document.querySelectorAll('[data-dest]').forEach(function (card) {
     card.addEventListener('click', function (event) {
