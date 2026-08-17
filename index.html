@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meterline — Metered taxis at Amsterdam Schiphol</title>
+<meta name="description" content="Licensed metered taxis to and from Amsterdam Schiphol. Book a car, meet your driver at Arrivals 4, pay what the taximeter reads.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip" href="#book" data-i18n="skip">Skip to booking</a>
+
+<header class="bar">
+  <div class="wrap bar__inner">
+    <a class="brand" href="#top">
+      <span class="brand__lamp" aria-hidden="true"></span>
+      <span class="brand__name">Meterline</span>
+      <span class="brand__sub" data-i18n="brand.sub">Schiphol transfers</span>
+    </a>
+
+    <div class="bar__right">
+      <div class="lang" role="group" aria-label="Language" data-i18n-aria="lang.label">
+        <button type="button" class="lang__b" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang__b" data-lang="nl" aria-pressed="false">NL</button>
+        <button type="button" class="lang__b" data-lang="ar" aria-pressed="false" lang="ar">ع</button>
+      </div>
+      <nav class="bar__nav" aria-label="Sections">
+        <a href="#fare" data-i18n="nav.fare">The fare</a>
+        <a href="#meet" data-i18n="nav.meet">Meeting point</a>
+        <a href="#book" class="bar__cta" data-i18n="nav.cta">Book a taxi</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ── Hero ─────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow" data-i18n="hero.eyebrow">Amsterdam Schiphol · 24 hours</p>
+        <h1 data-i18n="hero.h1">A licensed taxi, already parked when you land.</h1>
+        <p class="lede" data-i18n="hero.lede">
+          We drive to and from Schiphol on the meter. Your driver tracks your flight,
+          waits at Arrivals 4, and the taximeter decides the fare — not a pop-up quote.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#book" data-i18n="cta.book">Book a taxi</a>
+          <a class="btn btn--ghost" href="tel:+31201234567" data-i18n="cta.call">Call +31 20 123 4567</a>
+        </div>
+      </div>
+
+      <!-- signature element: the taximeter. Its face is hardware — always Dutch. -->
+      <figure class="meter">
+        <div class="meter__bezel" lang="nl" dir="ltr">
+          <div class="meter__head">
+            <span>TAXAMETER</span>
+            <span class="meter__flag">VRIJ</span>
+          </div>
+          <div class="meter__readout">
+            <span class="meter__value">--.--</span>
+            <span class="meter__cur">EUR</span>
+          </div>
+          <dl class="meter__rows">
+            <div><dt>Tarief</dt><dd id="meterTariff">—</dd></div>
+            <div><dt>Afstand</dt><dd>0.00 km</dd></div>
+            <div><dt>Tijd</dt><dd>00:00</dd></div>
+          </dl>
+        </div>
+        <figcaption data-i18n="meter.caption">
+          The meter runs from pickup to drop-off. Until it starts there is no fare to show —
+          this is what you watch instead of a checkout page.
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="hero__art" aria-hidden="true">
+      <svg viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" role="presentation" focusable="false">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#E3EAF3"/>
+            <stop offset="1" stop-color="#F4F7FA"/>
+          </linearGradient>
+          <clipPath id="glass"><rect x="60" y="72" width="620" height="124" rx="3"/></clipPath>
+        </defs>
+
+        <rect width="1200" height="300" fill="url(#sky)"/>
+
+        <!-- control tower -->
+        <rect x="1090" y="50" width="16" height="146" fill="#9FB0C6"/>
+        <path d="M1078 50h40l-6 -14h-28z" fill="#153A8A"/>
+        <rect x="1076" y="18" width="44" height="26" rx="4" fill="#1B4FD8"/>
+
+        <!-- lamp post -->
+        <g fill="#AEBBCB"><rect x="1040" y="60" width="7" height="136"/><rect x="1024" y="56" width="39" height="7" rx="3"/></g>
+
+        <!-- terminal -->
+        <rect x="60" y="60" width="620" height="136" rx="4" fill="#F8FAFC"/>
+        <rect x="60" y="60" width="620" height="12" fill="#153A8A"/>
+        <g clip-path="url(#glass)" stroke="#C4D1E0" stroke-width="2">
+          <path d="M100 72v124M140 72v124M180 72v124M220 72v124M260 72v124M300 72v124M340 72v124M380 72v124M420 72v124M460 72v124M500 72v124M540 72v124M580 72v124M620 72v124M660 72v124M60 116h620M60 156h620"/>
+        </g>
+        <rect x="60" y="72" width="620" height="124" fill="#B9CBE2" opacity=".26"/>
+        <rect x="300" y="132" width="150" height="64" rx="2" fill="#E9EFF5"/>
+        <rect x="300" y="132" width="150" height="9" fill="#153A8A" opacity=".7"/>
+
+        <!-- kerbside taxi sign -->
+        <rect x="648" y="126" width="6" height="70" fill="#93A5BC"/>
+        <rect x="620" y="98" width="62" height="28" rx="3" fill="#153A8A"/>
+        <text x="633" y="117" class="art-sign">TAXI</text>
+
+        <!-- kerb and road -->
+        <rect x="0" y="196" width="1200" height="8" fill="#D3DBE4"/>
+        <rect x="0" y="204" width="1200" height="96" fill="#E1E7ED"/>
+        <path d="M0 268h1200" stroke="#CFD7E0" stroke-width="4" stroke-dasharray="46 34" fill="none"/>
+
+        <!-- taxi at the kerb -->
+        <g>
+          <path d="M700 226h268l-6-34c-2-13-13-22-26-22H738c-13 0-24 9-26 22z" fill="#F5B02E"/>
+          <path d="M748 176h172l-12-30c-3-8-11-13-19-13H779c-9 0-17 5-20 13z" fill="#CFE0F2"/>
+          <path d="M832 133h6v43h-6z" fill="#F5B02E"/>
+          <rect x="678" y="222" width="312" height="34" rx="12" fill="#F5B02E"/>
+          <rect x="678" y="244" width="312" height="12" rx="6" fill="#D8961F"/>
+          <rect x="806" y="114" width="56" height="20" rx="5" fill="#14181D"/>
+          <rect x="812" y="119" width="44" height="10" rx="3" fill="#FFC24D"/>
+          <rect x="690" y="230" width="20" height="9" rx="4" fill="#FFF3D6"/>
+          <rect x="960" y="230" width="20" height="9" rx="4" fill="#C0392B" opacity=".8"/>
+          <g fill="#14181D"><circle cx="740" cy="256" r="21"/><circle cx="926" cy="256" r="21"/></g>
+          <g fill="#E1E7ED"><circle cx="740" cy="256" r="9"/><circle cx="926" cy="256" r="9"/></g>
+        </g>
+      </svg>
+    </div>
+
+    <ul class="trust wrap" aria-label="Credentials" data-i18n-aria="trust.label">
+      <li data-i18n="trust.1">TX-keur certified drivers</li>
+      <li data-i18n="trust.2">KIWA taxi permit</li>
+      <li data-i18n="trust.3">Flight number tracked</li>
+      <li data-i18n="trust.4">Card, cash or invoice</li>
+    </ul>
+  </section>
+
+  <!-- ── Booking ──────────────────────────────────────────── -->
+  <section class="book" id="book">
+    <div class="wrap">
+      <div class="panel">
+
+        <!-- Formspree relays this to the inbox. The action is set from the
+             endpoint in app.js so there is only one place to edit. -->
+        <form class="form" id="bookingForm" name="booking" novalidate>
+          <header class="form__head">
+            <h2 data-i18n="form.h2">Book a taxi</h2>
+            <p data-i18n="form.sub">Takes a minute. We confirm by text within 15 minutes.</p>
+          </header>
+
+          <fieldset class="dir">
+            <legend data-i18n="form.direction">Direction</legend>
+            <div class="dir__set">
+              <label class="dir__opt"><input type="radio" name="direction" value="from" checked><span data-i18n="dir.from">From Schiphol</span></label>
+              <label class="dir__opt"><input type="radio" name="direction" value="to"><span data-i18n="dir.to">To Schiphol</span></label>
+              <label class="dir__opt"><input type="radio" name="direction" value="other"><span data-i18n="dir.other">Other route</span></label>
+            </div>
+          </fieldset>
+
+          <div class="grid">
+            <p class="field field--wide">
+              <label for="pickup" data-i18n="f.pickup">Pick-up address</label>
+              <input id="pickup" name="pickup" type="text" list="places" autocomplete="off"
+                     placeholder="Schiphol Plaza, Arrivals 4" required>
+              <span class="err" data-err-for="pickup"></span>
+            </p>
+
+            <p class="field field--wide">
+              <label for="dest" data-i18n="f.dest">Destination</label>
+              <input id="dest" name="destination" type="text" list="places" autocomplete="off"
+                     placeholder="Street, number, city" data-i18n-ph="f.dest.ph" required>
+              <span class="err" data-err-for="dest"></span>
+            </p>
+
+            <datalist id="places">
+              <option value="Schiphol Plaza, Arrivals 4"></option>
+              <option value="Schiphol P1, Departures"></option>
+              <option value="Amsterdam Centraal"></option>
+              <option value="Amsterdam Zuid / WTC"></option>
+              <option value="RAI Amsterdam"></option>
+              <option value="Haarlem"></option>
+              <option value="Leiden"></option>
+              <option value="Utrecht"></option>
+              <option value="Den Haag"></option>
+              <option value="Rotterdam"></option>
+            </datalist>
+
+            <p class="field">
+              <label for="date" data-i18n="f.date">Date</label>
+              <input id="date" name="date" type="date" required>
+              <span class="err" data-err-for="date"></span>
+            </p>
+
+            <p class="field">
+              <label for="time" data-i18n="f.time">Pick-up time</label>
+              <input id="time" name="time" type="time" required>
+              <span class="hint" data-i18n="f.time.hint">Local time in Amsterdam.</span>
+              <span class="err" data-err-for="time"></span>
+            </p>
+
+            <p class="field">
+              <label for="pax" data-i18n="f.pax">Passengers</label>
+              <select id="pax" name="passengers" required>
+                <option value="1" data-i18n="pax.1">1 passenger</option>
+                <option value="2" selected data-i18n="pax.2">2 passengers</option>
+                <option value="3" data-i18n="pax.3">3 passengers</option>
+                <option value="4" data-i18n="pax.4">4 passengers</option>
+                <option value="5" data-i18n="pax.5">5 — minivan</option>
+                <option value="6" data-i18n="pax.6">6 — minivan</option>
+                <option value="7" data-i18n="pax.7">7 — minivan</option>
+                <option value="8" data-i18n="pax.8">8 — minivan</option>
+              </select>
+            </p>
+
+            <p class="field">
+              <label for="bags"><span data-i18n="f.bags">Suitcases</span> <span class="opt" data-i18n="optional">optional</span></label>
+              <select id="bags" name="suitcases">
+                <option value="" data-i18n="bags.unsure">Not sure yet</option>
+                <option value="hand" data-i18n="bags.hand">Hand luggage only</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4+" data-i18n="bags.many">4 or more</option>
+              </select>
+            </p>
+
+            <p class="field">
+              <label for="name" data-i18n="f.name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name"
+                     placeholder="Name on the flight" data-i18n-ph="f.name.ph" required>
+              <span class="err" data-err-for="name"></span>
+            </p>
+
+            <p class="field">
+              <label for="phone" data-i18n="f.phone">Mobile number</label>
+              <input id="phone" name="mobile" type="tel" autocomplete="tel" inputmode="tel"
+                     placeholder="+31 6 1234 5678" required>
+              <span class="hint" data-i18n="f.phone.hint">Your driver calls this number on arrival.</span>
+              <span class="err" data-err-for="phone"></span>
+            </p>
+
+            <p class="field">
+              <label for="flight"><span data-i18n="f.flight">Flight number</span> <span class="opt" data-i18n="optional">optional</span></label>
+              <input id="flight" name="flight" type="text" class="mono" placeholder="KL1234" maxlength="8" autocomplete="off">
+              <span class="hint" data-i18n="f.flight.hint">We watch the arrival and shift the pickup if you land late.</span>
+            </p>
+
+            <p class="field field--wide">
+              <label for="notes"><span data-i18n="f.notes">Anything the driver should know</span> <span class="opt" data-i18n="optional">optional</span></label>
+              <textarea id="notes" name="notes" rows="3" placeholder="Child seat, wheelchair, bicycle, second stop…" data-i18n-ph="f.notes.ph"></textarea>
+            </p>
+          </div>
+
+          <div class="fareline">
+            <span class="fareline__tag" data-i18n="fare.tag">Fare</span>
+            <p data-i18n="fare.note">Metered. Your driver starts the taximeter at pickup and you pay what it reads at the door,
+               within the national maximum taxi tariff. No booking fee, no surge pricing.</p>
+          </div>
+
+          <!-- Bots fill this in; people never see it. _gotcha is the name
+               Formspree filters on, so spam is dropped server-side too. -->
+          <p class="trap" aria-hidden="true">
+            <label for="gotcha">Company</label>
+            <input id="gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+          </p>
+
+          <div class="form__foot">
+            <button class="btn btn--primary btn--big" type="submit" data-i18n="form.submit">Request this ride</button>
+            <p class="form__note" data-i18n="form.note">No payment now. Nothing is charged until the ride is finished.</p>
+          </div>
+
+          <p class="form__error" id="formError" role="alert" hidden></p>
+        </form>
+
+        <!-- confirmation, printed as a meter receipt -->
+        <div class="receipt" id="receipt" hidden tabindex="-1">
+          <div class="receipt__paper">
+            <p class="receipt__logo">METERLINE</p>
+            <p class="receipt__kicker" data-i18n="r.kicker">RIDE REQUEST RECEIVED</p>
+            <p class="receipt__ref"><span data-i18n="r.ref">REF</span> <strong id="rRef">—</strong></p>
+            <hr>
+            <dl class="receipt__rows">
+              <div><dt data-i18n="r.pickup">Pick-up</dt><dd id="rPickup">—</dd></div>
+              <div><dt data-i18n="r.dest">Drop-off</dt><dd id="rDest">—</dd></div>
+              <div><dt data-i18n="r.when">When</dt><dd id="rWhen">—</dd></div>
+              <div><dt data-i18n="r.pax">Passengers</dt><dd id="rPax">—</dd></div>
+              <div><dt data-i18n="r.bags">Suitcases</dt><dd id="rBags">—</dd></div>
+              <div><dt data-i18n="r.flight">Flight</dt><dd id="rFlight">—</dd></div>
+              <div><dt data-i18n="r.contact">Contact</dt><dd id="rContact">—</dd></div>
+            </dl>
+            <hr>
+            <div class="receipt__fare">
+              <span data-i18n="r.fare">FARE</span>
+              <span class="receipt__meter" data-i18n="r.fareval">ON THE TAXIMETER</span>
+            </div>
+            <p class="receipt__small" data-i18n="r.small">
+              Charged on the meter at drop-off. Keep this reference — your driver's name and
+              licence plate arrive by text within 15 minutes.
+            </p>
+            <p class="receipt__stamp" data-i18n="r.stamp">MEETING POINT · SCHIPHOL PLAZA · ARRIVALS 4</p>
+          </div>
+          <div class="receipt__side">
+            <p class="eyebrow" data-i18n="r.confirmed">Booking confirmed</p>
+            <h2 data-i18n="r.h2">Your ride is with the dispatcher.</h2>
+            <p class="receipt__lede" data-i18n="r.lede">We're matching you with the nearest licensed car. You'll get a text with the
+               driver's name, phone number and licence plate — and a call when they arrive.</p>
+            <ul class="receipt__next">
+              <li data-i18n="r.next1">Change or cancel free of charge up to 2 hours before pickup.</li>
+              <li data-i18n="r.next2">Landing early or late? The flight number keeps the pickup in sync.</li>
+              <li data-i18n-html="r.next3">Something urgent: <a href="tel:+31201234567">+31 20 123 4567</a>, day or night.</li>
+            </ul>
+            <button class="btn btn--ghost" type="button" id="againBtn" data-i18n="r.again">Book another ride</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Fare ─────────────────────────────────────────────── -->
+  <section class="fare" id="fare">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light" data-i18n="fare.eyebrow">How the fare works</p>
+      <h2 class="fare__title" data-i18n="fare.title">Three states of the meter.</h2>
+      <div class="fare__grid">
+        <article class="state">
+          <p class="state__flag" data-i18n="state1.flag">AT PICKUP</p>
+          <h3 data-i18n="state1.h">The meter starts</h3>
+          <p data-i18n-html="state1.p">Your driver switches the meter to <em>bezet</em> the moment you get in. Waiting time at the
+             terminal is on us for the first 30 minutes after landing.</p>
+        </article>
+        <article class="state">
+          <p class="state__flag" data-i18n="state2.flag">EN ROUTE</p>
+          <h3 data-i18n="state2.h">Time and distance</h3>
+          <p data-i18n="state2.p">The meter counts kilometres and minutes together, at the tariff printed on the window sticker.
+             Traffic on the A4 changes the number. Nobody changes it by hand.</p>
+        </article>
+        <article class="state">
+          <p class="state__flag" data-i18n="state3.flag">ON ARRIVAL</p>
+          <h3 data-i18n="state3.h">You pay the reading</h3>
+          <p data-i18n="state3.p">Meter stops, receipt prints. Card, cash or company invoice. Tolls and parking, if any, are
+             listed separately on the receipt.</p>
+        </article>
+      </div>
+      <p class="fare__foot" data-i18n-html="fare.foot">
+        Dutch taxis run on government-set maximum tariffs, and ours sit inside them. The sticker in the rear
+        window shows the exact rate before you step in. Need a fixed price for a long transfer instead?
+        <a href="tel:+31201234567">Ask the dispatcher.</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Meeting point ────────────────────────────────────── -->
+  <section class="meet" id="meet">
+    <div class="wrap meet__grid">
+      <div class="meet__copy">
+        <p class="eyebrow" data-i18n="meet.eyebrow">Meeting point</p>
+        <h2 data-i18n="meet.h2">Arrivals 4, past the coffee bar.</h2>
+        <p class="meet__body" data-i18n-html="meet.body">
+          Schiphol has one arrivals hall with four exits. Come out at <strong>Arrivals 4</strong> and look for a
+          driver holding a card with your name on it. If you surface at a different exit, call the number on your
+          confirmation text and the car moves to you.
+        </p>
+        <dl class="facts">
+          <div><dt data-i18n="facts.dep.t">Departures</dt><dd data-i18n="facts.dep.d">Kiss &amp; ride at P1, or the taxi rank on the departures deck.</dd></div>
+          <div><dt data-i18n="facts.wait.t">Waiting</dt><dd data-i18n="facts.wait.d">30 minutes free after landing, then the standard waiting tariff.</dd></div>
+          <div><dt data-i18n="facts.night.t">Night rides</dt><dd data-i18n="facts.night.d">Dispatch is staffed 24/7, including 03:00 departures.</dd></div>
+        </dl>
+      </div>
+      <div class="plaza" aria-hidden="true">
+        <!-- Wayfinding stays in the terminal's own signage language. -->
+        <svg viewBox="0 0 320 300" role="presentation" focusable="false">
+          <rect width="320" height="300" rx="10" fill="#F2F5F8"/>
+          <rect x="24" y="30" width="272" height="120" rx="6" fill="#fff" stroke="#D7DFE8"/>
+          <text x="40" y="58" class="pl-h">SCHIPHOL PLAZA</text>
+          <g stroke="#E1E8F0"><path d="M24 84h272M24 116h272"/></g>
+          <g class="pl-l">
+            <text x="40" y="106">ARRIVALS 1</text><text x="40" y="138">ARRIVALS 2</text>
+            <text x="176" y="106">ARRIVALS 3</text>
+          </g>
+          <rect x="168" y="120" width="120" height="26" rx="5" fill="#153A8A"/>
+          <text x="180" y="138" class="pl-hi">ARRIVALS 4</text>
+          <path d="M228 150v42" stroke="#153A8A" stroke-width="2" stroke-dasharray="4 5"/>
+          <circle cx="228" cy="198" r="7" fill="#F5B02E" stroke="#153A8A" stroke-width="2"/>
+          <rect x="24" y="212" width="272" height="10" fill="#DDE4EB"/>
+          <rect x="24" y="222" width="272" height="54" fill="#E7ECF1"/>
+          <path d="M24 250h272" stroke="#D2DAE3" stroke-width="3" stroke-dasharray="18 14"/>
+          <g>
+            <rect x="188" y="228" width="80" height="22" rx="7" fill="#F5B02E"/>
+            <rect x="200" y="219" width="52" height="11" rx="3" fill="#CFE0F2"/>
+            <circle cx="206" cy="250" r="6" fill="#14181D"/><circle cx="250" cy="250" r="6" fill="#14181D"/>
+          </g>
+          <text x="40" y="245" class="pl-l">TAXI</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <div>
+      <p class="foot__brand">Meterline</p>
+      <p data-i18n-html="foot.tagline">Metered airport transfers, Amsterdam Schiphol.<br>Dispatch open 24 hours.</p>
+    </div>
+    <div>
+      <p class="foot__h" data-i18n="foot.reach">Reach us</p>
+      <p><a href="tel:+31201234567">+31 20 123 4567</a><br><a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a></p>
+    </div>
+    <div>
+      <p class="foot__h" data-i18n="foot.legal">Small print</p>
+      <p data-i18n-html="foot.small">KIWA taxi permit · KvK 00000000 · TX-keur.<br>
+         Independent taxi operator. Not affiliated with Royal Schiphol Group.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn btn--ghost btn--dock" href="tel:+31201234567" data-i18n="dock.call">Call</a>
+  <a class="btn btn--primary btn--dock" href="#book" data-i18n="cta.book">Book a taxi</a>
+</div>
+
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

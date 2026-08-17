@@ -1,0 +1,497 @@
+/* ─────────────────────────────────────────────────────────────
+   Meterline — Schiphol taxi transfers
+   Palette: terminal concrete + aviation blue, one amber instrument.
+   Type: Archivo (display) / IBM Plex Sans (body) / IBM Plex Mono (data)
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --concrete:  #EBEFF3;
+  --paper:     #FFFFFF;
+  --ink:       #14181D;
+  --ink-soft:  #55606D;
+  --line:      #D6DEE7;
+  --navy:      #153A8A;
+  --navy-deep: #0E244F;
+  --amber:     #F5B02E;
+  --lcd:       #FFB223;
+  --lcd-bg:    #0B0E12;
+  --red:       #B23A2E;
+
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, Segoe UI, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --wrap: 1180px;
+  --pad: clamp(1.25rem, 4vw, 3rem);
+  --r: 4px;
+  --shadow: 0 1px 2px rgba(14, 36, 79, .06), 0 18px 40px -24px rgba(14, 36, 79, .28);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--concrete);
+  color: var(--ink);
+  font: 400 1rem/1.6 var(--body);
+  letter-spacing: -0.005em;
+}
+
+h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.03em; line-height: 1.04; margin: 0; }
+p { margin: 0; }
+a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+img, svg { max-width: 100%; }
+
+:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--pad); }
+
+.skip {
+  position: absolute; inset-inline-start: -9999px; top: 0; z-index: 60;
+  background: var(--navy); color: #fff; padding: .75rem 1rem; text-decoration: none;
+}
+.skip:focus { inset-inline-start: 0; }
+
+.eyebrow {
+  font: 500 .6875rem/1 var(--mono);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+.eyebrow--light { color: #8FA9D8; }
+
+/* ── Top bar ───────────────────────────────────────────── */
+.bar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(235, 239, 243, .88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 68px; }
+
+.brand { display: flex; align-items: baseline; gap: .5rem; text-decoration: none; color: var(--ink); }
+.brand__lamp {
+  width: 26px; height: 12px; border-radius: 3px 3px 1px 1px;
+  background: var(--amber);
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,.14);
+  align-self: center;
+}
+.brand__name { font-family: var(--display); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.04em; }
+.brand__sub { font: 500 .625rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
+
+.bar__right { display: flex; align-items: center; gap: clamp(.875rem, 2vw, 1.5rem); }
+.bar__nav { display: flex; align-items: center; gap: 1.75rem; }
+.bar__nav a { font-size: .9375rem; text-decoration: none; color: var(--ink-soft); }
+.bar__nav a:hover { color: var(--ink); }
+.bar__cta {
+  background: var(--navy); color: #fff !important;
+  padding: .625rem 1.125rem; border-radius: var(--r); font-weight: 500;
+}
+.bar__cta:hover { background: var(--navy-deep); }
+@media (max-width: 720px) {
+  .brand__sub { display: none; }
+  .bar__nav a:not(.bar__cta) { display: none; }
+}
+/* The dock owns the call to action on phones, so the bar drops it. */
+@media (max-width: 700px) {
+  .bar__nav { display: none; }
+}
+
+/* ── Language switch ───────────────────────────────────── */
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.lang__b {
+  appearance: none; background: transparent; cursor: pointer;
+  font: 500 .6875rem/1 var(--mono); letter-spacing: .1em;
+  color: var(--ink-soft); border: 0; border-inline-start: 1px solid var(--line);
+  padding: .5rem .625rem; min-width: 2.5rem;
+}
+.lang__b:first-child { border-inline-start: 0; }
+.lang__b:hover { color: var(--ink); background: rgba(21, 58, 138, .05); }
+.lang__b[aria-pressed="true"] { background: var(--navy); color: #fff; }
+.lang__b[lang="ar"] { font-family: "IBM Plex Sans Arabic", var(--body); font-size: .9375rem; letter-spacing: 0; }
+
+/* ── Buttons ───────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 500 .9375rem/1 var(--body);
+  padding: .9375rem 1.5rem; border-radius: var(--r);
+  border: 1px solid transparent; cursor: pointer; text-decoration: none;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+.btn--primary { background: var(--navy); color: #fff; }
+.btn--primary:hover { background: var(--navy-deep); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--ghost:hover { border-color: var(--ink); }
+.btn--big { padding: 1.125rem 2.25rem; font-size: 1rem; }
+.btn:active { transform: translateY(1px); }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:active { transform: none; } }
+
+/* ── Hero ──────────────────────────────────────────────── */
+.hero { padding-top: clamp(2.5rem, 6vw, 4.5rem); }
+
+/* Schiphol kerbside band: the picture, not a washed-out backdrop. */
+.hero__art { position: relative; height: clamp(160px, 24vw, 280px); overflow: hidden; }
+.hero__art svg { width: 100%; height: 100%; display: block; }
+.art-sign { font: 600 13px var(--mono); letter-spacing: .12em; fill: #fff; }
+.hero__art::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, var(--concrete) 0%, rgba(235, 239, 243, 0) 16%);
+}
+
+.hero__grid {
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: clamp(2rem, 5vw, 4.5rem); align-items: center;
+  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+.hero__copy h1 {
+  font-size: clamp(2.4rem, 6.2vw, 4.15rem);
+  max-width: 15ch;
+  margin-bottom: 1.5rem;
+}
+.lede { font-size: clamp(1.0625rem, 1.5vw, 1.1875rem); color: var(--ink-soft); max-width: 44ch; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2.25rem; }
+
+/* signature: taximeter */
+.meter { margin: 0; }
+.meter__bezel {
+  background: linear-gradient(#1B2129, #0D1116);
+  border: 1px solid #2C343E;
+  border-radius: 10px;
+  padding: 1.125rem 1.25rem 1rem;
+  box-shadow: 0 26px 60px -30px rgba(11, 14, 18, .9), inset 0 1px 0 rgba(255,255,255,.07);
+}
+.meter__head {
+  display: flex; justify-content: space-between; align-items: center;
+  font: 500 .625rem/1 var(--mono); letter-spacing: .22em; color: #7C8896;
+  padding-bottom: .875rem; border-bottom: 1px solid #232B34;
+}
+.meter__flag {
+  color: var(--lcd); letter-spacing: .18em;
+  border: 1px solid rgba(255, 178, 35, .35); border-radius: 2px;
+  padding: .25rem .5rem;
+}
+.meter__flag.is-live { color: #FF7A59; border-color: rgba(255, 122, 89, .45); }
+
+.meter__readout { display: flex; align-items: baseline; gap: .625rem; padding: 1.5rem 0 1.25rem; }
+.meter__value {
+  font: 600 clamp(3rem, 7.6vw, 4.5rem)/.9 var(--mono);
+  letter-spacing: .06em;
+  color: var(--lcd);
+  text-shadow: 0 0 22px rgba(255, 178, 35, .32);
+}
+.meter__cur { margin-inline-start: auto; font: 500 .75rem/1 var(--mono); letter-spacing: .2em; color: #7C8896; }
+
+.meter__rows { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: 0; border-top: 1px solid #232B34; padding-top: .875rem; }
+.meter__rows dt { font: 500 .5625rem/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #6B7683; margin-bottom: .375rem; }
+.meter__rows dd { margin: 0; font: 500 .875rem/1 var(--mono); color: #C7D0DA; }
+
+.meter figcaption {
+  margin-top: 1rem; font-size: .875rem; line-height: 1.55; color: var(--ink-soft);
+  border-inline-start: 2px solid var(--amber); padding-inline-start: .875rem;
+}
+
+.trust {
+  display: flex; flex-wrap: wrap; gap: 0;
+  list-style: none; margin: 0;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  font: 500 .75rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft);
+}
+.trust li { flex: 1 1 auto; padding: 1.0625rem 0; }
+.trust li::before { content: "— "; color: var(--amber); }
+
+@media (max-width: 900px) {
+  .hero__grid { grid-template-columns: 1fr; padding-bottom: 2rem; }
+  .hero__copy h1 { max-width: 20ch; }
+  .trust li { flex-basis: 50%; padding-block: .8125rem; }
+}
+
+/* ── Booking panel ─────────────────────────────────────── */
+.book { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+.panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.form { padding: clamp(1.5rem, 4vw, 3rem); }
+.form__head { margin-bottom: 2rem; }
+.form__head h2 { font-size: clamp(1.75rem, 3.4vw, 2.375rem); margin-bottom: .5rem; }
+.form__head p { color: var(--ink-soft); }
+
+.dir { border: 0; margin: 0 0 1.75rem; padding: 0; }
+.dir legend {
+  font: 500 .625rem/1 var(--mono); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-soft); padding: 0 0 .625rem;
+}
+.dir__set { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.dir__opt { position: relative; }
+.dir__opt input { position: absolute; opacity: 0; width: 100%; height: 100%; left: 0; top: 0; margin: 0; cursor: pointer; }
+.dir__opt span {
+  display: block; padding: .6875rem 1.125rem; font-size: .875rem; color: var(--ink-soft);
+  border-inline-start: 1px solid var(--line); cursor: pointer;
+}
+.dir__opt:first-child span { border-inline-start: 0; }
+.dir__opt input:checked + span { background: var(--navy); color: #fff; }
+.dir__opt input:focus-visible + span { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 1.5rem; }
+.field { display: flex; flex-direction: column; gap: .4375rem; margin: 0; }
+.field--wide { grid-column: 1 / -1; }
+.field > label { font-size: .8125rem; font-weight: 500; color: var(--ink); }
+.opt { font: 400 .6875rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+
+.field input, .field select, .field textarea {
+  width: 100%; font: 400 1rem/1.4 var(--body); color: var(--ink);
+  background: #FBFCFD; border: 1px solid var(--line); border-radius: var(--r);
+  padding: .8125rem .875rem; appearance: none;
+  transition: border-color .15s ease, background .15s ease;
+}
+.field textarea { resize: vertical; min-height: 5.25rem; }
+.field input.mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+.field select {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2355606D' stroke-width='1.6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .875rem center; padding-right: 2.25rem;
+}
+.field input:hover, .field select:hover, .field textarea:hover { border-color: #B9C5D2; }
+.field input:focus, .field select:focus, .field textarea:focus {
+  background: #fff; border-color: var(--navy); outline: 2px solid rgba(21, 58, 138, .18); outline-offset: 0;
+}
+.field input::placeholder, .field textarea::placeholder { color: #97A2AE; }
+.hint { font-size: .75rem; color: var(--ink-soft); }
+.err { font: 500 .75rem/1.4 var(--body); color: var(--red); }
+.field.is-bad input, .field.is-bad select { border-color: var(--red); background: #FDF7F6; }
+
+.fareline {
+  display: flex; gap: 1rem; align-items: flex-start;
+  margin-top: 2rem; padding: 1.125rem 1.25rem;
+  background: #F4F7FA; border: 1px solid var(--line); border-inline-start: 3px solid var(--amber);
+  border-radius: var(--r);
+}
+.fareline__tag {
+  flex: none; font: 500 .625rem/1.6 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--navy);
+}
+.fareline p { font-size: .875rem; line-height: 1.6; color: var(--ink-soft); }
+
+.form__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 2rem; }
+.form__note { font-size: .8125rem; color: var(--ink-soft); }
+
+.trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0; }
+.form__error {
+  margin-top: 1.25rem; padding: 1rem 1.125rem;
+  background: #FDF7F6; border: 1px solid var(--red); border-inline-start: 3px solid var(--red);
+  border-radius: var(--r); font-size: .875rem; line-height: 1.6; color: #7E2A20;
+}
+.form__error[hidden] { display: none; }
+.form__error a { color: var(--red); }
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+  .form__foot .btn { width: 100%; }
+}
+
+/* ── Confirmation ──────────────────────────────────────── */
+.receipt {
+  display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+.receipt[hidden] { display: none; }
+
+.receipt__paper {
+  background: #FDFBF6; color: #22262B;
+  padding: 1.5rem 1.375rem 1.75rem;
+  font-family: var(--mono); font-size: .8125rem;
+  box-shadow: 0 14px 34px -20px rgba(14, 36, 79, .45);
+  /* torn-off meter slip */
+  --tooth: 9px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  mask:
+    radial-gradient(var(--tooth) at 50% 0, transparent 98%, #000) top / 22px var(--tooth) repeat-x,
+    radial-gradient(var(--tooth) at 50% 100%, transparent 98%, #000) bottom / 22px var(--tooth) repeat-x,
+    linear-gradient(#000 0 0) center / 100% calc(100% - 2 * var(--tooth)) no-repeat;
+}
+.receipt__logo { font-weight: 600; letter-spacing: .34em; font-size: .875rem; }
+.receipt__kicker { margin-top: 1.25rem; letter-spacing: .14em; font-size: .6875rem; color: #6C7580; }
+.receipt__ref { margin-top: .25rem; font-size: 1.125rem; letter-spacing: .06em; }
+.receipt__ref strong { font-weight: 600; }
+.receipt__paper hr { border: 0; border-top: 1px dashed #C8C2B4; margin: 1.125rem 0; }
+.receipt__rows { margin: 0; display: grid; gap: .625rem; }
+.receipt__rows div { display: grid; grid-template-columns: 5.75rem minmax(0, 1fr); gap: .5rem; }
+.receipt__rows dt { color: #6C7580; font-size: .6875rem; letter-spacing: .1em; text-transform: uppercase; padding-top: .1rem; }
+.receipt__rows dd { margin: 0; word-break: break-word; }
+.receipt__fare { display: flex; justify-content: space-between; align-items: baseline; letter-spacing: .12em; }
+.receipt__meter { font-weight: 600; color: #9A6A0B; }
+.receipt__small { margin-top: 1.125rem; font-size: .6875rem; line-height: 1.7; color: #6C7580; }
+.receipt__stamp {
+  margin-top: 1.375rem; font-size: .625rem; letter-spacing: .12em; text-align: center;
+  color: var(--navy); border: 1px dashed rgba(21, 58, 138, .5); padding: .5rem; transform: rotate(-1.2deg);
+}
+
+.receipt__side h2 { font-size: clamp(1.625rem, 3.2vw, 2.25rem); margin-bottom: 1rem; }
+.receipt__lede { color: var(--ink-soft); max-width: 46ch; }
+.receipt__next { list-style: none; margin: 1.75rem 0; padding: 0; border-top: 1px solid var(--line); }
+.receipt__next li {
+  padding: .875rem 0; padding-inline-start: 1.5rem; border-bottom: 1px solid var(--line);
+  font-size: .9375rem; color: var(--ink-soft); position: relative;
+}
+.receipt__next li::before {
+  content: "+"; position: absolute; inset-inline-start: 0;
+  color: var(--amber); font-family: var(--mono);
+}
+
+@media (max-width: 780px) {
+  .receipt { grid-template-columns: 1fr; }
+  .receipt__side { order: -1; }
+}
+
+/* ── Fare section ──────────────────────────────────────── */
+.fare {
+  background: var(--navy-deep); color: #E7ECF4;
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+.fare__title { font-size: clamp(1.875rem, 4vw, 2.75rem); color: #fff; margin-bottom: 2.75rem; }
+.fare__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: rgba(255,255,255,.14); }
+.state { background: var(--navy-deep); padding-block: 1.75rem; padding-inline: 0 1.5rem; }
+.fare__grid .state:not(:first-child) { padding-inline-start: 1.5rem; }
+.state__flag { font: 500 .625rem/1 var(--mono); letter-spacing: .2em; color: var(--amber); margin-bottom: 1.25rem; }
+.state h3 { font-size: 1.1875rem; color: #fff; margin-bottom: .625rem; }
+.state p { font-size: .9375rem; color: #B9C6DC; }
+.state em { color: var(--amber); font-style: normal; font-family: var(--mono); font-size: .875rem; }
+.fare__foot {
+  margin-top: 2.75rem; max-width: 62ch; font-size: .9375rem; color: #A9B8D0;
+  border-top: 1px solid rgba(255,255,255,.14); padding-top: 1.5rem;
+}
+.fare__foot a { color: var(--amber); }
+@media (max-width: 820px) {
+  .fare__grid { grid-template-columns: 1fr; }
+  .state, .fare__grid .state:not(:first-child) { padding: 1.5rem 0; }
+}
+
+/* ── Meeting point ─────────────────────────────────────── */
+.meet { padding-block: clamp(3rem, 7vw, 5rem); }
+.meet__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+.meet__copy h2 { font-size: clamp(1.75rem, 3.6vw, 2.5rem); margin-bottom: 1.25rem; }
+.meet__body { color: var(--ink-soft); max-width: 52ch; }
+.facts { margin: 2rem 0 0; border-top: 1px solid var(--line); }
+.facts div { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; padding: .9375rem 0; border-bottom: 1px solid var(--line); }
+.facts dt { font: 500 .6875rem/1.6 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--navy); }
+.facts dd { margin: 0; font-size: .9375rem; color: var(--ink-soft); }
+.plaza svg { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; }
+.pl-h { font: 600 11px var(--mono); letter-spacing: .14em; fill: #14181D; }
+.pl-l { font: 500 9px var(--mono); letter-spacing: .12em; fill: #7D8894; }
+.pl-hi { font: 600 10px var(--mono); letter-spacing: .12em; fill: #fff; }
+@media (max-width: 820px) {
+  .meet__grid { grid-template-columns: 1fr; }
+  .facts div { grid-template-columns: 1fr; gap: .25rem; }
+}
+
+/* ── Footer ────────────────────────────────────────────── */
+.foot { background: #fff; border-top: 1px solid var(--line); padding-block: 2.75rem; font-size: .875rem; color: var(--ink-soft); }
+.foot__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
+.foot__brand { font-family: var(--display); font-weight: 700; font-size: 1.125rem; color: var(--ink); letter-spacing: -0.04em; margin-bottom: .5rem; }
+.foot__h { font: 500 .625rem/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ink); margin-bottom: .75rem; }
+@media (max-width: 700px) { .foot__grid { grid-template-columns: 1fr; gap: 1.75rem; } }
+
+/* ── Mobile dock ───────────────────────────────────────── */
+.dock { display: none; }
+@media (max-width: 700px) {
+  .dock {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+    display: grid; grid-template-columns: auto 1fr; gap: .625rem;
+    padding: .625rem .875rem calc(.625rem + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, .94);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+  }
+  .btn--dock { padding: .9375rem 1.25rem; }
+  .btn--ghost.btn--dock { background: #fff; }
+  body { padding-bottom: 5.25rem; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Right to left
+   ───────────────────────────────────────────────────────────── */
+[dir="rtl"] .field select {
+  background-position: left .875rem center;
+  padding-inline: .875rem 2.25rem;
+}
+/* Numbers, addresses and flight codes are read left to right by the driver. */
+[dir="rtl"] a[href^="tel:"],
+[dir="rtl"] a[href^="mailto:"] { direction: ltr; unicode-bidi: isolate; }
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] input.mono,
+[dir="rtl"] #pickup,
+[dir="rtl"] #dest { direction: ltr; text-align: right; }
+[dir="rtl"] .receipt__stamp { transform: rotate(1.2deg); }
+/* Terminal signage keeps its own reading order inside the drawings. */
+[dir="rtl"] .hero__art svg,
+[dir="rtl"] .plaza svg { direction: ltr; }
+
+/* ─────────────────────────────────────────────────────────────
+   Arabic: a face with real Arabic cuts, and no Latin tracking tricks
+   ───────────────────────────────────────────────────────────── */
+html[lang="ar"] {
+  --display: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+}
+html[lang="ar"] body { letter-spacing: 0; line-height: 1.75; }
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3 { letter-spacing: 0; line-height: 1.28; }
+
+/* The wordmark is a wordmark in every language. */
+html[lang="ar"] .brand__name,
+html[lang="ar"] .foot__brand { font-family: "Archivo", var(--body); letter-spacing: -0.04em; }
+html[lang="ar"] .receipt__logo,
+html[lang="ar"] .receipt__ref { font-family: var(--mono); }
+
+/* Arabic script does not take letter-spacing or uppercasing. */
+html[lang="ar"] .eyebrow,
+html[lang="ar"] .brand__sub,
+html[lang="ar"] .trust,
+html[lang="ar"] .dir legend,
+html[lang="ar"] .opt,
+html[lang="ar"] .fareline__tag,
+html[lang="ar"] .state__flag,
+html[lang="ar"] .facts dt,
+html[lang="ar"] .foot__h,
+html[lang="ar"] .receipt__paper,
+html[lang="ar"] .receipt__kicker,
+html[lang="ar"] .receipt__rows dt,
+html[lang="ar"] .receipt__rows dd,
+html[lang="ar"] .receipt__fare,
+html[lang="ar"] .receipt__small,
+html[lang="ar"] .receipt__stamp {
+  font-family: var(--body);
+  letter-spacing: 0;
+  text-transform: none;
+}
+html[lang="ar"] .eyebrow,
+html[lang="ar"] .state__flag,
+html[lang="ar"] .facts dt,
+html[lang="ar"] .foot__h,
+html[lang="ar"] .fareline__tag { font-weight: 600; }
+html[lang="ar"] .receipt__rows dt,
+html[lang="ar"] .receipt__kicker { font-size: .75rem; }
+html[lang="ar"] .receipt__paper { font-size: .875rem; }
+html[lang="ar"] .receipt__stamp { font-size: .6875rem; }
+
+/* The meter is Dutch hardware: leave its face alone. */
+html[lang="ar"] .meter__bezel,
+html[lang="ar"] .meter__head,
+html[lang="ar"] .meter__rows dt,
+html[lang="ar"] .meter__rows dd,
+html[lang="ar"] .meter__value,
+html[lang="ar"] .meter__cur { font-family: var(--mono); }
+html[lang="ar"] .meter__head,
+html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: uppercase; }
