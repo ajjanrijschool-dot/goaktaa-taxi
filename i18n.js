@@ -18,7 +18,7 @@ window.I18N = (function () {
       'nav.meet': 'Meeting point',
       'nav.cta': 'Book a taxi',
       'cta.book': 'Book a taxi',
-      'cta.call': 'Call +31 20 123 4567',
+      'cta.call': 'Call +31 6 1333 1111',
       'dock.call': 'Call',
 
       'hero.eyebrow': 'Amsterdam Schiphol · 24 hours',
@@ -70,7 +70,7 @@ window.I18N = (function () {
       'form.submit': 'Request this ride',
       'form.sending': 'Sending…',
       'form.note': 'No payment now. Nothing is charged until the ride is finished.',
-      'form.failed': 'The request didn’t reach us. Try again, or book by phone on <a href="tel:+31201234567">+31 20 123 4567</a> or by mail at <a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a>.',
+      'form.failed': 'The request didn’t reach us. Try again, or book by phone on <a href="tel:+31613331111">+31 6 1333 1111</a> or by mail at <a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a>.',
 
       'err.pickup': 'Tell us where to collect you.',
       'err.dest': 'Add the address you are heading to.',
@@ -100,7 +100,7 @@ window.I18N = (function () {
       'r.lede': 'We’re matching you with the nearest licensed car. You’ll get a text with the driver’s name, phone number and licence plate — and a call when they arrive.',
       'r.next1': 'Change or cancel free of charge up to 2 hours before pickup.',
       'r.next2': 'Landing early or late? The flight number keeps the pickup in sync.',
-      'r.next3': 'Something urgent: <a href="tel:+31201234567">+31 20 123 4567</a>, day or night.',
+      'r.next3': 'Something urgent: <a href="tel:+31613331111">+31 6 1333 1111</a>, day or night.',
       'r.again': 'Book another ride',
 
       'fare.eyebrow': 'How the fare works',
@@ -114,7 +114,7 @@ window.I18N = (function () {
       'state3.flag': 'ON ARRIVAL',
       'state3.h': 'You pay the reading',
       'state3.p': 'Meter stops, receipt prints. Card, cash or company invoice. Tolls and parking, if any, are listed separately on the receipt.',
-      'fare.foot': 'Dutch taxis run on government-set maximum tariffs, and ours sit inside them. The sticker in the rear window shows the exact rate before you step in. Need a fixed price for a long transfer instead? <a href="tel:+31201234567">Ask the dispatcher.</a>',
+      'fare.foot': 'Dutch taxis run on government-set maximum tariffs, and ours sit inside them. The sticker in the rear window shows the exact rate before you step in. Need a fixed price for a long transfer instead? <a href="tel:+31613331111">Ask the dispatcher.</a>',
 
       'meet.eyebrow': 'Meeting point',
       'meet.h2': 'Arrivals 4, past the coffee bar.',
@@ -143,7 +143,7 @@ window.I18N = (function () {
       'nav.meet': 'Ontmoetingspunt',
       'nav.cta': 'Taxi boeken',
       'cta.book': 'Taxi boeken',
-      'cta.call': 'Bel +31 20 123 4567',
+      'cta.call': 'Bel +31 6 1333 1111',
       'dock.call': 'Bellen',
 
       'hero.eyebrow': 'Amsterdam Schiphol · 24 uur',
@@ -195,7 +195,7 @@ window.I18N = (function () {
       'form.submit': 'Deze rit aanvragen',
       'form.sending': 'Versturen…',
       'form.note': 'Nu niets betalen. Er wordt niets afgeschreven tot de rit voorbij is.',
-      'form.failed': 'De aanvraag is niet bij ons aangekomen. Probeer het opnieuw, of boek telefonisch via <a href="tel:+31201234567">+31 20 123 4567</a> of per mail via <a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a>.',
+      'form.failed': 'De aanvraag is niet bij ons aangekomen. Probeer het opnieuw, of boek telefonisch via <a href="tel:+31613331111">+31 6 1333 1111</a> of per mail via <a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a>.',
 
       'err.pickup': 'Vertel ons waar we je ophalen.',
       'err.dest': 'Vul het adres in waar je naartoe gaat.',
@@ -225,7 +225,7 @@ window.I18N = (function () {
       'r.lede': 'We koppelen je aan de dichtstbijzijnde taxi met vergunning. Je krijgt een sms met de naam, het telefoonnummer en het kenteken van de chauffeur — en een telefoontje bij aankomst.',
       'r.next1': 'Tot 2 uur voor de ophaaltijd gratis wijzigen of annuleren.',
       'r.next2': 'Eerder of later geland? Het vluchtnummer houdt de ophaaltijd gelijk.',
-      'r.next3': 'Iets urgents: <a href="tel:+31201234567">+31 20 123 4567</a>, dag en nacht.',
+      'r.next3': 'Iets urgents: <a href="tel:+31613331111">+31 6 1333 1111</a>, dag en nacht.',
       'r.again': 'Nog een rit boeken',
 
       'fare.eyebrow': 'Hoe het tarief werkt',
@@ -239,7 +239,7 @@ window.I18N = (function () {
       'state3.flag': 'BIJ AANKOMST',
       'state3.h': 'Je betaalt wat er staat',
       'state3.p': 'Meter uit, bon eruit. Pin, cash of op factuur. Tol en parkeerkosten staan apart op de bon.',
-      'fare.foot': 'Nederlandse taxi’s werken met wettelijke maximumtarieven, en die van ons blijven daaronder. De sticker in de achterruit laat het exacte tarief zien voordat je instapt. Toch een vaste prijs voor een lange transfer? <a href="tel:+31201234567">Vraag het de centrale.</a>',
+      'fare.foot': 'Nederlandse taxi’s werken met wettelijke maximumtarieven, en die van ons blijven daaronder. De sticker in de achterruit laat het exacte tarief zien voordat je instapt. Toch een vaste prijs voor een lange transfer? <a href="tel:+31613331111">Vraag het de centrale.</a>',
 
       'meet.eyebrow': 'Ontmoetingspunt',
       'meet.h2': 'Aankomsthal 4, voorbij de koffiebar.',
@@ -268,7 +268,7 @@ window.I18N = (function () {
       'nav.meet': 'نقطة اللقاء',
       'nav.cta': 'احجز تاكسي',
       'cta.book': 'احجز تاكسي',
-      'cta.call': 'اتصل ‎+31 20 123 4567',
+      'cta.call': 'اتصل ‎+31 6 1333 1111',
       'dock.call': 'اتصل',
 
       'hero.eyebrow': 'أمستردام سخيبول · 24 ساعة',
@@ -320,7 +320,7 @@ window.I18N = (function () {
       'form.submit': 'أرسل طلب الرحلة',
       'form.sending': 'جارٍ الإرسال…',
       'form.note': 'لا دفع الآن. لا يُخصم أي مبلغ قبل انتهاء الرحلة.',
-      'form.failed': 'الطلب لم يصلنا. أعد المحاولة، أو احجز بالهاتف على <a href="tel:+31201234567">+31 20 123 4567</a> أو بالبريد على <a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a>.',
+      'form.failed': 'الطلب لم يصلنا. أعد المحاولة، أو احجز بالهاتف على <a href="tel:+31613331111">+31 6 1333 1111</a> أو بالبريد على <a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a>.',
 
       'err.pickup': 'أخبرنا من أين نأخذك.',
       'err.dest': 'أضف العنوان الذي تتوجه إليه.',
@@ -350,7 +350,7 @@ window.I18N = (function () {
       'r.lede': 'نبحث لك عن أقرب سيارة مرخّصة. ستصلك رسالة باسم السائق ورقمه ولوحة سيارته — ومكالمة عند وصوله.',
       'r.next1': 'التعديل أو الإلغاء مجاناً حتى ساعتين قبل موعد الانطلاق.',
       'r.next2': 'هبطت مبكراً أو متأخراً؟ رقم الرحلة يضبط موعد الانطلاق تلقائياً.',
-      'r.next3': 'لأي أمر عاجل: <a href="tel:+31201234567" dir="ltr">+31 20 123 4567</a>، ليلاً أو نهاراً.',
+      'r.next3': 'لأي أمر عاجل: <a href="tel:+31613331111" dir="ltr">+31 6 1333 1111</a>، ليلاً أو نهاراً.',
       'r.again': 'احجز رحلة أخرى',
 
       'fare.eyebrow': 'كيف تُحسب الأجرة',
@@ -364,7 +364,7 @@ window.I18N = (function () {
       'state3.flag': 'عند الوصول',
       'state3.h': 'تدفع ما يظهر',
       'state3.p': 'يتوقف العدّاد وتُطبع الفاتورة. بطاقة أو نقداً أو فاتورة شركة. الرسوم ومواقف السيارات، إن وُجدت، تظهر منفصلة في الفاتورة.',
-      'fare.foot': 'التاكسي في هولندا يعمل بتعريفة حد أقصى تحددها الحكومة، وتعريفتنا تبقى تحتها. والملصق على النافذة الخلفية يبيّن السعر الدقيق قبل أن تركب. تريد سعراً ثابتاً لرحلة طويلة؟ <a href="tel:+31201234567">اسأل غرفة التوزيع.</a>',
+      'fare.foot': 'التاكسي في هولندا يعمل بتعريفة حد أقصى تحددها الحكومة، وتعريفتنا تبقى تحتها. والملصق على النافذة الخلفية يبيّن السعر الدقيق قبل أن تركب. تريد سعراً ثابتاً لرحلة طويلة؟ <a href="tel:+31613331111">اسأل غرفة التوزيع.</a>',
 
       'meet.eyebrow': 'نقطة اللقاء',
       'meet.h2': 'مخرج الوصول 4، بعد مقهى الصالة.',
