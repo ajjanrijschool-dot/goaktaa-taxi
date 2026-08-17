@@ -246,16 +246,21 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
 /* The frame is what the meter is positioned against — the figure itself
    includes the caption, so anchoring to it drops the meter onto the text. */
 .shot__frame { position: relative; }
+/* Square frame, and the crop favours the lower part of the picture:
+   a portrait photo of a car puts the car well below centre. */
 .shot__photo {
-  display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover;
+  object-position: center 68%;
   border-radius: 10px; background: #DCE7F5;
   box-shadow: 0 1px 2px rgba(14, 36, 79, .1), 0 26px 50px -30px rgba(14, 36, 79, .55);
 }
+/* Top-left, over the building glass: the bottom of the frame is where the
+   car and its plate are, and covering those defeats the point of the photo. */
 .shot--photo .meter__bezel {
   position: absolute; z-index: 1;
   inset-inline-start: clamp(.75rem, 2vw, 1.25rem);
-  bottom: clamp(.75rem, 2vw, 1.25rem);
-  width: min(80%, 19rem);
+  top: clamp(.75rem, 2vw, 1.25rem);
+  width: min(72%, 17rem);
   padding: .75rem .875rem .6875rem;
   border-radius: 8px;
   background: linear-gradient(rgba(24, 30, 38, .93), rgba(11, 14, 18, .95));
