@@ -691,7 +691,10 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
   background: var(--navy); color: #fff;
   padding: .9375rem 1.125rem 1rem; text-align: center;
 }
-.svc__cap strong { font-family: var(--display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.02em; }
+/* Tight tracking suits headlines but closes the word gap on a two-word
+   city name — "Taxi Den Haag" reads as "TaxiDen Haag". Ease it off and
+   give the spaces a little room back. */
+.svc__cap strong { font-family: var(--display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.005em; word-spacing: .14em; }
 .svc__time { font: 500 .6875rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #A9C0E4; }
 .svc a:hover .svc__cap { background: var(--navy-deep); }
 .svcs__foot { margin-top: 1.75rem; max-width: 62ch; font-size: .9375rem; color: var(--ink-soft); }
@@ -956,3 +959,18 @@ html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: upperca
 /* The panel is positioned against the picture, so the picture must be
    the positioning context — without this it spans the whole viewport. */
 .svc__art { position: relative; }
+
+/* ── Language flags ────────────────────────────────────────
+   Flags where a flag genuinely maps to the language. Arabic keeps its
+   letter: no one country stands for it, and picking one would be wrong
+   for most Arabic-speaking passengers. */
+.lang__b { padding: 0; overflow: hidden; }
+.lang__b .flag { width: 100%; height: 100%; display: block; }
+/* Unpicked languages sit back; the current one is ringed and full colour. */
+.lang__b:not([aria-pressed="true"]) .flag { filter: saturate(.55); opacity: .55; }
+.lang__b:hover .flag { filter: none; opacity: 1; }
+.lang__b[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--navy);
+  background: transparent;
+}
+.lang__b--letter[aria-pressed="true"] { background: var(--navy); color: #fff; }
