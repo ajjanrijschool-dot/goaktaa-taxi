@@ -24,6 +24,17 @@
     inbox: 'taxiservice.goaktaa@gmail.com'
   };
 
+  /* ── Confirmations to the customer ────────────────────────────
+     Paste the Cloudflare Worker URL here once it is deployed (see
+     worker/confirm.js). With it set, the booking goes to the Worker,
+     which emails and texts the customer and forwards the booking to
+     dispatch. Left empty, the form behaves exactly as before: the
+     booking reaches you through Formspree and the customer hears
+     nothing automatic — which is what the wording on the page says. */
+  var CONFIRM = { endpoint: '' };
+
+  function confirmsReady() { return /^https:\/\/.+/.test(CONFIRM.endpoint); }
+
   function mailReady() {
     return MAIL.endpoint.indexOf('YOUR-FORMSPREE-ID') === -1;
   }
@@ -40,6 +51,7 @@
   var bagsEl  = document.getElementById('bags');
   var nameEl  = document.getElementById('name');
   var phoneEl = document.getElementById('phone');
+  var emailEl = document.getElementById('email');
   var notesEl = document.getElementById('notes');
   var trapEl  = document.getElementById('gotcha');
   var failure = document.getElementById('formError');
@@ -305,6 +317,12 @@
     if (step === 2) {
       check(nameEl, nameEl.value.trim().length > 1, 'err.name');
       check(phoneEl, digits(phoneEl.value) >= 8, 'err.phone');
+      /* Optional, but a typo means the confirmation goes nowhere. */
+      if (emailEl && emailEl.value.trim()) {
+        check(emailEl, /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(emailEl.value.trim()), 'err.email');
+      } else if (emailEl) {
+        clearError(emailEl);
+      }
     }
 
     /* Say at the button why the button did nothing. Without this, a blocked
@@ -467,6 +485,25 @@
 
   /* The dispatcher reads one language whatever the visitor picked, so the
      labels here stay English. _subject and _gotcha are Formspree's own. */
+  /* What the Worker needs. Field names are its own, not Formspree's. */
+  function confirmPayload(ride) {
+    return {
+      ref: ride.ref,
+      pickup: ride.pickup + (ride.via ? ' via ' + ride.via : ''),
+      dest: ride.dest,
+      when: readableWhen(),
+      pax: paxLabel(),
+      bags: bagsEl.value ? selectedText(bagsEl) : '',
+      flight: ride.flight,
+      name: ride.name,
+      phone: ride.phone,
+      email: emailEl ? emailEl.value.trim() : '',
+      notes: ride.notes,
+      lang: window.I18N.lang(),
+      trap: trapEl.value
+    };
+  }
+
   function payload(ride) {
     return {
       _subject: 'Ride request ' + ride.ref + ' — ' + ride.date + ' ' + ride.time,
@@ -484,6 +521,7 @@
       Flight: ride.flight || 'not given',
       Name: ride.name,
       Mobile: ride.phone,
+      Email: (emailEl && emailEl.value.trim()) || 'not given',
       Notes: ride.notes || '—',
       Fare: 'On the taximeter — no price quoted',
       'Reply in': ride.lang
@@ -525,10 +563,16 @@
     }
 
     sending(true);
-    fetch(MAIL.endpoint, {
+
+    /* The Worker confirms the customer and forwards to dispatch in one
+       call. Without it, Formspree still delivers the booking to us. */
+    var target = confirmsReady() ? CONFIRM.endpoint : MAIL.endpoint;
+    var body = confirmsReady() ? confirmPayload(ride) : payload(ride);
+
+    fetch(target, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify(payload(ride))
+      body: JSON.stringify(body)
     }).then(function (res) {
       sending(false);
       if (res.ok) { showReceipt(ride); return; }

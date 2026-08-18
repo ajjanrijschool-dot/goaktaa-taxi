@@ -550,6 +550,14 @@
             </p>
 
             <p class="field">
+              <label for="email"><span data-i18n="f.email">Email</span> <span class="opt" data-i18n="optional">optional</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" inputmode="email"
+                     placeholder="you@example.com">
+              <span class="hint" data-i18n="f.email.hint">For a written confirmation. Leave it out and we will contact you on your mobile.</span>
+              <span class="err" data-err-for="email"></span>
+            </p>
+
+            <p class="field">
               <label for="flight"><span data-i18n="f.flight">Flight number</span> <span class="opt" data-i18n="optional">optional</span></label>
               <input id="flight" name="flight" type="text" class="mono" placeholder="KL1234" maxlength="8" autocomplete="off">
               <span class="hint" data-i18n="f.flight.hint">We watch the arrival and shift the pickup if you land late.</span>
