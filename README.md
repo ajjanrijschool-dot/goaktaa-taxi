@@ -18,10 +18,10 @@ app.js        form validation, sending, the confirmation slip
 Open `index.html` in a browser. Everything works offline except the web
 fonts, which fall back to system faces.
 
-The form runs in **demo mode** until the Formspree endpoint is set: it
-validates, prints the slip, and sends nothing. Each demo submission logs a
-console warning naming the reference that was not sent, so this state is
-never silent.
+The form is live: it posts to Formspree and mail arrives at the address set
+on that form. If the endpoint is ever cleared the form falls back to demo
+mode, printing the slip and sending nothing, and says so in the console —
+so that state is never silent.
 
 ## 1. Formspree — the booking mail
 
@@ -29,8 +29,8 @@ never silent.
    to* dropdown only offers verified addresses, so add the destination under
    **Account → Linked Emails** and click the confirmation mail first.
 2. Copy the form's endpoint. It looks like `https://formspree.io/f/abcdwxyz`.
-3. Open `app.js`, find the `MAIL` block at the top, and replace
-   `https://formspree.io/f/mkjwqpkk` with your endpoint.
+The endpoint in use is set in the `MAIL` block at the top of `app.js`. To
+   change inbox, change it in Formspree — the endpoint stays the same.
 
 That is the only place it appears — the `<form action>` is set from it on
 load, so there is nothing to keep in sync. Changing which inbox receives the
