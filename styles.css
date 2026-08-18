@@ -194,10 +194,10 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
    7/3 is the ratio a phone was already showing. */
 .hero__art {
   position: relative; overflow: hidden;
-  /* Height follows width, so the crop is the same on a phone and a laptop.
-     Not aspect-ratio with a max-height: that caps the height by shrinking
-     the width, and the band stops short of the edge on wide screens. */
-  height: min(42.86vw, 620px);
+  /* The photo is 1800x1200, so the band is 3:2 as well and nothing is
+     cropped away. Height follows width — aspect-ratio with a max-height
+     caps the height by shrinking the width, which leaves a gap at the edge. */
+  height: min(66.66vw, 1000px);
 }
 .hero__art svg { width: 100%; height: 100%; display: block; }
 .art-sign { font: 600 13px var(--mono); letter-spacing: .12em; fill: #fff; }
@@ -893,7 +893,7 @@ html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: upperca
    The drawn scene stays as the fallback, same as everywhere else. */
 .hero__photo {
   display: block; width: 100%; height: 100%;
-  object-fit: cover; object-position: center 42%;
+  object-fit: cover; object-position: center;
 }
 /* The long fade suits a flat drawing; over a photo it reads as haze,
    so the photo gets a short blend at the top edge only. */
