@@ -1203,3 +1203,53 @@ html { font-size: 106.25%; }                 /* 17px base, all rem sizes follow 
 @media (prefers-reduced-motion: reduce) {
   .reveal-on .reveal { opacity: 1; transform: none; transition: none; }
 }
+
+/* ── Page not found ────────────────────────────────────── */
+.lost { padding-block: clamp(3rem, 8vw, 6rem); }
+.lost__grid {
+  display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+}
+.lost__title { font-size: clamp(2.25rem, 5.5vw, 3.5rem); margin-bottom: 1.25rem; }
+.lost__lede { font-size: 1.0625rem; color: var(--ink-soft); max-width: 44ch; }
+.lost__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin: 2rem 0 2.5rem; }
+.lost__links {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: .5rem 1.5rem;
+  border-top: 1px solid var(--line); padding-top: 1.25rem;
+}
+.lost__links a { font-size: .9375rem; }
+.lost__meter { margin: 0; }
+.lost__meter .meter__bezel {
+  background: linear-gradient(#1B2129, #0D1116);
+  border: 1px solid #2C343E; border-radius: 10px;
+  padding: 1.125rem 1.25rem 1rem;
+  box-shadow: 0 26px 60px -30px rgba(11, 14, 18, .9), inset 0 1px 0 rgba(255,255,255,.07);
+}
+@media (max-width: 820px) {
+  .lost__grid { grid-template-columns: 1fr; }
+  .lost__meter { order: -1; max-width: 22rem; }
+}
+
+/* ── Depth ─────────────────────────────────────────────────
+   The page was one flat grey throughout. This is a very quiet vertical
+   lift behind the light sections — enough that the white cards sit on
+   something, not enough to read as a gradient. */
+body {
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #F4F7FA 0%, rgba(244, 247, 250, 0) 60%),
+    var(--concrete);
+  background-attachment: fixed;
+}
+.svcs, .reviews { background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 40%); }
+
+/* Steps of the booking card fade instead of snapping. */
+.pane { animation: paneIn .32s cubic-bezier(.22,.61,.36,1) both; }
+@keyframes paneIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pane { animation: none; }
+  body { background-attachment: scroll; }
+}
