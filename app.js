@@ -87,6 +87,22 @@
   var today = localDate(new Date());
   dateEl.min = today;
 
+  /* Start from a real date and time rather than empty boxes. Segmented
+     date/time controls are easy to half-fill — a missing minute or a
+     mistyped year reads as blank to the browser — and the booking then
+     refuses to move for reasons that are hard to see. Editing a sensible
+     default is far more reliable than composing one from nothing.
+     Tomorrow mid-morning: never in the past, never inside the 30-minute
+     same-day cutoff. */
+  (function seedWhen() {
+    if (!dateEl.value) {
+      var d = new Date();
+      d.setDate(d.getDate() + 1);
+      dateEl.value = localDate(d);
+    }
+    if (!timeEl.value) timeEl.value = '10:00';
+  }());
+
   /* ── Swap, via stop, return leg, passenger count ───────── */
   swapBtn.addEventListener('click', function () {
     var held = pickup.value;
