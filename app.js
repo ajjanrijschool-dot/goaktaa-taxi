@@ -203,7 +203,12 @@
     if (step === 1) {
       check(pickup, pickup.value.trim().length > 2, 'err.pickup');
       check(dest, dest.value.trim().length > 2, 'err.dest');
-      check(dateEl, !!dateEl.value && dateEl.value >= today, 'err.date');
+
+      /* A half-typed date or time reads as empty to the browser. Saying
+         "pick a date" to someone who just typed one is maddening, so name
+         what is actually missing. */
+      if (dateEl.validity.badInput) check(dateEl, false, 'err.datePart');
+      else check(dateEl, !!dateEl.value && dateEl.value >= today, 'err.date');
 
       var timeOk = !!timeEl.value;
       var sameDay = dateEl.value === today;
@@ -213,7 +218,8 @@
         var parts = timeEl.value.split(':');
         timeOk = (Number(parts[0]) * 60 + Number(parts[1])) > mins + 29;
       }
-      check(timeEl, timeOk, sameDay ? 'err.timeSoon' : 'err.time');
+      if (timeEl.validity.badInput) check(timeEl, false, 'err.timePart');
+      else check(timeEl, timeOk, sameDay ? 'err.timeSoon' : 'err.time');
 
       if (retEl.checked) {
         check(retDate, !!retDate.value && retDate.value >= (dateEl.value || today), 'err.retDate');
@@ -224,6 +230,18 @@
     if (step === 2) {
       check(nameEl, nameEl.value.trim().length > 1, 'err.name');
       check(phoneEl, digits(phoneEl.value) >= 8, 'err.phone');
+    }
+
+    /* Say at the button why the button did nothing. Without this, a blocked
+       click reads as a broken button. */
+    var stop = document.getElementById('blockNote');
+    if (stop) {
+      stop.hidden = bad.length === 0;
+      if (bad.length) {
+        stop.textContent = bad.length === 1
+          ? t('err.one')
+          : t('err.many').replace('{n}', String(bad.length));
+      }
     }
 
     if (bad.length) {
