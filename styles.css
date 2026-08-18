@@ -1087,3 +1087,15 @@ html[lang=ar] .exits__lab { font-family: var(--body); letter-spacing: 0; text-tr
 .foot a:hover { color: var(--amber); text-decoration-color: var(--amber); }
 /* The Saudi flag is a bitmap, not inline SVG like the other two. */
 img.flag { object-fit: cover; }
+
+/* ── Larger type ───────────────────────────────────────────
+   The header ran small next to the rest of the page: a phone number
+   is the most useful thing up there and it was set below body size.
+   Everything here is a step up, not a redesign. */
+html { font-size: 106.25%; }                 /* 17px base, all rem sizes follow */
+
+.reach__text strong { font-size: 1rem; }
+.reach__text span { font-size: .8125rem; }
+.brand__sub { font-size: .6875rem; }
+.mainnav a { font-size: .875rem; }
+.lang__b { width: 40px; height: 40px; }
