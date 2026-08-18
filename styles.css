@@ -974,3 +974,9 @@ html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: upperca
   background: transparent;
 }
 .lang__b--letter[aria-pressed="true"] { background: var(--navy); color: #fff; }
+/* Desaturating the unpicked flags made them look faded rather than
+   unselected — a washed Dutch flag just reads as broken. Keep the colours
+   true, dim them slightly, and let the navy ring mark the current one. */
+.lang__b:not([aria-pressed="true"]) .flag { filter: none; opacity: .78; }
+.lang__b:hover .flag { opacity: 1; }
+.lang__b[aria-pressed="true"] .flag { opacity: 1; }
