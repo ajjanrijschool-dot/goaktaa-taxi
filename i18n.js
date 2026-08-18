@@ -23,6 +23,8 @@ window.I18N = (function () {
       'cta.book': 'Book a taxi',
       'cta.call': 'Call +31 6 1333 1111',
       'dock.call': 'Call',
+      'wa.label': 'Message us on WhatsApp',
+      'wa.text': 'Hello, I would like to book a taxi at Schiphol.',
 
       'hero.eyebrow': 'Amsterdam Schiphol · 24 hours',
       'hero.h1': 'A licensed taxi, already parked when you land.',
@@ -208,6 +210,8 @@ window.I18N = (function () {
       'cta.book': 'Taxi boeken',
       'cta.call': 'Bel +31 6 1333 1111',
       'dock.call': 'Bellen',
+      'wa.label': 'Stuur ons een bericht op WhatsApp',
+      'wa.text': 'Hallo, ik wil graag een taxi boeken op Schiphol.',
 
       'hero.eyebrow': 'Amsterdam Schiphol · 24 uur',
       'hero.h1': 'Een taxi met vergunning, al geparkeerd als je landt.',
@@ -393,6 +397,8 @@ window.I18N = (function () {
       'cta.book': 'احجز تاكسي',
       'cta.call': 'اتصل ‎+31 6 1333 1111',
       'dock.call': 'اتصل',
+      'wa.label': 'راسلنا على واتساب',
+      'wa.text': 'مرحباً، أريد حجز تاكسي من مطار سخيبول.',
 
       'hero.eyebrow': 'أمستردام سخيبول · 24 ساعة',
       'hero.h1': 'تاكسي مرخّص، واقف في انتظارك قبل أن تهبط.',

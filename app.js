@@ -479,6 +479,7 @@
 
   /* Re-speak everything the dictionary can't reach on its own. */
   document.addEventListener('ml:lang', function () {
+    paintWhatsApp();
     tariff();
     form.querySelectorAll('[data-err-key]').forEach(function (el) {
       var slot = form.querySelector('[data-err-for="' + el.id + '"]');
@@ -508,6 +509,15 @@
     if (img.complete) reveal();
     else img.addEventListener('load', reveal);
   }());
+
+  /* WhatsApp opens with a first line already typed, in the language the
+     visitor is reading, so they are not staring at an empty chat. */
+  function paintWhatsApp() {
+    var wa = document.getElementById('waBtn');
+    if (!wa) return;
+    wa.href = 'https://wa.me/31613331111?text=' + encodeURIComponent(t('wa.text'));
+  }
+  paintWhatsApp();
 
   /* The kerbside band takes a real photo of Schiphol when there is one. */
   (function bandPhoto() {

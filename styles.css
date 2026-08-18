@@ -902,3 +902,26 @@ html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: upperca
   font: 700 .625rem/15px var(--mono); text-align: center;
 }
 .ctl--go { align-self: end; }
+
+/* ── WhatsApp ──────────────────────────────────────────────
+   Sits clear of the mobile dock so it never covers the booking
+   button, and keeps WhatsApp's own green so people recognise it. */
+.wa {
+  position: fixed; z-index: 45;
+  inset-inline-end: clamp(1rem, 2.5vw, 1.75rem);
+  bottom: clamp(1rem, 2.5vw, 1.75rem);
+  width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: #25D366; color: #fff;
+  box-shadow: 0 4px 14px rgba(18, 140, 70, .38);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.wa svg { width: 32px; height: 32px; }
+.wa:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(18, 140, 70, .48); }
+.wa:active { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { .wa { transition: none; } .wa:hover { transform: none; } }
+@media (max-width: 700px) {
+  /* Above the dock, not behind it. */
+  .wa { bottom: calc(5.25rem + .75rem); width: 52px; height: 52px; }
+  .wa svg { width: 29px; height: 29px; }
+}
