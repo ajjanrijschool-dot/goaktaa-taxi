@@ -20,8 +20,15 @@
  *
  * 2. Settings → Variables → add these as SECRETS, not plain text:
  *
- *      TWILIO_SID      your Account SID, starts AC…
- *      TWILIO_TOKEN    your Auth Token — the real credential, never share it
+ *      TWILIO_SID      your Account SID, starts AC… (always needed — it is
+ *                      part of the URL, not the password)
+ *
+ *    then EITHER an API key, which can be revoked on its own — preferred:
+ *      TWILIO_KEY      the API key SID, starts SK…
+ *      TWILIO_SECRET   the secret Twilio shows once when the key is made
+ *
+ *    OR the account password, simpler but far broader:
+ *      TWILIO_TOKEN    your Auth Token
  *      TWILIO_FROM     your Twilio phone number, e.g. +3197010586789
  *      DISPATCH_EMAIL  taxiservice.goaktaa@gmail.com
  *      FROM_EMAIL      bookings@taxiservicegoaktaa.nl
@@ -85,7 +92,13 @@ export default {
     /* ── 1. SMS to the customer, via Twilio ──
        Twilio speaks form-encoded, not JSON, and authenticates with
        HTTP Basic using the SID as user and the token as password. */
-    if (env.TWILIO_SID && env.TWILIO_TOKEN && env.TWILIO_FROM) {
+    /* Authenticate with an API key when one is set — it can be revoked on
+       its own without changing the account password. Falls back to the
+       Account SID and Auth Token when no key is configured. */
+    const twUser = env.TWILIO_KEY || env.TWILIO_SID;
+    const twPass = env.TWILIO_SECRET || env.TWILIO_TOKEN;
+
+    if (env.TWILIO_SID && twUser && twPass && env.TWILIO_FROM) {
       try {
         const body = t.sms
           .replace('{ref}', ride.ref)
@@ -103,7 +116,7 @@ export default {
           {
             method: 'POST',
             headers: {
-              'Authorization': 'Basic ' + btoa(env.TWILIO_SID + ':' + env.TWILIO_TOKEN),
+              'Authorization': 'Basic ' + btoa(twUser + ':' + twPass),
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: form
