@@ -476,6 +476,11 @@
   /* Hand the customer to the payment page. The reference travels with
      them so the payment arrives labelled with the ride it belongs to. */
   function payLink(ride) {
+    /* Mollie payment links take no query parameters — anything we append
+       is dropped, so send the bare link and match the payment to the
+       booking by name and time instead. Stripe does carry them. */
+    if (FEE.payUrl.indexOf('mollie.com') > -1) return FEE.payUrl;
+
     var url = FEE.payUrl + (FEE.payUrl.indexOf('?') < 0 ? '?' : '&')
       + 'client_reference_id=' + encodeURIComponent(ride.ref);
     if (ride.email) url += '&prefilled_email=' + encodeURIComponent(ride.email);
