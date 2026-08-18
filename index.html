@@ -91,15 +91,19 @@
            letterforms: at this size hand-made script would come out garbled,
            and garbled scripture is worse than an honest simplification. -->
       <button type="button" class="lang__b" data-lang="ar" aria-pressed="false" data-i18n-aria="lang.ar">
-        <svg class="flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-          <rect width="60" height="30" fill="#165D31"/>
+        <!-- Square viewBox: a 2:1 flag cropped into a circle loses its ends.
+             The shahada is suggested with bars, not drawn as letterforms —
+             at 38px hand-made script comes out garbled, and garbled
+             scripture is worse than an honest simplification. -->
+        <svg class="flag" viewBox="0 0 30 30" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <rect width="30" height="30" fill="#165D31"/>
           <g fill="#fff">
-            <rect x="14" y="9" width="32" height="2.1" rx="1.05"/>
-            <rect x="18" y="13" width="24" height="2.1" rx="1.05"/>
-            <circle cx="47.5" cy="10.05" r="1.05"/>
-            <circle cx="16.5" cy="14.05" r="1.05"/>
-            <path d="M15 21h30l4.5 1.5L45 24H15z"/>
-            <rect x="9.5" y="20.4" width="4.5" height="4.2" rx="1.2"/>
+            <rect x="6.4" y="9.4" width="17.2" height="1.7" rx=".85"/>
+            <circle cx="24.6" cy="10.25" r=".85"/>
+            <rect x="8.6" y="12.7" width="12.8" height="1.7" rx=".85"/>
+            <circle cx="7.4" cy="13.55" r=".85"/>
+            <path d="M7.6 19.9h13.2l3.6 1.25-3.6 1.25H7.6z"/>
+            <rect x="4.2" y="19.4" width="3.4" height="4.2" rx="1.1"/>
           </g>
         </svg>
       </button>
