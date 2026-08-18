@@ -25,9 +25,9 @@
   };
 
   /* ── Confirmations to the customer ────────────────────────────
-     Paste the Cloudflare Worker URL here once it is deployed (see
-     worker/confirm.js). With it set, the booking goes to the Worker,
-     which emails and texts the customer and forwards the booking to
+     Paste the Twilio Function URL here once it is deployed (see
+     twilio-function/confirm.js). With it set, the booking goes there,
+     and it texts and emails the customer and forwards the booking to
      dispatch. Left empty, the form behaves exactly as before: the
      booking reaches you through Formspree and the customer hears
      nothing automatic — which is what the wording on the page says. */
