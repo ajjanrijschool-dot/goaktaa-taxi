@@ -925,3 +925,34 @@ html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: upperca
   .wa { bottom: calc(5.25rem + .75rem); width: 52px; height: 52px; }
   .wa svg { width: 29px; height: 29px; }
 }
+
+/* ── City card hover panel ─────────────────────────────────
+   Staxi's cards flip to a blue panel with a call to action. Ours says
+   what we actually sell — a metered ride — since there is no price to
+   calculate. Hover and keyboard focus both trigger it; on touch there is
+   no hover, and the card simply opens the booking form as before. */
+.svc__over {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1.25rem; padding: 1.5rem;
+  background: rgba(21, 58, 138, .94);
+  color: #fff; text-align: center;
+  opacity: 0; transition: opacity .22s ease;
+}
+.svc__overtext { font-size: .9375rem; line-height: 1.5; max-width: 22ch; }
+.svc__chev {
+  display: grid; place-items: center;
+  width: 42px; height: 42px; border-radius: var(--r);
+  background: rgba(0, 0, 0, .35); color: #fff;
+  transition: background .18s ease;
+}
+.svc__chev svg { width: 18px; height: 18px; }
+.svc a:hover .svc__over,
+.svc a:focus-visible .svc__over { opacity: 1; }
+.svc a:hover .svc__chev { background: var(--amber); color: #14181D; }
+@media (prefers-reduced-motion: reduce) {
+  .svc__over, .svc__chev { transition: none; }
+}
+/* The panel is positioned against the picture, so the picture must be
+   the positioning context — without this it spans the whole viewport. */
+.svc__art { position: relative; }

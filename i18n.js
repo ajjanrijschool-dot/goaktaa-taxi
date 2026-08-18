@@ -170,6 +170,9 @@ window.I18N = (function () {
       'svc.rtm': 'Taxi Rotterdam',
       'svc.dh': 'Taxi Den Haag',
       'svc.fromap': 'From Schiphol',
+      'svc.over.ams': 'Book a taxi to Amsterdam. The meter decides the fare, not a quote.',
+      'svc.over.rtm': 'Book a taxi to Rotterdam. The meter decides the fare, not a quote.',
+      'svc.over.dh': 'Book a taxi to Den Haag. The meter decides the fare, not a quote.',
       'svc.foot': 'Pick a city and its name lands in the booking form. Anywhere else in the Netherlands works the same way — type the address and the meter does the rest.',
 
       'reviews.eyebrow': 'Reviews',
@@ -357,6 +360,9 @@ window.I18N = (function () {
       'svc.rtm': 'Taxi Rotterdam',
       'svc.dh': 'Taxi Den Haag',
       'svc.fromap': 'Vanaf Schiphol',
+      'svc.over.ams': 'Boek een taxi naar Amsterdam. De meter bepaalt het tarief, geen offerte.',
+      'svc.over.rtm': 'Boek een taxi naar Rotterdam. De meter bepaalt het tarief, geen offerte.',
+      'svc.over.dh': 'Boek een taxi naar Den Haag. De meter bepaalt het tarief, geen offerte.',
       'svc.foot': 'Kies een stad en de naam staat meteen in het boekingsformulier. Elders in Nederland werkt het net zo — vul het adres in en de meter doet de rest.',
 
       'reviews.eyebrow': 'Beoordelingen',
@@ -544,6 +550,9 @@ window.I18N = (function () {
       'svc.rtm': 'تاكسي روتردام',
       'svc.dh': 'تاكسي لاهاي',
       'svc.fromap': 'من سخيبول',
+      'svc.over.ams': 'احجز تاكسي إلى أمستردام. العدّاد يحدد الأجرة، لا عرض سعر.',
+      'svc.over.rtm': 'احجز تاكسي إلى روتردام. العدّاد يحدد الأجرة، لا عرض سعر.',
+      'svc.over.dh': 'احجز تاكسي إلى لاهاي. العدّاد يحدد الأجرة، لا عرض سعر.',
       'svc.foot': 'اختر مدينة وسيظهر اسمها مباشرة في نموذج الحجز. وأي مكان آخر في هولندا يعمل بالطريقة نفسها — اكتب العنوان والعدّاد يتكفّل بالباقي.',
 
       'reviews.eyebrow': 'التقييمات',
