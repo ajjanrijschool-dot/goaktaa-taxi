@@ -188,7 +188,15 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
 .hero { padding-top: clamp(2.5rem, 6vw, 4.5rem); }
 
 /* Schiphol kerbside band: the picture, not a washed-out backdrop. */
-.hero__art { position: relative; height: clamp(160px, 24vw, 280px); overflow: hidden; }
+/* The band keeps one shape at every width, so the photo is cropped the
+   same on a laptop as on a phone. A fixed height did the opposite: wide
+   screens got a thin letterbox slice with the building cut away.
+   7/3 is the ratio a phone was already showing. */
+.hero__art {
+  position: relative; overflow: hidden;
+  aspect-ratio: 7 / 3;
+  max-height: 620px;
+}
 .hero__art svg { width: 100%; height: 100%; display: block; }
 .art-sign { font: 600 13px var(--mono); letter-spacing: .12em; fill: #fff; }
 .hero__art::after {
@@ -986,21 +994,6 @@ html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: upperca
 .btn--wa { background: #25D366; color: #fff; }
 .btn--wa:hover { background: #1EBE5A; }
 
-/* ── Arrivals exit picker ──────────────────────────────── */
-.exits { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem .625rem; margin-top: .5rem; }
-.exits__lab { font: 500 .75rem/1 var(--body); color: var(--on-amber); }
-.exits__set { display: flex; flex-wrap: wrap; gap: .375rem; }
-.exits__b {
-  appearance: none; cursor: pointer;
-  min-width: 34px; height: 30px; padding: 0 .5rem;
-  border-radius: var(--r); border: 1px solid rgba(58, 42, 5, .28);
-  background: rgba(255, 255, 255, .7); color: var(--on-amber);
-  font: 600 .8125rem/1 var(--mono);
-}
-.exits__b--wide { font-family: var(--body); font-weight: 500; padding-inline: .75rem; }
-.exits__b:hover { background: #fff; border-color: var(--on-amber); }
-.exits__b[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
-html[lang="ar"] .exits__b { font-family: var(--body); }
 
 /* ── Review system ─────────────────────────────────────── */
 .reviews__grid {
@@ -1054,3 +1047,27 @@ html[lang="ar"] .exits__b { font-family: var(--body); }
 
 /* Badge sits centred over the three points, like a seal on the row. */
 .gbadge__row { display: flex; justify-content: center; }
+
+/* ── Arrivals exit dropdown ────────────────────────────────
+   Opens under the pick-up field. Scrolls if the list ever grows. */
+.route__leg { position: relative; }
+.exits {
+  position: absolute; z-index: 20; inset-inline: 0; top: calc(100% + .375rem);
+  background: var(--paper); border: 1px solid var(--line); border-radius: 6px;
+  box-shadow: 0 18px 36px -16px rgba(14, 36, 79, .35);
+  padding: .5rem; max-height: 15rem; overflow-y: auto;
+}
+.exits__lab {
+  font: 500 .625rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-soft); padding: .375rem .5rem .5rem;
+}
+.exits__list { list-style: none; margin: 0; padding: 0; display: grid; gap: .125rem; }
+.exits__opt {
+  appearance: none; width: 100%; text-align: start; cursor: pointer;
+  border: 0; background: none; border-radius: var(--r);
+  padding: .625rem .625rem; font: 500 .9375rem/1.2 var(--body); color: var(--ink);
+}
+.exits__opt--soft { color: var(--ink-soft); }
+.exits__opt:hover { background: #EDF2FA; }
+.exits__opt[aria-selected=true] { background: var(--navy); color: #fff; }
+html[lang=ar] .exits__lab { font-family: var(--body); letter-spacing: 0; text-transform: none; }

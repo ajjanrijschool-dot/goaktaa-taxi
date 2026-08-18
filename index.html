@@ -298,22 +298,23 @@
               <div class="route__leg">
                 <div class="pill">
                   <label class="pill__lab" for="pickup" data-i18n="f.from">From</label>
-                  <input id="pickup" name="pickup" type="text" list="places" autocomplete="off"
+                  <input id="pickup" name="pickup" type="text" autocomplete="off"
                          placeholder="Schiphol Plaza, Arrivals 4" required>
                 </div>
                 <span class="err" data-err-for="pickup"></span>
-                <!-- Schiphol's arrivals hall has four exits. Rather than make
-                     people type one, offer them — shown only when the pick-up
-                     is actually at the airport. -->
+                <!-- Schiphol's arrivals hall has four doors. Opening the
+                     pick-up field offers them, rather than making anyone type
+                     an address for a door they have not walked out of yet. -->
                 <div class="exits" id="exits" hidden>
-                  <span class="exits__lab" data-i18n="f.exit">Which exit?</span>
-                  <div class="exits__set" role="group" aria-label="Arrivals exit" data-i18n-aria="f.exit">
-                    <button type="button" class="exits__b" data-exit="1">1</button>
-                    <button type="button" class="exits__b" data-exit="2">2</button>
-                    <button type="button" class="exits__b" data-exit="3">3</button>
-                    <button type="button" class="exits__b" data-exit="4">4</button>
-                    <button type="button" class="exits__b exits__b--wide" data-exit="" data-i18n="f.exit.unsure">Not sure yet</button>
-                  </div>
+                  <p class="exits__lab" data-i18n="f.exit">Which exit?</p>
+                  <ul class="exits__list" role="listbox" aria-label="Arrivals exit" data-i18n-aria="f.exit">
+                    <li><button type="button" class="exits__opt" data-exit="1">Arrivals 1</button></li>
+                    <li><button type="button" class="exits__opt" data-exit="2">Arrivals 2</button></li>
+                    <li><button type="button" class="exits__opt" data-exit="3">Arrivals 3</button></li>
+                    <li><button type="button" class="exits__opt" data-exit="4">Arrivals 4</button></li>
+                    <li><button type="button" class="exits__opt exits__opt--soft" data-exit="" data-i18n="f.exit.unsure">Not sure yet</button></li>
+                    <li><button type="button" class="exits__opt exits__opt--soft" data-exit="dep">Schiphol P1, Departures</button></li>
+                  </ul>
                 </div>
               </div>
 

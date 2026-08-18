@@ -117,35 +117,62 @@
   });
 
   /* ── Which exit at Schiphol ────────────────────────────────
-     The arrivals hall has four doors and people rarely know the address
-     of the one they will walk out of. Offer them, but only while the
-     pick-up is actually at the airport. */
+     Opens from the pick-up field like a dropdown. Only offered while the
+     pick-up is the airport, and it closes the moment a door is chosen. */
   var exitsWrap = document.getElementById('exits');
-  var SCHIPHOL_UNSURE = 'Schiphol Plaza — I\'ll call when I land';
+  var SCHIPHOL_UNSURE = 'Schiphol Plaza — I will call when I land';
 
-  function paintExits() {
+  function atSchiphol() {
+    var v = pickup.value.trim();
+    return v === '' || /schiphol/i.test(v);
+  }
+
+  function markExits() {
     if (!exitsWrap) return;
-    var at = /schiphol/i.test(pickup.value) && !/departures|p1/i.test(pickup.value);
-    exitsWrap.hidden = !at;
-    if (!at) return;
-    var found = pickup.value.match(/arrivals\s*([1-4])/i);
-    var current = found ? found[1] : '';
-    exitsWrap.querySelectorAll('.exits__b').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.dataset.exit === current));
+    var found = pickup.value.match(/arrivals[^0-9]*([1-4])/i);
+    var current = found ? found[1] : (/departures|p1/i.test(pickup.value) ? 'dep' : '');
+    exitsWrap.querySelectorAll('.exits__opt').forEach(function (b) {
+      b.setAttribute('aria-selected', String(b.dataset.exit === current));
     });
   }
 
+  function openExits() {
+    if (!exitsWrap || !atSchiphol()) return;
+    markExits();
+    exitsWrap.hidden = false;
+  }
+
+  function closeExits() {
+    if (exitsWrap) exitsWrap.hidden = true;
+  }
+
   if (exitsWrap) {
-    exitsWrap.querySelectorAll('.exits__b').forEach(function (b) {
+    pickup.addEventListener('focus', openExits);
+    pickup.addEventListener('click', openExits);
+    pickup.addEventListener('input', function () {
+      if (atSchiphol()) openExits(); else closeExits();
+    });
+
+    exitsWrap.querySelectorAll('.exits__opt').forEach(function (b) {
       b.addEventListener('click', function () {
-        pickup.value = b.dataset.exit
-          ? 'Schiphol Plaza, Arrivals ' + b.dataset.exit
+        pickup.value = b.dataset.exit === 'dep' ? SCHIPHOL_OUT
+          : b.dataset.exit ? 'Schiphol Plaza, Arrivals ' + b.dataset.exit
           : SCHIPHOL_UNSURE;
         clearError(pickup);
-        paintExits();
+        closeExits();
+        dest.focus();
       });
     });
-    pickup.addEventListener('input', paintExits);
+
+    /* Click away or press Escape and it folds up again. */
+    document.addEventListener('click', function (event) {
+      if (exitsWrap.hidden) return;
+      if (event.target === pickup || exitsWrap.contains(event.target)) return;
+      closeExits();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !exitsWrap.hidden) { closeExits(); pickup.focus(); }
+    });
   }
 
   viaBtn.addEventListener('click', function () {
@@ -694,6 +721,6 @@
   /* Most of our rides start at the airport, so start there. */
   if (!pickup.value) pickup.value = SCHIPHOL_IN;
   paintPax();
-  paintExits();
+  markExits();
   paint();
 }());
