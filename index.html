@@ -884,7 +884,7 @@
         </li>
       </ul>
 
-      <div class="reviews__grid">
+      <div class="reviews__grid reviews__grid--solo">
         <div class="reviews__list-wrap">
           <ul class="reviews__list" id="reviewList">
             <!-- One of these per published review:
@@ -898,45 +898,7 @@
           <p class="reviews__none" id="reviewNone" data-i18n="reviews.none">No reviews published yet. Yours would be the first.</p>
         </div>
 
-        <form class="revform" id="reviewForm" novalidate>
-          <p class="revform__h" data-i18n="reviews.ask">Rode with us? Tell us how it went.</p>
 
-          <fieldset class="stars">
-            <legend class="sr" data-i18n="reviews.rating">Your rating</legend>
-            <div class="stars__set" id="stars">
-              <button type="button" class="stars__b" data-star="1" aria-label="1" title="1">★</button>
-              <button type="button" class="stars__b" data-star="2" aria-label="2" title="2">★</button>
-              <button type="button" class="stars__b" data-star="3" aria-label="3" title="3">★</button>
-              <button type="button" class="stars__b" data-star="4" aria-label="4" title="4">★</button>
-              <button type="button" class="stars__b" data-star="5" aria-label="5" title="5">★</button>
-            </div>
-            <input type="hidden" name="rating" id="rating" value="">
-            <span class="err" data-err-for="rating"></span>
-          </fieldset>
-
-          <p class="field">
-            <label for="revName" data-i18n="reviews.name">Your name</label>
-            <input id="revName" name="reviewer" type="text" autocomplete="name" required>
-            <span class="err" data-err-for="revName"></span>
-          </p>
-
-          <p class="field">
-            <label for="revText" data-i18n="reviews.words">Your review</label>
-            <textarea id="revText" name="review" rows="4" required data-i18n-ph="reviews.words.ph"
-                      placeholder="What went well, what could be better"></textarea>
-            <span class="err" data-err-for="revText"></span>
-          </p>
-
-          <p class="trap" aria-hidden="true">
-            <label for="revTrap">Company</label>
-            <input id="revTrap" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
-          </p>
-
-          <button class="btn btn--primary" type="submit" id="revSend" data-i18n="reviews.send">Send review</button>
-          <p class="revform__note" data-i18n="reviews.note">We read every one. Published with your first name only, and only with your words.</p>
-          <p class="form__error" id="revError" role="alert" hidden></p>
-          <p class="revform__thanks" id="revThanks" role="status" hidden data-i18n="reviews.thanks">Thank you — that reached us.</p>
-        </form>
       </div>
     </div>
   </section>
