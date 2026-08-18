@@ -194,10 +194,13 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
    7/3 is the ratio a phone was already showing. */
 .hero__art {
   position: relative; overflow: hidden;
-  /* The photo is 1800x1200, so the band is 3:2 as well and nothing is
-     cropped away. Height follows width — aspect-ratio with a max-height
-     caps the height by shrinking the width, which leaves a gap at the edge. */
-  height: min(66.66vw, 1000px);
+  /* Same framing, smaller on the page: the photo is 3:2 so the box is too,
+     and nothing is cropped. Full bleed made it enormous on a desktop, so it
+     is capped to the page width and centred instead. */
+  width: min(100%, 1000px);
+  margin-inline: auto;
+  height: min(66.66vw, 667px);
+  border-radius: 8px;
 }
 .hero__art svg { width: 100%; height: 100%; display: block; }
 .art-sign { font: 600 13px var(--mono); letter-spacing: .12em; fill: #fff; }
@@ -897,9 +900,7 @@ html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: upperca
 }
 /* The long fade suits a flat drawing; over a photo it reads as haze,
    so the photo gets a short blend at the top edge only. */
-.hero__art--photo::after {
-  background: linear-gradient(180deg, rgba(235, 239, 243, .85) 0%, rgba(235, 239, 243, 0) 11%);
-}
+.hero__art--photo::after { display: none; }
 
 /* Told at the button, not only under the field it belongs to. */
 .blocknote {
