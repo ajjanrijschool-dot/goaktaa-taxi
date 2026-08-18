@@ -161,6 +161,57 @@ publish them — the invoice would come to this company. Safe sources:
 - Wikimedia Commons — free, but most images require crediting the
   photographer, so read each one's licence.
 
+## Parked: automatic confirmations to the customer
+
+Written, tested, and deliberately switched off — it needs paid accounts.
+
+**Where it stands.** `twilio-function/confirm.js` is a complete Twilio
+Function that texts the customer, emails them, and forwards the booking to
+dispatch. It is not deployed. `CONFIRM.endpoint` in `app.js` is empty, so
+bookings go to Formspree exactly as before and the customer receives nothing
+automatic. The wording on the site matches that: it promises only that we
+come back to them before the pick-up time, and never mentions a text, an
+email, or a number of minutes.
+
+**Do not put a firmer promise back on the page until this is live.**
+
+**What switching it on costs.**
+
+| | |
+|---|---|
+| Twilio account, upgraded off trial | from about EUR 20 credit |
+| SMS | about EUR 0.08 each |
+| SendGrid email | free to 3,000 a month, included with Twilio |
+| Twilio phone number | not needed — see below |
+| Hosting the function | free, inside Twilio |
+
+So roughly EUR 8 a month at 100 bookings, plus the initial credit.
+
+**To switch it on.**
+
+1. Twilio → Functions and Assets → Services → Create Service, name it `goaktaa`
+2. Add Function at `/confirm`, paste `twilio-function/confirm.js`, Deploy All
+3. Environment variables: `TWILIO_FROM=GoAktaa`,
+   `DISPATCH_EMAIL=taxiservice.goaktaa@gmail.com`,
+   `SITE_ORIGIN=https://taxiservicegoaktaa.nl`, and `SENDGRID_KEY` for email
+4. Set the function's visibility to Public
+5. Put its URL in `CONFIRM.endpoint` in `app.js`
+
+The Function needs no Twilio credentials at all — running inside the account,
+`context.getTwilioClient()` is already authenticated. There is nothing to
+copy and nothing to leak.
+
+**Two facts that will otherwise waste an afternoon.**
+
+Sender `GoAktaa` is an alphanumeric sender ID: free, no number to buy, 11
+characters, and one-way. It does **not** work on a trial account, and the US
+and Canada do not carry it at all. A `+1` customer gets no SMS unless
+`TWILIO_NUMBER` is set to a real Twilio number; the Function refuses that
+send with a clear reason rather than failing quietly.
+
+On a trial account Twilio only texts numbers verified in the console and
+stamps "Sent from your Twilio trial account" on every message.
+
 ## Not included: payments
 
 Mollie is deliberately absent — there is nothing to sell yet, and a static
