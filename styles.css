@@ -1123,3 +1123,24 @@ html { font-size: 106.25%; }                 /* 17px base, all rem sizes follow 
 .legal__body strong { color: var(--ink); }
 .foot__links { margin-bottom: .5rem; }
 .foot__links a { text-decoration: underline; }
+/* The width/height attributes on the hero photo are there to reserve space
+   while it loads. Without an explicit height here the height attribute wins
+   outright, aspect-ratio is ignored, and the portrait photo renders at full
+   1600px tall. height:auto hands the shape back to aspect-ratio. */
+.shot__photo { height: auto; }
+
+/* ── Photos that arrive later ──────────────────────────────
+   These start transparent rather than display:none. A hidden image is
+   never "near the viewport", so a lazy one would never be fetched at
+   all — laid out but invisible, it loads and then fades in over the
+   drawing it replaces. */
+.svc__photo, .hero__photo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity .3s ease;
+}
+.svc__art.is-photo .svc__photo,
+.hero__art--photo .hero__photo { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .svc__photo, .hero__photo { transition: none; }
+}

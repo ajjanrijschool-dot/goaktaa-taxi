@@ -605,7 +605,6 @@
     if (!img) return;
     function reveal() {
       if (!img.naturalWidth) return;
-      img.hidden = false;
       band.classList.add('hero__art--photo');
       var drawing = band.querySelector('.hero__draw');
       if (drawing) drawing.remove();
@@ -621,7 +620,7 @@
   document.querySelectorAll('.svc__photo').forEach(function (img) {
     function reveal() {
       if (!img.naturalWidth) return;
-      img.hidden = false;
+      img.parentNode.classList.add('is-photo');
       var drawing = img.parentNode.querySelector('.svc__draw');
       if (drawing) drawing.remove();
     }
