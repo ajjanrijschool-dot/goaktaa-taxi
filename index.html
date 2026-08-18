@@ -383,6 +383,13 @@
             <header class="bookcard__head">
               <h2 data-i18n="form.h2">Where are we taking you?</h2>
             </header>
+            <!-- Shown before anyone fills the form in: a mandatory charge
+                 disclosed only at the end is a dark pattern, and in the EU
+                 it is also not lawful. -->
+            <p class="feebar">
+              <span class="feebar__amt">€20</span>
+              <span data-i18n="fee.bar">booking fee, paid online. The ride itself runs on the taximeter.</span>
+            </p>
 
             <datalist id="places">
               <option value="Schiphol Plaza, Arrivals 1"></option>
@@ -641,6 +648,13 @@
               <li data-i18n="r.next2">Landing early or late? The flight number keeps the pickup in sync.</li>
               <li data-i18n-html="r.next3">Something urgent: <a href="tel:+31613331111">+31 6 1333 1111</a>, day or night.</li>
             </ul>
+            <!-- Appears once a payment link is configured in app.js. -->
+            <div class="paybox" id="payBox" hidden>
+              <p class="paybox__h"><span data-i18n="fee.due">Booking fee due</span> <strong>€20</strong></p>
+              <p class="paybox__p" data-i18n="fee.explain">Your ride is only held once this is paid. The fare itself is settled in the car, on the meter.</p>
+              <a class="btn btn--primary btn--big" id="payBtn" href="#" data-i18n="fee.pay">Pay €20 and confirm</a>
+            </div>
+
             <div class="receipt__acts">
               <!-- Opens WhatsApp with the whole booking already written out.
                    The customer taps send, and both sides have the ride in a

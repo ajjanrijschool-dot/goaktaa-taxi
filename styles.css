@@ -1253,3 +1253,32 @@ body {
   .pane { animation: none; }
   body { background-attachment: scroll; }
 }
+
+/* ── Booking fee ───────────────────────────────────────────
+   Stated on step one, before anyone invests time in the form. */
+.feebar {
+  display: flex; align-items: center; gap: .625rem; flex-wrap: wrap;
+  background: rgba(20, 24, 29, .09);
+  border: 1px solid rgba(58, 42, 5, .22);
+  border-radius: var(--r);
+  padding: .625rem .875rem;
+  margin-bottom: 1.25rem;
+  font-size: .875rem; color: var(--on-amber);
+}
+.feebar__amt {
+  font: 700 1.0625rem/1 var(--display);
+  background: var(--navy); color: #fff;
+  padding: .3125rem .5rem; border-radius: 3px;
+}
+
+.paybox {
+  background: #F4F7FA; border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--navy);
+  border-radius: var(--r);
+  padding: 1.25rem; margin-bottom: 1.5rem;
+}
+.paybox[hidden] { display: none; }
+.paybox__h { font-size: 1rem; margin-bottom: .375rem; }
+.paybox__h strong { font-family: var(--display); font-size: 1.25rem; color: var(--navy); }
+.paybox__p { font-size: .875rem; color: var(--ink-soft); margin-bottom: 1rem; max-width: 46ch; }
+html[lang="ar"] .feebar__amt, html[lang="ar"] .paybox__h strong { font-family: var(--body); }

@@ -33,6 +33,22 @@
      nothing automatic — which is what the wording on the page says. */
   var CONFIRM = { endpoint: '' };
 
+  /* ── The booking fee ──────────────────────────────────────────
+     A flat €20 per booking, paid online. Because the amount never
+     varies, this needs no server and no API key: one payment link
+     from Stripe or Mollie does it.
+
+     Stripe: Payments → Payment links → create a €20 link. It accepts
+     ?client_reference_id= so the booking reference lands in your
+     dashboard next to the payment, and ?prefilled_email= to save the
+     customer typing it again.
+
+     Empty means no payment step is shown at all — better a missing
+     button than one that leads nowhere. */
+  var FEE = { amount: 20, currency: 'EUR', payUrl: '' };
+
+  function feeReady() { return /^https:\/\/.+/.test(FEE.payUrl); }
+
   function confirmsReady() { return /^https:\/\/.+/.test(CONFIRM.endpoint); }
 
   function mailReady() {
@@ -445,6 +461,23 @@
     link.href = 'https://wa.me/31613331111?text=' + encodeURIComponent(lines.join('\n'));
   }
 
+  /* The payment link, with the booking reference attached so a payment
+     can be matched to a ride without asking the customer. */
+  function paintPay(ride) {
+    var box = document.getElementById('payBox');
+    var btn = document.getElementById('payBtn');
+    if (!box || !btn) return;
+    if (!feeReady()) { box.hidden = true; return; }
+
+    var url = FEE.payUrl
+      + (FEE.payUrl.indexOf('?') < 0 ? '?' : '&')
+      + 'client_reference_id=' + encodeURIComponent(ride.ref);
+    if (ride.email) url += '&prefilled_email=' + encodeURIComponent(ride.email);
+
+    btn.href = url;
+    box.hidden = false;
+  }
+
   function renderReceipt(ride) {
     put('rRef', ride.ref);
     put('rPickup', ride.pickup + (ride.via ? ' → ' + ride.via : ''));
@@ -455,6 +488,7 @@
     put('rFlight', ride.flight || t('r.notgiven'));
     put('rContact', ride.name + ' · ' + ride.phone);
     paintWaSend(ride);
+    paintPay(ride);
   }
 
   function showReceipt(ride) {
@@ -551,6 +585,7 @@
       name: nameEl.value.trim(),
       phone: phoneEl.value.trim(),
       notes: notesEl.value.trim(),
+      email: emailEl ? emailEl.value.trim() : '',
       lang: ({ en: 'English', nl: 'Dutch', ar: 'Arabic' })[window.I18N.lang()]
     };
 
