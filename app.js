@@ -761,6 +761,80 @@
   }());
 
 
+  /* ── The mobile menu ───────────────────────────────────────── */
+  (function menu() {
+    var nav = document.getElementById("mainnav");
+    var toggle = document.getElementById("navToggle");
+    var links = document.getElementById("navLinks");
+    if (!nav || !toggle || !links) return;
+
+    function setOpen(on) {
+      nav.classList.toggle("is-open", on);
+      toggle.setAttribute("aria-expanded", String(on));
+    }
+
+    toggle.addEventListener("click", function () {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    /* Picking a destination should close the menu behind you. */
+    links.addEventListener("click", function (e) {
+      if (e.target.closest("a")) setOpen(false);
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!nav.contains(e.target)) setOpen(false);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && nav.classList.contains("is-open")) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    /* Leaving it open while the layout turns back into a row would strand
+       the panel mid-screen. */
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 760) setOpen(false);
+    });
+  }());
+
+  /* ── Sections arrive rather than appear ─────────────────────
+     Quiet on purpose: a short rise and fade, once, never repeated.
+     The hiding is applied by script, so if the script never runs the
+     page is simply all visible — content is never hidden by CSS alone.
+     Anyone who asks for reduced motion gets none of it. */
+  (function reveal() {
+    var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (calm || !("IntersectionObserver" in window)) return;
+
+    var targets = document.querySelectorAll(
+      ".svcs__title, .svc, .board__title, .board__panel, .fare__title, .state," +
+      " .reviews__title, .point, .meet__copy > *, .plaza, .legal__title, .legal__item," +
+      " .gbadge__row"
+    );
+    if (!targets.length) return;
+
+    document.documentElement.classList.add("reveal-on");
+    [].forEach.call(targets, function (el, i) {
+      el.classList.add("reveal");
+      /* neighbours follow each other in, but the stagger is capped so a
+         long row never leaves the last card lagging behind the scroll */
+      el.style.setProperty("--reveal-delay", Math.min(i % 4, 3) * 70 + "ms");
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-in");
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 });
+
+    [].forEach.call(targets, function (el) { io.observe(el); });
+  }());
+
   /* Most of our rides start at the airport, so start there. */
   if (!pickup.value) pickup.value = SCHIPHOL_IN;
   paintPax();
