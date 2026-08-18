@@ -272,28 +272,16 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
 .shot--photo .meter__bezel { display: none; }
 
 /* One caption for the meter, another for the photo. */
-.shot__cap--photo { display: none; }
-.shot--photo .shot__cap--photo { display: block; }
-.shot--photo .shot__cap--meter { display: none; }
 
 .meter figcaption {
   margin-top: 1rem; font-size: .875rem; line-height: 1.55; color: var(--ink-soft);
   border-inline-start: 2px solid var(--amber); padding-inline-start: .875rem;
 }
 
-.trust {
-  display: flex; flex-wrap: wrap; gap: 0;
-  list-style: none; margin: 0;
-  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  font: 500 .75rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft);
-}
-.trust li { flex: 1 1 auto; padding: 1.0625rem 0; }
-.trust li::before { content: "— "; color: var(--amber); }
 
 @media (max-width: 900px) {
   .hero__grid { grid-template-columns: 1fr; padding-bottom: 2rem; }
   .hero__copy h1 { max-width: 20ch; }
-  .trust li { flex-basis: 50%; padding-block: .8125rem; }
 }
 
 /* ── Booking panel ─────────────────────────────────────── */
@@ -663,10 +651,6 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
   content: ""; width: 6px; height: 6px; border-radius: 50%;
   background: #4ECB7B; flex: none;
 }
-.board__foot {
-  margin-top: 2rem; max-width: 64ch; font-size: .9375rem; color: #A9B8D0;
-  border-top: 1px solid rgba(255, 255, 255, .14); padding-top: 1.5rem;
-}
 @media (max-width: 760px) {
   /* Destination on its own line, then drive · distance · status under it. */
   .board__head { display: none; }
@@ -710,7 +694,6 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
 .svc__cap strong { font-family: var(--display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.005em; word-spacing: .14em; }
 .svc__time { font: 500 .6875rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #A9C0E4; }
 .svc a:hover .svc__cap { background: var(--navy-deep); }
-.svcs__foot { margin-top: 1.75rem; max-width: 62ch; font-size: .9375rem; color: var(--ink-soft); }
 
 /* ── Reviews ───────────────────────────────────────────── */
 .reviews { padding-block: clamp(3rem, 7vw, 4.5rem); }
@@ -840,7 +823,6 @@ html[lang="ar"] .receipt__ref { font-family: var(--mono); }
 /* Arabic script does not take letter-spacing or uppercasing. */
 html[lang="ar"] .eyebrow,
 html[lang="ar"] .brand__sub,
-html[lang="ar"] .trust,
 html[lang="ar"] .dir legend,
 html[lang="ar"] .opt,
 html[lang="ar"] .fareline__tag,
