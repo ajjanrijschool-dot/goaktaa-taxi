@@ -5,10 +5,139 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Taxi Service Go Aktaa — Metered taxis at Amsterdam Schiphol</title>
 <meta name="description" content="Licensed metered taxis to and from Amsterdam Schiphol. Book a car, meet your driver at Arrivals 4, pay what the taximeter reads.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://taxiservicegoaktaa.nl/">
+
+<!-- Same page in three languages, switched in the browser. -->
+<link rel="alternate" hreflang="en" href="https://taxiservicegoaktaa.nl/">
+<link rel="alternate" hreflang="nl" href="https://taxiservicegoaktaa.nl/">
+<link rel="alternate" hreflang="ar" href="https://taxiservicegoaktaa.nl/">
+<link rel="alternate" hreflang="x-default" href="https://taxiservicegoaktaa.nl/">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="theme-color" content="#153A8A">
+
+<!-- What a shared link looks like in WhatsApp, Facebook, LinkedIn. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Taxi Service Go Aktaa">
+<meta property="og:url" content="https://taxiservicegoaktaa.nl/">
+<meta property="og:title" content="Taxi Service Go Aktaa — Metered taxis at Amsterdam Schiphol">
+<meta property="og:description" content="Licensed metered taxis to and from Amsterdam Schiphol. Your driver tracks your flight and waits at the exit you choose. The taximeter decides the fare.">
+<meta property="og:image" content="https://taxiservicegoaktaa.nl/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="nl_NL">
+<meta property="og:locale:alternate" content="ar_AR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Taxi Service Go Aktaa — Metered taxis at Amsterdam Schiphol">
+<meta name="twitter:description" content="Licensed metered taxis to and from Amsterdam Schiphol. The taximeter decides the fare.">
+<meta name="twitter:image" content="https://taxiservicegoaktaa.nl/og-image.jpg">
+
+<!-- Fonts served from this domain. Loading them from Google would hand
+     every visitor's IP address to Google, which a German court ruled a
+     GDPR breach in 2022, and costs two extra connections per visit. -->
+<link rel="preload" href="fonts/Archivo-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/IBMPlexSans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="styles.css">
+
+<!-- Tells Google what this business is, so the phone number and hours
+     can appear in search. Address and rating are deliberately absent:
+     both must be real, and one is not known yet while the other is empty. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TaxiService",
+  "name": "Taxi Service Go Aktaa",
+  "alternateName": "TTAxi",
+  "url": "https://taxiservicegoaktaa.nl/",
+  "image": "https://taxiservicegoaktaa.nl/og-image.jpg",
+  "logo": "https://taxiservicegoaktaa.nl/logo.svg",
+  "telephone": "+31613331111",
+  "email": "taxiservice.goaktaa@gmail.com",
+  "description": "Licensed metered taxi transfers to and from Amsterdam Airport Schiphol. The fare comes off the taximeter, within the Dutch national maximum tariff.",
+  "priceRange": "Metered — Dutch national maximum tariff",
+  "currenciesAccepted": "EUR",
+  "paymentAccepted": "Cash, Credit Card, Invoice",
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "KvK",
+    "value": "93594909"
+  },
+  "availableLanguage": [
+    {
+      "@type": "Language",
+      "name": "English"
+    },
+    {
+      "@type": "Language",
+      "name": "Dutch"
+    },
+    {
+      "@type": "Language",
+      "name": "Arabic"
+    }
+  ],
+  "areaServed": [
+    {
+      "@type": "Airport",
+      "name": "Amsterdam Airport Schiphol",
+      "iataCode": "AMS"
+    },
+    {
+      "@type": "City",
+      "name": "Amsterdam"
+    },
+    {
+      "@type": "City",
+      "name": "Rotterdam"
+    },
+    {
+      "@type": "City",
+      "name": "The Hague"
+    },
+    {
+      "@type": "City",
+      "name": "Haarlem"
+    },
+    {
+      "@type": "City",
+      "name": "Leiden"
+    },
+    {
+      "@type": "City",
+      "name": "Utrecht"
+    }
+  ],
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "00:00",
+    "closes": "23:59"
+  },
+  "potentialAction": {
+    "@type": "ReserveAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://taxiservicegoaktaa.nl/#book"
+    },
+    "result": {
+      "@type": "Reservation",
+      "name": "Taxi booking"
+    }
+  }
+}
+</script>
+
 </head>
 <body>
 
@@ -133,7 +262,7 @@
            the meter stands alone, exactly as before. -->
       <figure class="meter shot" id="heroShot">
         <div class="shot__frame">
-        <img class="shot__photo" src="car.jpg" alt="" data-i18n-alt="hero.photo.alt" hidden>
+        <img class="shot__photo" src="car.jpg" width="1200" height="1600" fetchpriority="high" decoding="async" alt="" data-i18n-alt="hero.photo.alt" hidden>
         <div class="meter__bezel" lang="nl" dir="ltr">
           <div class="meter__head">
             <span>TAXAMETER</span>
@@ -162,7 +291,7 @@
     </div>
 
     <div class="hero__art" aria-hidden="true">
-      <img class="hero__photo" src="schiphol.jpg" alt="" hidden>
+      <img class="hero__photo" src="schiphol.jpg" width="1800" height="1200" loading="lazy" decoding="async" alt="" hidden>
       <svg class="hero__draw" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" role="presentation" focusable="false">
         <defs>
           <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
@@ -574,7 +703,7 @@
         <li class="svc">
           <a href="#book" data-dest="Amsterdam Centraal">
             <span class="svc__art">
-              <img class="svc__photo" src="amsterdam.webp" alt="" hidden>
+              <img class="svc__photo" src="amsterdam.webp" width="825" height="550" loading="lazy" decoding="async" alt="" hidden>
               <svg class="svc__draw" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
                 <defs>
                   <linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1">
@@ -653,7 +782,7 @@
         <li class="svc">
           <a href="#book" data-dest="Rotterdam">
             <span class="svc__art">
-              <img class="svc__photo" src="rotterdam.webp" alt="" hidden>
+              <img class="svc__photo" src="rotterdam.webp" width="1024" height="1024" loading="lazy" decoding="async" alt="" hidden>
               <svg class="svc__draw" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
                 <defs>
                   <linearGradient id="skyR" x1="0" y1="0" x2="0" y2="1">
@@ -707,7 +836,7 @@
         <li class="svc">
           <a href="#book" data-dest="Den Haag">
             <span class="svc__art">
-              <img class="svc__photo" src="denhaag.jpg" alt="" hidden>
+              <img class="svc__photo" src="denhaag.jpg" width="596" height="336" loading="lazy" decoding="async" alt="" hidden>
               <svg class="svc__draw" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
                 <defs>
                   <linearGradient id="skyH" x1="0" y1="0" x2="0" y2="1">
@@ -941,6 +1070,27 @@
   </section>
 </main>
 
+  <!-- ── Small print ───────────────────────────────────────────
+       A privacy statement is not optional: this form collects names,
+       phone numbers, addresses and flight numbers, which the AVG treats
+       as personal data. Written to match what the site actually does. -->
+  <section class="legal" id="legal">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="legal.eyebrow">Small print</p>
+      <h2 class="legal__title" data-i18n="legal.title">Your data, and the terms of the ride.</h2>
+
+      <details class="legal__item">
+        <summary data-i18n="legal.privacy.h">Privacy statement</summary>
+        <div class="legal__body" data-i18n-html="legal.privacy.body"></div>
+      </details>
+
+      <details class="legal__item">
+        <summary data-i18n="legal.terms.h">Booking terms</summary>
+        <div class="legal__body" data-i18n-html="legal.terms.body"></div>
+      </details>
+    </div>
+  </section>
+
 <footer class="foot">
   <div class="wrap foot__grid">
     <div>
@@ -953,7 +1103,8 @@
     </div>
     <div>
       <p class="foot__h" data-i18n="foot.legal">Small print</p>
-      <p data-i18n-html="foot.small">KIWA taxi permit · KvK 93594909 · TX-keur.<br>
+      <p class="foot__links"><a href="#legal" data-i18n="foot.privacy">Privacy statement</a> · <a href="#legal" data-i18n="foot.terms">Booking terms</a></p>
+         <p data-i18n-html="foot.small">KIWA taxi permit · KvK 93594909 · TX-keur.<br>
          Independent taxi operator. Not affiliated with Royal Schiphol Group.</p>
     </div>
   </div>

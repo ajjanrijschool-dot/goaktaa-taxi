@@ -1099,3 +1099,27 @@ html { font-size: 106.25%; }                 /* 17px base, all rem sizes follow 
 .brand__sub { font-size: .6875rem; }
 .mainnav a { font-size: .875rem; }
 .lang__b { width: 40px; height: 40px; }
+
+/* ── Small print ───────────────────────────────────────── */
+.legal { padding-block: clamp(2.5rem, 6vw, 4rem); border-top: 1px solid var(--line); }
+.legal__title { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 1.75rem; }
+.legal__item { border-bottom: 1px solid var(--line); }
+.legal__item summary {
+  cursor: pointer; padding: 1.125rem 0; list-style: none;
+  font-family: var(--display); font-weight: 600; font-size: 1.0625rem;
+  display: flex; align-items: center; gap: .75rem;
+}
+.legal__item summary::-webkit-details-marker { display: none; }
+.legal__item summary::before {
+  content: "+"; flex: none;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--navy); color: #fff;
+  font: 500 1rem/22px var(--mono); text-align: center;
+}
+.legal__item[open] summary::before { content: "–"; }
+.legal__body { padding-bottom: 1.5rem; max-width: 68ch; }
+.legal__body p { margin-bottom: .875rem; font-size: .9375rem; line-height: 1.7; color: var(--ink-soft); }
+.legal__body p:last-child { margin-bottom: 0; }
+.legal__body strong { color: var(--ink); }
+.foot__links { margin-bottom: .5rem; }
+.foot__links a { text-decoration: underline; }

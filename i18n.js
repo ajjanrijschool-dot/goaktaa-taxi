@@ -204,7 +204,15 @@ window.I18N = (function () {
 
       'foot.tagline': 'Metered airport transfers, Amsterdam Schiphol.<br>Dispatch open 24 hours.',
       'foot.reach': 'Reach us',
+      'legal.eyebrow': 'Small print',
+      'legal.title': 'Your data, and the terms of the ride.',
+      'legal.privacy.h': 'Privacy statement',
+      'legal.privacy.body': '<p><strong>What we collect.</strong> When you book we ask for your name, mobile number, pick-up and destination address, date and time, number of passengers, and optionally your suitcases, flight number and a note for the driver.</p><p><strong>Why.</strong> To drive you. The driver needs the address to reach you, the name for the card they hold up, and the number to call you on arrival. The flight number lets us move the pickup if you land late.</p><p><strong>Where it goes.</strong> The form is delivered by Formspree, which passes it to our email inbox. Formspree keeps a copy in our account. Nobody else receives it, and we never sell or share it.</p><p><strong>How long we keep it.</strong> Booking mail is kept while it is useful for the ride and our bookkeeping, and deleted after that.</p><p><strong>Cookies.</strong> This site sets none. No analytics, no advertising, no tracking. The only thing stored is the language you pick, kept in your own browser so the page opens in the same language next time. Our fonts are served from this domain, so no third party sees your visit.</p><p><strong>Your rights.</strong> You can ask what we hold about you, have it corrected, or have it deleted. Write to <a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a>. If our answer does not satisfy you, you can complain to the Autoriteit Persoonsgegevens.</p>',
+      'legal.terms.h': 'Booking terms',
+      'legal.terms.body': '<p><strong>The fare.</strong> Every ride runs on the taximeter, within the maximum taxi tariff set by the Dutch government. The rate is on the sticker in the rear window before you get in. No booking fee and no surge pricing. Tolls and parking, if any, are listed separately on the receipt.</p><p><strong>Payment.</strong> Nothing is charged when you book. You pay the meter reading at the door, by card, cash or company invoice.</p><p><strong>A booking is a request.</strong> A ride is confirmed when we reply, not when the form is submitted. We confirm by text, normally within 15 minutes.</p><p><strong>Waiting.</strong> At the airport the first 30 minutes after your flight lands are free. After that the standard waiting tariff applies.</p><p><strong>Changes and cancellation.</strong> Free of charge up to 2 hours before the pick-up time. Call or message the number on your confirmation.</p><p><strong>Who we are.</strong> Taxi Service Go Aktaa, registered with the Kamer van Koophandel under number 93594909, holder of a KIWA taxi permit. Independent operator, not affiliated with Royal Schiphol Group.</p>',
       'foot.legal': 'Small print',
+      'foot.privacy': 'Privacy statement',
+      'foot.terms': 'Booking terms',
       'foot.small': 'KIWA taxi permit · KvK 93594909 · TX-keur.<br>Independent taxi operator. Not affiliated with Royal Schiphol Group.'
     },
 
@@ -405,7 +413,15 @@ window.I18N = (function () {
 
       'foot.tagline': 'Taxiritten op de meter, Amsterdam Schiphol.<br>Centrale 24 uur open.',
       'foot.reach': 'Bereik ons',
+      'legal.eyebrow': 'Kleine lettertjes',
+      'legal.title': 'Je gegevens, en de voorwaarden van de rit.',
+      'legal.privacy.h': 'Privacyverklaring',
+      'legal.privacy.body': '<p><strong>Wat we vragen.</strong> Bij een boeking vragen we je naam, mobiele nummer, ophaal- en bestemmingsadres, datum en tijd, aantal passagiers, en optioneel je koffers, vluchtnummer en een opmerking voor de chauffeur.</p><p><strong>Waarom.</strong> Om je te rijden. De chauffeur heeft het adres nodig om je te bereiken, de naam voor het bordje, en het nummer om je te bellen bij aankomst. Met het vluchtnummer schuiven we de ophaaltijd op als je later landt.</p><p><strong>Waar het heen gaat.</strong> Het formulier wordt bezorgd door Formspree, dat het doorstuurt naar onze mailbox. Formspree bewaart een kopie in ons account. Niemand anders ontvangt het, en we verkopen of delen het nooit.</p><p><strong>Hoe lang we het bewaren.</strong> Boekingsmail bewaren we zolang die nuttig is voor de rit en onze administratie, daarna verwijderen we die.</p><p><strong>Cookies.</strong> Deze site plaatst er geen. Geen analytics, geen advertenties, geen tracking. Het enige dat wordt opgeslagen is de taal die je kiest, in je eigen browser, zodat de pagina de volgende keer in dezelfde taal opent. Onze lettertypen komen van dit domein, dus geen derde partij ziet je bezoek.</p><p><strong>Je rechten.</strong> Je mag opvragen wat we van je hebben, het laten corrigeren of laten verwijderen. Mail naar <a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a>. Ben je het oneens met ons antwoord, dan kun je klagen bij de Autoriteit Persoonsgegevens.</p>',
+      'legal.terms.h': 'Boekingsvoorwaarden',
+      'legal.terms.body': '<p><strong>Het tarief.</strong> Elke rit gaat op de taxameter, binnen het maximumtarief dat de Nederlandse overheid vaststelt. Het tarief staat op de sticker in de achterruit voordat je instapt. Geen boekingskosten en geen piektarief. Tol en parkeerkosten, indien van toepassing, staan apart op de bon.</p><p><strong>Betalen.</strong> Bij het boeken wordt niets afgeschreven. Je betaalt de meterstand bij de deur, met pin, contant of op factuur.</p><p><strong>Een boeking is een aanvraag.</strong> Een rit staat vast zodra wij antwoorden, niet zodra het formulier is verstuurd. We bevestigen per sms, normaal binnen 15 minuten.</p><p><strong>Wachten.</strong> Op de luchthaven zijn de eerste 30 minuten na de landing gratis. Daarna geldt het standaard wachttarief.</p><p><strong>Wijzigen en annuleren.</strong> Kosteloos tot 2 uur voor de ophaaltijd. Bel of app het nummer uit je bevestiging.</p><p><strong>Wie we zijn.</strong> Taxi Service Go Aktaa, ingeschreven bij de Kamer van Koophandel onder nummer 93594909, houder van een KIWA-taxivergunning. Zelfstandig bedrijf, niet verbonden aan Royal Schiphol Group.</p>',
       'foot.legal': 'Kleine lettertjes',
+      'foot.privacy': 'Privacyverklaring',
+      'foot.terms': 'Boekingsvoorwaarden',
       'foot.small': 'KIWA-taxivergunning · KvK 93594909 · TX-keur.<br>Zelfstandig taxibedrijf. Niet verbonden aan Royal Schiphol Group.'
     },
 
@@ -606,7 +622,15 @@ window.I18N = (function () {
 
       'foot.tagline': 'نقل بالعدّاد من مطار أمستردام سخيبول وإليه.<br>غرفة التوزيع تعمل 24 ساعة.',
       'foot.reach': 'تواصل معنا',
+      'legal.eyebrow': 'بيانات رسمية',
+      'legal.title': 'بياناتك، وشروط الرحلة.',
+      'legal.privacy.h': 'بيان الخصوصية',
+      'legal.privacy.body': '<p><strong>ما الذي نجمعه.</strong> عند الحجز نطلب اسمك، ورقم جوالك، وعنوان الانطلاق والوجهة، والتاريخ والوقت، وعدد المسافرين، واختيارياً الحقائب ورقم الرحلة وأي ملاحظة للسائق.</p><p><strong>لماذا.</strong> لنقلك. السائق يحتاج العنوان ليصل إليك، والاسم ليكتبه على اللوحة، والرقم ليتصل بك عند وصوله. ورقم الرحلة يتيح لنا تأجيل موعد الانطلاق إذا تأخر هبوطك.</p><p><strong>إلى أين تذهب.</strong> يُسلَّم النموذج عبر Formspree الذي يمرره إلى بريدنا. وتحتفظ Formspree بنسخة في حسابنا. لا يستلمها أحد غيرنا، ولا نبيعها أو نشاركها أبداً.</p><p><strong>مدة الاحتفاظ.</strong> نحتفظ ببريد الحجز ما دام مفيداً للرحلة ولسجلاتنا، ثم نحذفه.</p><p><strong>ملفات تعريف الارتباط.</strong> هذا الموقع لا يضع أياً منها. لا تحليلات ولا إعلانات ولا تتبّع. الشيء الوحيد المحفوظ هو اللغة التي تختارها، داخل متصفحك أنت، لتفتح الصفحة باللغة نفسها في المرة القادمة. وخطوطنا تُحمَّل من هذا النطاق، فلا يرى زيارتك طرف ثالث.</p><p><strong>حقوقك.</strong> يمكنك أن تسأل عمّا لدينا عنك، أو تطلب تصحيحه أو حذفه. راسلنا على <a href="mailto:taxiservice.goaktaa@gmail.com">taxiservice.goaktaa@gmail.com</a>. وإن لم يُرضِك ردنا، يمكنك تقديم شكوى إلى هيئة حماية البيانات الهولندية.</p>',
+      'legal.terms.h': 'شروط الحجز',
+      'legal.terms.body': '<p><strong>الأجرة.</strong> كل رحلة تعمل بالعدّاد، ضمن الحد الأقصى للتعريفة التي تحددها الحكومة الهولندية. والسعر مثبت على ملصق النافذة الخلفية قبل أن تركب. بلا رسوم حجز وبلا أسعار مضاعفة. والرسوم ومواقف السيارات، إن وُجدت، تظهر منفصلة في الفاتورة.</p><p><strong>الدفع.</strong> لا يُخصم شيء عند الحجز. تدفع قراءة العدّاد عند الوصول، ببطاقة أو نقداً أو بفاتورة شركة.</p><p><strong>الحجز طلب.</strong> تتأكد الرحلة عندما نرد عليك، لا عند إرسال النموذج. ونؤكد برسالة نصية، عادة خلال 15 دقيقة.</p><p><strong>الانتظار.</strong> في المطار أول 30 دقيقة بعد هبوط رحلتك مجانية. وبعدها تُطبَّق تعريفة الانتظار المعتادة.</p><p><strong>التعديل والإلغاء.</strong> مجاناً حتى ساعتين قبل موعد الانطلاق. اتصل أو راسل الرقم الموجود في تأكيدك.</p><p><strong>من نحن.</strong> Taxi Service Go Aktaa، مسجّلة لدى غرفة التجارة الهولندية برقم 93594909، وحاملة تصريح تاكسي من KIWA. شركة مستقلة، غير تابعة لمجموعة Royal Schiphol.</p>',
       'foot.legal': 'بيانات رسمية',
+      'foot.privacy': 'بيان الخصوصية',
+      'foot.terms': 'شروط الحجز',
       'foot.small': 'تصريح تاكسي KIWA · KvK 93594909 · TX-keur.<br>شركة تاكسي مستقلة، وغير تابعة لمجموعة Royal Schiphol.'
     }
   };

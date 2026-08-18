@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#153A8A"/>
+  <!-- the roof light from the wordmark -->
+  <path d="M16 30 L21 16 H43 L48 30 Z" fill="#F5B02E"/>
+  <rect x="14" y="28" width="36" height="7" rx="3.5" fill="#D8961F"/>
+  <!-- route: pick-up to drop-off -->
+  <circle cx="19" cy="47" r="4.5" fill="#fff"/>
+  <path d="M19 47 H40" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M39 41 L50 47 L39 53 Z" fill="#fff"/>
+</svg>
