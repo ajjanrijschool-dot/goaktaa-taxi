@@ -29,7 +29,19 @@
  *
  *    OR the account password, simpler but far broader:
  *      TWILIO_TOKEN    your Auth Token
- *      TWILIO_FROM     your Twilio phone number, e.g. +3197010586789
+ *      TWILIO_FROM     who the text comes from. Either:
+ *                        GoAktaa   — an alphanumeric sender ID: free, no
+ *                                    number to buy, max 11 characters, and
+ *                                    one-way (the customer cannot reply).
+ *                                    Needs the account upgraded off trial.
+ *                        +3197…    — a Twilio number you bought, ~EUR 1/month,
+ *                                    replies land in the Twilio console.
+ *
+ *      TWILIO_NUMBER   optional, and only worth setting if TWILIO_FROM is an
+ *                      alphanumeric ID. The US and Canada do not carry those,
+ *                      so +1 customers are sent from this number instead.
+ *                      Without it, a +1 booking gets no SMS — the booking
+ *                      still reaches dispatch, and the site says so.
  *      DISPATCH_EMAIL  taxiservice.goaktaa@gmail.com
  *      FROM_EMAIL      bookings@taxiservicegoaktaa.nl
  *      SITE_ORIGIN     https://taxiservicegoaktaa.nl
@@ -105,11 +117,20 @@ export default {
           .replace('{when}', ride.when)
           .replace('{pickup}', ride.pickup);
 
-        const form = new URLSearchParams({
-          To: ride.phone.replace(/[^\d+]/g, ''),
-          From: env.TWILIO_FROM,
-          Body: body
-        });
+        const to = ride.phone.replace(/[^\d+]/g, '');
+
+        /* Alphanumeric sender IDs — "GoAktaa" instead of a number — are free
+           and look like us, but the US and Canada do not carry them, and a
+           good share of Schiphol passengers hold a +1 number. Where a real
+           Twilio number is configured, use it for those. */
+        const noAlpha = /^\+1/.test(to);
+        const from = (noAlpha && env.TWILIO_NUMBER) ? env.TWILIO_NUMBER : env.TWILIO_FROM;
+
+        if (noAlpha && !env.TWILIO_NUMBER && !/^\+/.test(from)) {
+          throw new Error('+1 number needs TWILIO_NUMBER: alphanumeric senders are not carried in the US or Canada');
+        }
+
+        const form = new URLSearchParams({ To: to, From: from, Body: body });
 
         const res = await fetch(
           `https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_SID}/Messages.json`,
