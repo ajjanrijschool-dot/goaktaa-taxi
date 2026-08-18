@@ -6,10 +6,9 @@
  * where the keys stay server-side.
  *
  * What it does, in order:
- *   1. takes the booking from the site
+ *   1. texts the customer a confirmation    (Twilio — we always have a mobile)
  *   2. emails the customer a confirmation   (if they gave an address)
- *   3. texts the customer a confirmation    (always — we have their mobile)
- *   4. emails the booking to the dispatcher
+ *   3. emails the booking to the dispatcher
  *
  * A failure in any one step does not fail the others, and the site is told
  * what actually went out, so it never claims something that did not happen.
@@ -17,23 +16,28 @@
  * ── Setup ─────────────────────────────────────────────────────────────
  *
  * 1. Cloudflare account (free) → Workers & Pages → Create Worker.
- *    Paste this file in, deploy, and note the URL it gives you.
+ *    Paste this file in, deploy, note the URL it gives you.
  *
  * 2. Settings → Variables → add these as SECRETS, not plain text:
  *
- *      RESEND_KEY        from resend.com   — free tier covers 3,000 mails/month
- *      MESSAGEBIRD_KEY   from messagebird.com — SMS is paid, about €0.08 each
- *      DISPATCH_EMAIL    taxiservice.goaktaa@gmail.com
- *      FROM_EMAIL        bookings@taxiservicegoaktaa.nl
- *      SITE_ORIGIN       https://taxiservicegoaktaa.nl
+ *      TWILIO_SID      your Account SID, starts AC…
+ *      TWILIO_TOKEN    your Auth Token — the real credential, never share it
+ *      TWILIO_FROM     your Twilio phone number, e.g. +3197010586789
+ *      DISPATCH_EMAIL  taxiservice.goaktaa@gmail.com
+ *      FROM_EMAIL      bookings@taxiservicegoaktaa.nl
+ *      SITE_ORIGIN     https://taxiservicegoaktaa.nl
  *
- *    Never paste these keys into the website, into chat, or into git.
+ *    And ONE of these for email:
+ *      SENDGRID_KEY    Twilio's own email service, 3,000/month free
+ *      RESEND_KEY      resend.com, also free at this volume
  *
  * 3. In app.js set CONFIRM.endpoint to the Worker URL.
  *
- * Note on FROM_EMAIL: Resend needs the sending domain verified, which means
- * adding DNS records at TransIP. Until that is done use onboarding@resend.dev,
- * which works immediately but shows Resend's name to the customer.
+ * ── Twilio trial accounts ─────────────────────────────────────────────
+ * On the free trial Twilio will ONLY text numbers you have verified in the
+ * console, and it prefixes every message with "Sent from your Twilio trial
+ * account". Real customers cannot be reached until the account is upgraded.
+ * Fine for testing; upgrade before you rely on it.
  */
 
 export default {
@@ -46,16 +50,14 @@ export default {
     };
 
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
-    if (request.method !== 'POST') {
-      return json({ error: 'POST only' }, 405, cors);
-    }
+    if (request.method !== 'POST') return json({ error: 'POST only' }, 405, cors);
 
     let b;
     try { b = await request.json(); }
     catch { return json({ error: 'bad json' }, 400, cors); }
 
     /* Only a bot fills this in. Answer as though it worked. */
-    if (b.trap) return json({ ok: true, email: false, sms: false }, 200, cors);
+    if (b.trap) return json({ ok: true, sms: false, email: false }, 200, cors);
 
     const ride = {
       ref: str(b.ref, 12),
@@ -77,61 +79,70 @@ export default {
     }
 
     const t = COPY[ride.lang];
-    const sent = { email: false, sms: false, dispatch: false };
+    const sent = { sms: false, email: false, dispatch: false };
     const failed = [];
 
-    /* ── 1. confirmation email to the customer ── */
-    if (ride.email && env.RESEND_KEY) {
-      try {
-        await send('https://api.resend.com/emails', env.RESEND_KEY, {
-          from: `Taxi Service Go Aktaa <${env.FROM_EMAIL || 'onboarding@resend.dev'}>`,
-          to: [ride.email],
-          subject: t.subject.replace('{ref}', ride.ref),
-          html: emailHtml(ride, t)
-        });
-        sent.email = true;
-      } catch (e) { failed.push('email: ' + e.message); }
-    }
-
-    /* ── 2. confirmation SMS to the customer ── */
-    if (env.MESSAGEBIRD_KEY) {
+    /* ── 1. SMS to the customer, via Twilio ──
+       Twilio speaks form-encoded, not JSON, and authenticates with
+       HTTP Basic using the SID as user and the token as password. */
+    if (env.TWILIO_SID && env.TWILIO_TOKEN && env.TWILIO_FROM) {
       try {
         const body = t.sms
           .replace('{ref}', ride.ref)
           .replace('{when}', ride.when)
           .replace('{pickup}', ride.pickup);
-        const res = await fetch('https://rest.messagebird.com/messages', {
-          method: 'POST',
-          headers: {
-            'Authorization': 'AccessKey ' + env.MESSAGEBIRD_KEY,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            originator: 'GoAktaa',       /* max 11 characters */
-            recipients: [ride.phone.replace(/[^\d+]/g, '')],
-            body
-          })
+
+        const form = new URLSearchParams({
+          To: ride.phone.replace(/[^\d+]/g, ''),
+          From: env.TWILIO_FROM,
+          Body: body
         });
-        if (!res.ok) throw new Error('messagebird ' + res.status);
+
+        const res = await fetch(
+          `https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_SID}/Messages.json`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Basic ' + btoa(env.TWILIO_SID + ':' + env.TWILIO_TOKEN),
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: form
+          }
+        );
+        if (!res.ok) {
+          const detail = await res.text();
+          throw new Error('twilio ' + res.status + ' ' + detail.slice(0, 180));
+        }
         sent.sms = true;
       } catch (e) { failed.push('sms: ' + e.message); }
     }
 
-    /* ── 3. the booking itself, to the dispatcher ── */
-    if (env.RESEND_KEY && env.DISPATCH_EMAIL) {
+    /* ── 2. confirmation email to the customer ── */
+    if (ride.email) {
       try {
-        await send('https://api.resend.com/emails', env.RESEND_KEY, {
-          from: `Bookings <${env.FROM_EMAIL || 'onboarding@resend.dev'}>`,
-          to: [env.DISPATCH_EMAIL],
-          reply_to: ride.email || undefined,
+        await sendMail(env, {
+          to: ride.email,
+          subject: t.subject.replace('{ref}', ride.ref),
+          html: customerHtml(ride, t)
+        });
+        sent.email = true;
+      } catch (e) { failed.push('email: ' + e.message); }
+    }
+
+    /* ── 3. the booking itself, to dispatch ── */
+    if (env.DISPATCH_EMAIL) {
+      try {
+        await sendMail(env, {
+          to: env.DISPATCH_EMAIL,
           subject: `Ride request ${ride.ref} — ${ride.when}`,
-          html: dispatchHtml(ride)
+          html: dispatchHtml(ride),
+          replyTo: ride.email || undefined
         });
         sent.dispatch = true;
       } catch (e) { failed.push('dispatch: ' + e.message); }
     }
 
-    return json({ ok: sent.dispatch || sent.sms || sent.email, ...sent, failed }, 200, cors);
+    return json({ ok: sent.sms || sent.dispatch || sent.email, ...sent, failed }, 200, cors);
   }
 };
 
@@ -148,14 +159,50 @@ function json(obj, status, headers) {
   });
 }
 
-async function send(url, key, payload) {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-  if (!res.ok) throw new Error('resend ' + res.status);
-  return res.json();
+/* Whichever email service has a key set. SendGrid comes with Twilio,
+   Resend is a separate signup — either is fine, neither is required. */
+async function sendMail(env, m) {
+  const from = env.FROM_EMAIL || 'onboarding@resend.dev';
+
+  if (env.SENDGRID_KEY) {
+    const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + env.SENDGRID_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        personalizations: [{ to: [{ email: m.to }] }],
+        from: { email: from, name: 'Taxi Service Go Aktaa' },
+        reply_to: m.replyTo ? { email: m.replyTo } : undefined,
+        subject: m.subject,
+        content: [{ type: 'text/html', value: m.html }]
+      })
+    });
+    if (!res.ok) throw new Error('sendgrid ' + res.status + ' ' + (await res.text()).slice(0, 160));
+    return;
+  }
+
+  if (env.RESEND_KEY) {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + env.RESEND_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: `Taxi Service Go Aktaa <${from}>`,
+        to: [m.to],
+        reply_to: m.replyTo,
+        subject: m.subject,
+        html: m.html
+      })
+    });
+    if (!res.ok) throw new Error('resend ' + res.status + ' ' + (await res.text()).slice(0, 160));
+    return;
+  }
+
+  throw new Error('no email key configured');
 }
 
 function esc(s) {
@@ -168,7 +215,7 @@ function row(label, value) {
     : '';
 }
 
-function emailHtml(r, t) {
+function customerHtml(r, t) {
   return `<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:520px;margin:0 auto;color:#14181D">
   <div style="background:#153A8A;color:#fff;padding:20px 24px;border-radius:6px 6px 0 0">
     <div style="font-size:20px;font-weight:700">Taxi Service Go Aktaa</div>
@@ -204,7 +251,9 @@ function dispatchHtml(r) {
 </div>`;
 }
 
-/* Customer-facing copy, in the language they booked in. */
+/* Customer-facing copy, in the language they booked in.
+   SMS is deliberately short: one segment is 160 characters, and every
+   segment past the first is charged again. */
 const COPY = {
   en: {
     subject: 'Your taxi is booked — {ref}',
@@ -213,7 +262,7 @@ const COPY = {
     intro: 'Your ride is with the dispatcher. We will come back to you with the driver’s name and licence plate before the pick-up time.',
     fare: 'On the taximeter, within the Dutch national maximum tariff. Nothing is charged in advance.',
     contact: 'Questions, or need to change something? Call or WhatsApp',
-    sms: 'Go Aktaa: booking {ref} received. {when} from {pickup}. We confirm your driver before pick-up. Questions: +31613331111',
+    sms: 'Go Aktaa: booking {ref} received, {when}. We confirm your driver before pick-up. Questions: +31613331111',
     l: { ref: 'Reference', when: 'When', pickup: 'Pick-up', dest: 'Destination', pax: 'Passengers', flight: 'Flight', fare: 'Fare' }
   },
   nl: {
@@ -223,7 +272,7 @@ const COPY = {
     intro: 'Je rit staat bij de centrale. We laten je de naam en het kenteken van de chauffeur weten voor de ophaaltijd.',
     fare: 'Op de taxameter, binnen het Nederlandse maximumtarief. Vooraf wordt niets afgeschreven.',
     contact: 'Vragen of iets wijzigen? Bel of app',
-    sms: 'Go Aktaa: boeking {ref} ontvangen. {when} vanaf {pickup}. We bevestigen je chauffeur voor vertrek. Vragen: +31613331111',
+    sms: 'Go Aktaa: boeking {ref} ontvangen, {when}. We bevestigen je chauffeur voor vertrek. Vragen: +31613331111',
     l: { ref: 'Referentie', when: 'Wanneer', pickup: 'Ophalen', dest: 'Bestemming', pax: 'Passagiers', flight: 'Vlucht', fare: 'Tarief' }
   },
   ar: {
@@ -233,7 +282,9 @@ const COPY = {
     intro: 'طلبك وصل إلى غرفة التوزيع. سنوافيك باسم السائق ولوحة سيارته قبل موعد الانطلاق.',
     fare: 'على العدّاد، ضمن الحد الأقصى للتعريفة الهولندية. لا يُخصم أي مبلغ مسبقاً.',
     contact: 'لأي سؤال أو تعديل، اتصل أو راسل',
-    sms: 'Go Aktaa: تم استلام الحجز {ref}. {when} من {pickup}. سنؤكد السائق قبل الموعد. للاستفسار: +31613331111',
+    /* Arabic SMS is sent as UCS-2, which allows only 70 characters per
+       segment instead of 160 — so this one is deliberately terser. */
+    sms: 'Go Aktaa: حجزك {ref} وصلنا. سنؤكد السائق قريباً. +31613331111',
     l: { ref: 'المرجع', when: 'الموعد', pickup: 'الانطلاق', dest: 'الوجهة', pax: 'المسافرون', flight: 'الرحلة', fare: 'الأجرة' }
   }
 };
