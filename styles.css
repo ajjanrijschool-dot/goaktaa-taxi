@@ -1074,3 +1074,14 @@ html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: upperca
 .exits__opt:hover { background: #EDF2FA; }
 .exits__opt[aria-selected=true] { background: var(--navy); color: #fff; }
 html[lang=ar] .exits__lab { font-family: var(--body); letter-spacing: 0; text-transform: none; }
+
+/* ── Footer in navy ────────────────────────────────────── */
+.foot {
+  background: var(--navy-deep);
+  border-top: 0;
+  color: #B9C6DC;
+}
+.foot__brand { color: #fff; }
+.foot__h { color: #fff; }
+.foot a { color: #fff; text-decoration-color: rgba(255, 255, 255, .45); }
+.foot a:hover { color: var(--amber); text-decoration-color: var(--amber); }
