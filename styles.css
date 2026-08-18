@@ -194,8 +194,10 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
    7/3 is the ratio a phone was already showing. */
 .hero__art {
   position: relative; overflow: hidden;
-  aspect-ratio: 7 / 3;
-  max-height: 620px;
+  /* Height follows width, so the crop is the same on a phone and a laptop.
+     Not aspect-ratio with a max-height: that caps the height by shrinking
+     the width, and the band stops short of the edge on wide screens. */
+  height: min(42.86vw, 620px);
 }
 .hero__art svg { width: 100%; height: 100%; display: block; }
 .art-sign { font: 600 13px var(--mono); letter-spacing: .12em; fill: #fff; }
