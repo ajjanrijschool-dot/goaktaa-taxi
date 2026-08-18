@@ -20,7 +20,7 @@
      Until then the form runs in demo mode: it validates and prints
      the slip, and sends nothing. */
   var MAIL = {
-    endpoint: 'https://formspree.io/f/YOUR-FORMSPREE-ID',
+    endpoint: 'https://formspree.io/f/mkjwqpkk',
     inbox: 'taxiservice.goaktaa@gmail.com'
   };
 
@@ -470,6 +470,23 @@
       if (!img.naturalWidth) return;
       img.hidden = false;
       shot.classList.add('shot--photo');
+    }
+    if (img.complete) reveal();
+    else img.addEventListener('load', reveal);
+  }());
+
+  /* The kerbside band takes a real photo of Schiphol when there is one. */
+  (function bandPhoto() {
+    var band = document.querySelector('.hero__art');
+    if (!band) return;
+    var img = band.querySelector('.hero__photo');
+    if (!img) return;
+    function reveal() {
+      if (!img.naturalWidth) return;
+      img.hidden = false;
+      band.classList.add('hero__art--photo');
+      var drawing = band.querySelector('.hero__draw');
+      if (drawing) drawing.remove();
     }
     if (img.complete) reveal();
     else img.addEventListener('load', reveal);

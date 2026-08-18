@@ -30,7 +30,7 @@ never silent.
    **Account → Linked Emails** and click the confirmation mail first.
 2. Copy the form's endpoint. It looks like `https://formspree.io/f/abcdwxyz`.
 3. Open `app.js`, find the `MAIL` block at the top, and replace
-   `https://formspree.io/f/YOUR-FORMSPREE-ID` with your endpoint.
+   `https://formspree.io/f/mkjwqpkk` with your endpoint.
 
 That is the only place it appears — the `<form action>` is set from it on
 load, so there is nothing to keep in sync. Changing which inbox receives the

@@ -875,3 +875,15 @@ html[lang="ar"] .meter__value,
 html[lang="ar"] .meter__cur { font-family: var(--mono); }
 html[lang="ar"] .meter__head,
 html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: uppercase; }
+
+/* ── Hero band: a photo of the real kerb, when there is one ─────
+   The drawn scene stays as the fallback, same as everywhere else. */
+.hero__photo {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover; object-position: center 42%;
+}
+/* The long fade suits a flat drawing; over a photo it reads as haze,
+   so the photo gets a short blend at the top edge only. */
+.hero__art--photo::after {
+  background: linear-gradient(180deg, rgba(235, 239, 243, .85) 0%, rgba(235, 239, 243, 0) 11%);
+}
