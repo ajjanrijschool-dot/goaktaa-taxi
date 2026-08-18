@@ -191,7 +191,6 @@ window.I18N = (function () {
       'point.3.p': 'Land early or late and the pickup moves with you. The first 30 minutes of waiting are ours.',
       'reviews.count': '{n} reviews',
       'reviews.title': 'What our passengers say',
-      'reviews.none': 'No reviews published yet. Yours would be the first.',
 
       'meet.eyebrow': 'Meeting point',
       'meet.h2': 'Whichever exit you walk out of.',
@@ -393,7 +392,6 @@ window.I18N = (function () {
       'point.3.p': 'Eerder of later geland en de ophaaltijd schuift mee. De eerste 30 minuten wachten zijn voor ons.',
       'reviews.count': '{n} beoordelingen',
       'reviews.title': 'Wat onze passagiers zeggen',
-      'reviews.none': 'Nog geen beoordelingen geplaatst. De jouwe zou de eerste zijn.',
 
       'meet.eyebrow': 'Ontmoetingspunt',
       'meet.h2': 'Bij welke uitgang je ook naar buiten komt.',
@@ -595,7 +593,6 @@ window.I18N = (function () {
       'point.3.p': 'هبطت مبكراً أو متأخراً وموعد الانطلاق يتحرك معك. وأول 30 دقيقة انتظار على حسابنا.',
       'reviews.count': '{n} تقييماً',
       'reviews.title': 'ماذا يقول ركّابنا',
-      'reviews.none': 'لا توجد تقييمات منشورة بعد. تقييمك سيكون الأول.',
 
       'meet.eyebrow': 'نقطة اللقاء',
       'meet.h2': 'من أي مخرج تخرج، نكون هناك.',

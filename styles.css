@@ -1051,3 +1051,6 @@ html[lang="ar"] .exits__b { font-family: var(--body); }
 
 /* With the form gone the list has the row to itself. */
 .reviews__grid--solo { grid-template-columns: 1fr; }
+
+/* Badge sits centred over the three points, like a seal on the row. */
+.gbadge__row { display: flex; justify-content: center; }

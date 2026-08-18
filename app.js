@@ -690,12 +690,6 @@
     el.hidden = false;
   }());
 
-  /* An empty review list would otherwise sit there as a silent gap. */
-  (function reviewList() {
-    var list = document.getElementById('reviewList');
-    var none = document.getElementById('reviewNone');
-    if (list && none) none.hidden = list.querySelectorAll('.review').length > 0;
-  }());
 
   /* Most of our rides start at the airport, so start there. */
   if (!pickup.value) pickup.value = SCHIPHOL_IN;
