@@ -663,6 +663,33 @@
     update();
   }());
 
+  /* ── Google rating ─────────────────────────────────────────
+     Fill this in once you have a Google Business Profile with real
+     reviews on it, and the badge appears above the review section.
+     Leave it empty and nothing shows — an invented score is the fastest
+     way for a business to lose the trust it is trying to buy.
+
+       url:    your Google profile or review link
+       rating: what Google actually shows, e.g. '4.8'
+       count:  how many reviews, e.g. '37'                       */
+  var GOOGLE = { url: '', rating: '', count: '' };
+
+  (function googleBadge() {
+    var el = document.getElementById('gBadge');
+    if (!el) return;
+    if (!GOOGLE.url || !GOOGLE.rating || !GOOGLE.count) return;   /* stays hidden */
+    var score = Math.max(0, Math.min(5, parseFloat(GOOGLE.rating) || 0));
+    var full = Math.floor(score);
+    var half = score - full >= 0.35;
+    document.getElementById('gStars').textContent =
+      '★'.repeat(full) + (half ? '⯨' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
+    document.getElementById('gScore').textContent = GOOGLE.rating;
+    document.getElementById('gCount').textContent =
+      t('reviews.count').replace('{n}', GOOGLE.count);
+    el.href = GOOGLE.url;
+    el.hidden = false;
+  }());
+
   /* ── Reviews ───────────────────────────────────────────────
      Same relay as the booking: a review is mailed over and published by
      hand. Nothing appears on the page by itself — a review nobody wrote

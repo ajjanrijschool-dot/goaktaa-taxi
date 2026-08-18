@@ -1036,3 +1036,35 @@ html[lang="ar"] .exits__b { font-family: var(--body); }
 @media (max-width: 820px) {
   .reviews__grid { grid-template-columns: 1fr; }
 }
+
+/* ── Google rating badge ───────────────────────────────────
+   Renders only when a real rating is configured in app.js. */
+.gbadge {
+  display: inline-flex; align-items: center; gap: .625rem;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 999px;
+  padding: .5rem 1rem .5rem .75rem; text-decoration: none; color: var(--ink);
+  box-shadow: var(--shadow); margin-bottom: 1.5rem;
+}
+.gbadge:hover { border-color: #B9C5D2; }
+.gbadge__g svg { width: 18px; height: 18px; display: block; }
+.gbadge__stars { color: var(--amber); letter-spacing: .06em; font-size: 1rem; }
+.gbadge__score { font-size: .875rem; color: var(--ink-soft); }
+.gbadge__score strong { color: var(--ink); font-weight: 600; }
+.gbadge__score span::before { content: " · "; }
+
+/* ── Trust points ──────────────────────────────────────── */
+.points {
+  list-style: none; margin: 2rem 0 2.5rem; padding: 0;
+  display: grid; gap: clamp(1rem, 2.5vw, 2rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+.point { display: flex; gap: .875rem; align-items: flex-start; }
+.point__tick {
+  flex: none; width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--navy); color: #fff;
+}
+.point__tick svg { width: 15px; height: 15px; }
+.point__body { display: flex; flex-direction: column; gap: .3125rem; }
+.point__body strong { font-size: .9375rem; color: var(--navy); }
+.point__body span { font-size: .875rem; line-height: 1.6; color: var(--ink-soft); }
