@@ -91,19 +91,20 @@
            letterforms: at this size hand-made script would come out garbled,
            and garbled scripture is worse than an honest simplification. -->
       <button type="button" class="lang__b" data-lang="ar" aria-pressed="false" data-i18n-aria="lang.ar">
-        <!-- Square viewBox: a 2:1 flag cropped into a circle loses its ends.
-             The shahada is suggested with bars, not drawn as letterforms —
-             at 38px hand-made script comes out garbled, and garbled
-             scripture is worse than an honest simplification. -->
+        <!-- Square viewBox, and heavy shapes: at 36px thin strokes turn to
+             mush. The script is a baseline with ascenders — the shape of
+             Arabic writing, not fake words, since hand-drawn letterforms
+             this small would come out as garbled scripture. -->
         <svg class="flag" viewBox="0 0 30 30" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
           <rect width="30" height="30" fill="#165D31"/>
           <g fill="#fff">
-            <rect x="6.4" y="9.4" width="17.2" height="1.7" rx=".85"/>
-            <circle cx="24.6" cy="10.25" r=".85"/>
-            <rect x="8.6" y="12.7" width="12.8" height="1.7" rx=".85"/>
-            <circle cx="7.4" cy="13.55" r=".85"/>
-            <path d="M7.6 19.9h13.2l3.6 1.25-3.6 1.25H7.6z"/>
-            <rect x="4.2" y="19.4" width="3.4" height="4.2" rx="1.1"/>
+            <rect x="4.6" y="10.2" width="20.8" height="3.1" rx="1.55"/>
+            <rect x="8.4" y="6.6" width="2.1" height="4.4" rx="1.05"/>
+            <rect x="13.9" y="6.6" width="2.1" height="4.4" rx="1.05"/>
+            <rect x="19.4" y="6.6" width="2.1" height="4.4" rx="1.05"/>
+            <path d="M24.4 17.4H8.2l-4.6 2.1 4.6 2.1h16.2z"/>
+            <rect x="24.2" y="16.2" width="1.9" height="6.6" rx=".8"/>
+            <circle cx="27.4" cy="19.5" r="1.7"/>
           </g>
         </svg>
       </button>
@@ -301,6 +302,19 @@
                          placeholder="Schiphol Plaza, Arrivals 4" required>
                 </div>
                 <span class="err" data-err-for="pickup"></span>
+                <!-- Schiphol's arrivals hall has four exits. Rather than make
+                     people type one, offer them — shown only when the pick-up
+                     is actually at the airport. -->
+                <div class="exits" id="exits" hidden>
+                  <span class="exits__lab" data-i18n="f.exit">Which exit?</span>
+                  <div class="exits__set" role="group" aria-label="Arrivals exit" data-i18n-aria="f.exit">
+                    <button type="button" class="exits__b" data-exit="1">1</button>
+                    <button type="button" class="exits__b" data-exit="2">2</button>
+                    <button type="button" class="exits__b" data-exit="3">3</button>
+                    <button type="button" class="exits__b" data-exit="4">4</button>
+                    <button type="button" class="exits__b exits__b--wide" data-exit="" data-i18n="f.exit.unsure">Not sure yet</button>
+                  </div>
+                </div>
               </div>
 
               <div class="route__mid">
@@ -818,29 +832,70 @@
        one <li> per review, using the customer's own words. Do not
        invent them: a review nobody wrote is worth less than no review.
        ───────────────────────────────────────────────────────── -->
+  <!-- ── Reviews ───────────────────────────────────────────────
+       Customers write one here and it arrives by mail like a booking.
+       Publish the good ones by adding an <li class="review"> to the list
+       below — real words, real names, nothing invented.
+       ───────────────────────────────────────────────────────── -->
   <section class="reviews" id="reviews">
     <div class="wrap">
       <p class="eyebrow" data-i18n="reviews.eyebrow">Reviews</p>
-      <h2 class="reviews__title" data-i18n="reviews.title">Nothing here yet, and we won't invent any.</h2>
+      <h2 class="reviews__title" data-i18n="reviews.title">How was the ride?</h2>
 
-      <div class="reviews__empty">
-        <p class="reviews__lede" data-i18n="reviews.lede">We started driving recently. Plenty of taxi sites open with
-           glowing quotes from nobody in particular; this one will show real ones or none at all.</p>
-        <p class="reviews__ask" data-i18n="reviews.ask">Rode with us? Tell us how it went and it goes straight on this page.</p>
-        <div class="reviews__actions">
-          <a class="btn btn--primary" href="mailto:taxiservice.goaktaa@gmail.com?subject=My%20ride" data-i18n="reviews.cta">Send us your review</a>
-          <a class="btn btn--ghost" href="tel:+31613331111" data-i18n="cta.call">Call +31 6 1333 1111</a>
+      <div class="reviews__grid">
+        <div class="reviews__list-wrap">
+          <ul class="reviews__list" id="reviewList">
+            <!-- One of these per published review:
+            <li class="review">
+              <p class="review__stars" aria-label="5 out of 5">★★★★★</p>
+              <p class="review__quote">Their words, unedited.</p>
+              <p class="review__who"><strong>First name</strong><span>Route · month year</span></p>
+            </li>
+            -->
+          </ul>
+          <p class="reviews__none" id="reviewNone" data-i18n="reviews.none">No reviews published yet. Yours would be the first.</p>
         </div>
-      </div>
 
-      <!-- Real reviews go here. Keep the name as the customer gave it.
-      <ul class="reviews__list">
-        <li class="review">
-          <p class="review__quote">Their words, unedited.</p>
-          <p class="review__who"><strong>First name</strong><span>Route · month year</span></p>
-        </li>
-      </ul>
-      -->
+        <form class="revform" id="reviewForm" novalidate>
+          <p class="revform__h" data-i18n="reviews.ask">Rode with us? Tell us how it went.</p>
+
+          <fieldset class="stars">
+            <legend class="sr" data-i18n="reviews.rating">Your rating</legend>
+            <div class="stars__set" id="stars">
+              <button type="button" class="stars__b" data-star="1" aria-label="1" title="1">★</button>
+              <button type="button" class="stars__b" data-star="2" aria-label="2" title="2">★</button>
+              <button type="button" class="stars__b" data-star="3" aria-label="3" title="3">★</button>
+              <button type="button" class="stars__b" data-star="4" aria-label="4" title="4">★</button>
+              <button type="button" class="stars__b" data-star="5" aria-label="5" title="5">★</button>
+            </div>
+            <input type="hidden" name="rating" id="rating" value="">
+            <span class="err" data-err-for="rating"></span>
+          </fieldset>
+
+          <p class="field">
+            <label for="revName" data-i18n="reviews.name">Your name</label>
+            <input id="revName" name="reviewer" type="text" autocomplete="name" required>
+            <span class="err" data-err-for="revName"></span>
+          </p>
+
+          <p class="field">
+            <label for="revText" data-i18n="reviews.words">Your review</label>
+            <textarea id="revText" name="review" rows="4" required data-i18n-ph="reviews.words.ph"
+                      placeholder="What went well, what could be better"></textarea>
+            <span class="err" data-err-for="revText"></span>
+          </p>
+
+          <p class="trap" aria-hidden="true">
+            <label for="revTrap">Company</label>
+            <input id="revTrap" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+          </p>
+
+          <button class="btn btn--primary" type="submit" id="revSend" data-i18n="reviews.send">Send review</button>
+          <p class="revform__note" data-i18n="reviews.note">We read every one. Published with your first name only, and only with your words.</p>
+          <p class="form__error" id="revError" role="alert" hidden></p>
+          <p class="revform__thanks" id="revThanks" role="status" hidden data-i18n="reviews.thanks">Thank you — that reached us.</p>
+        </form>
+      </div>
     </div>
   </section>
 
