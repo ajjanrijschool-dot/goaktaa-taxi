@@ -78,7 +78,7 @@ export default {
       return json({ error: 'incomplete booking' }, 400, cors);
     }
 
-    const t = COPY[ride.lang];
+    const t = COPY;
     const sent = { sms: false, email: false, dispatch: false };
     const failed = [];
 
@@ -251,40 +251,16 @@ function dispatchHtml(r) {
 </div>`;
 }
 
-/* Customer-facing copy, in the language they booked in.
-   SMS is deliberately short: one segment is 160 characters, and every
-   segment past the first is charged again. */
+/* Confirmations go out in English only. The customer's language is
+   still passed through and shown to dispatch as 'Reply in', so whoever
+   answers knows which language to use when they call back. */
 const COPY = {
-  en: {
-    subject: 'Your taxi is booked — {ref}',
-    tagline: 'Metered transfers, Amsterdam Schiphol',
-    greeting: 'Hello {name},',
-    intro: 'Your ride is with the dispatcher. We will come back to you with the driver’s name and licence plate before the pick-up time.',
-    fare: 'On the taximeter, within the Dutch national maximum tariff. Nothing is charged in advance.',
-    contact: 'Questions, or need to change something? Call or WhatsApp',
-    sms: 'Go Aktaa: booking {ref} received, {when}. We confirm your driver before pick-up. Questions: +31613331111',
-    l: { ref: 'Reference', when: 'When', pickup: 'Pick-up', dest: 'Destination', pax: 'Passengers', flight: 'Flight', fare: 'Fare' }
-  },
-  nl: {
-    subject: 'Je taxi is geboekt — {ref}',
-    tagline: 'Ritten op de meter, Amsterdam Schiphol',
-    greeting: 'Hallo {name},',
-    intro: 'Je rit staat bij de centrale. We laten je de naam en het kenteken van de chauffeur weten voor de ophaaltijd.',
-    fare: 'Op de taxameter, binnen het Nederlandse maximumtarief. Vooraf wordt niets afgeschreven.',
-    contact: 'Vragen of iets wijzigen? Bel of app',
-    sms: 'Go Aktaa: boeking {ref} ontvangen, {when}. We bevestigen je chauffeur voor vertrek. Vragen: +31613331111',
-    l: { ref: 'Referentie', when: 'Wanneer', pickup: 'Ophalen', dest: 'Bestemming', pax: 'Passagiers', flight: 'Vlucht', fare: 'Tarief' }
-  },
-  ar: {
-    subject: 'تم حجز التاكسي — {ref}',
-    tagline: 'توصيل بالعدّاد، مطار أمستردام سخيبول',
-    greeting: 'مرحباً {name}،',
-    intro: 'طلبك وصل إلى غرفة التوزيع. سنوافيك باسم السائق ولوحة سيارته قبل موعد الانطلاق.',
-    fare: 'على العدّاد، ضمن الحد الأقصى للتعريفة الهولندية. لا يُخصم أي مبلغ مسبقاً.',
-    contact: 'لأي سؤال أو تعديل، اتصل أو راسل',
-    /* Arabic SMS is sent as UCS-2, which allows only 70 characters per
-       segment instead of 160 — so this one is deliberately terser. */
-    sms: 'Go Aktaa: حجزك {ref} وصلنا. سنؤكد السائق قريباً. +31613331111',
-    l: { ref: 'المرجع', when: 'الموعد', pickup: 'الانطلاق', dest: 'الوجهة', pax: 'المسافرون', flight: 'الرحلة', fare: 'الأجرة' }
-  }
+  subject: 'Your taxi is booked — {ref}',
+  tagline: 'Metered transfers, Amsterdam Schiphol',
+  greeting: 'Hello {name},',
+  intro: 'Your ride is with the dispatcher. We will come back to you with the driver name and licence plate before the pick-up time.',
+  fare: 'On the taximeter, within the Dutch national maximum tariff. Nothing is charged in advance.',
+  contact: 'Questions, or need to change something? Call or WhatsApp',
+  sms: 'Go Aktaa: booking {ref} received, {when}. We confirm your driver before pick-up. Questions: +31613331111',
+  l: { ref: 'Reference', when: 'When', pickup: 'Pick-up', dest: 'Destination', pax: 'Passengers', flight: 'Flight', fare: 'Fare' }
 };
