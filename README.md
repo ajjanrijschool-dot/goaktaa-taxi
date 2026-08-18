@@ -212,6 +212,46 @@ send with a clear reason rather than failing quietly.
 On a trial account Twilio only texts numbers verified in the console and
 stamps "Sent from your Twilio trial account" on every message.
 
+## The €20 booking fee
+
+Every booking pays €20 online before the ride is held. The metered fare is
+separate and still settled in the car. The €20 is **not refunded** if the
+customer cancels — that is said on the booking form, in the terms, and on
+the button itself before anyone pays.
+
+### Switching it on
+
+The site needs one thing: a payment link for a fixed €20. Because the amount
+never changes, no API key and no server are involved.
+
+1. In Stripe (or Mollie), create a **payment link** for €20 EUR.
+2. Set its success URL to `https://taxiservicegoaktaa.nl/?paid=1`.
+3. Put the link in `app.js`:
+
+   ```js
+   var FEE = { amount: 20, currency: 'EUR', payUrl: 'https://buy.stripe.com/xxxx' };
+   ```
+
+4. Commit and push.
+
+### What happens then
+
+`Continue to payment` sends the booking to Formspree first, so the request is
+safely in the inbox even if the customer abandons the payment. Then it hands
+them to the payment page with `?client_reference_id=GA-XXXX`, so the payment
+arrives labelled with the ride it belongs to, and their email prefilled.
+After paying they come back to `/?paid=1` and see the confirmation.
+
+**While `payUrl` is empty** the site does not promise a payment screen: the
+button reads *Request this ride* again and the booking ends on the paper
+slip, exactly as before. Nothing half-built is shown to a customer.
+
+### Before you charge anyone
+
+Check the fee against your KIWA permit and the Dutch maximum-tariff rules
+(`maximumtarief`). A charge on top of a metered fare can breach permit
+conditions. Worth one call to your permit contact.
+
 ## Not included: payments
 
 Mollie is deliberately absent — there is nothing to sell yet, and a static

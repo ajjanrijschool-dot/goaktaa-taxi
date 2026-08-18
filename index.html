@@ -610,6 +610,19 @@
         </form>
       </div>
 
+      <!-- Shown when the customer returns from a completed payment. -->
+      <div class="panel paid" id="paidBox" hidden>
+        <p class="eyebrow" data-i18n="paid.eyebrow">Payment received</p>
+        <h2 class="paid__title" data-i18n="paid.title">That is your ride booked.</h2>
+        <p class="paid__ref"><span data-i18n="r.ref">REF</span> <strong id="paidRef">—</strong></p>
+        <p class="paid__p" data-i18n="paid.body">We have your booking and your €20. We will come back to you with the
+           driver name and licence plate before the pick-up time. The fare itself is settled in the car, on the meter.</p>
+        <div class="paid__acts">
+          <a class="btn btn--ghost" href="tel:+31613331111" data-i18n="cta.call">Call +31 6 1333 1111</a>
+          <a class="btn btn--ghost" href="/" data-i18n="nav.home">Home</a>
+        </div>
+      </div>
+
       <!-- The confirmation is paperwork, so it gets the paper card. -->
       <div class="panel" id="confirmPanel" hidden>
         <div class="receipt" id="receipt" tabindex="-1">

@@ -1282,3 +1282,11 @@ body {
 .paybox__h strong { font-family: var(--display); font-size: 1.25rem; color: var(--navy); }
 .paybox__p { font-size: .875rem; color: var(--ink-soft); margin-bottom: 1rem; max-width: 46ch; }
 html[lang="ar"] .feebar__amt, html[lang="ar"] .paybox__h strong { font-family: var(--body); }
+
+/* ── Back from a completed payment ─────────────────────── */
+.paid { padding: clamp(1.5rem, 4vw, 2.5rem); }
+.paid[hidden] { display: none; }
+.paid__title { font-size: clamp(1.625rem, 3.2vw, 2.25rem); margin-bottom: .75rem; }
+.paid__ref { font: 500 1.0625rem/1 var(--mono); color: var(--navy); margin-bottom: 1rem; }
+.paid__p { color: var(--ink-soft); max-width: 52ch; margin-bottom: 1.5rem; }
+.paid__acts { display: flex; flex-wrap: wrap; gap: .75rem; }

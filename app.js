@@ -469,13 +469,23 @@
     if (!box || !btn) return;
     if (!feeReady()) { box.hidden = true; return; }
 
-    var url = FEE.payUrl
-      + (FEE.payUrl.indexOf('?') < 0 ? '?' : '&')
+    btn.href = payLink(ride);
+    box.hidden = false;
+  }
+
+  /* Hand the customer to the payment page. The reference travels with
+     them so the payment arrives labelled with the ride it belongs to. */
+  function payLink(ride) {
+    var url = FEE.payUrl + (FEE.payUrl.indexOf('?') < 0 ? '?' : '&')
       + 'client_reference_id=' + encodeURIComponent(ride.ref);
     if (ride.email) url += '&prefilled_email=' + encodeURIComponent(ride.email);
+    return url;
+  }
 
-    btn.href = url;
-    box.hidden = false;
+  function goPay(ride) {
+    lastRide = ride;
+    try { sessionStorage.setItem('goaktaa.ref', ride.ref); } catch (e) { /* private mode */ }
+    window.location.href = payLink(ride);
   }
 
   function renderReceipt(ride) {
@@ -593,6 +603,7 @@
     if (!mailReady()) {
       console.warn('Go Aktaa: demo mode — no Formspree endpoint in app.js, so ' +
         ride.ref + ' was not sent to ' + MAIL.inbox + '.');
+      if (feeReady()) { goPay(ride); return; }
       showReceipt(ride);
       return;
     }
@@ -610,7 +621,14 @@
       body: JSON.stringify(body)
     }).then(function (res) {
       sending(false);
-      if (res.ok) { showReceipt(ride); return; }
+      if (res.ok) {
+        /* The booking is safely with us before the customer leaves the
+           site. If they abandon the payment we still have the request,
+           and can chase it — better than losing the ride entirely. */
+        if (feeReady()) { goPay(ride); return; }
+        showReceipt(ride);
+        return;
+      }
       showFailure();
       res.json().then(function (data) {
         console.error('Go Aktaa: Formspree rejected ' + ride.ref + '.', data);
@@ -875,4 +893,37 @@
   paintPax();
   markExits();
   paint();
+
+  /* No payment link yet? Then the button must not promise a payment
+     screen. Swapping the key rather than the text keeps the language
+     switcher working. */
+  if (!feeReady()) {
+    var sendEl = document.getElementById('sendBtn');
+    var noteEl = document.querySelector('.form__note');
+    if (sendEl) sendEl.setAttribute('data-i18n', 'form.submit.nofee');
+    if (noteEl) noteEl.setAttribute('data-i18n', 'form.note.nofee');
+    if (window.I18N) window.I18N.apply(window.I18N.lang());
+  }
+
+  /* Back from the payment page. Stripe redirects here after a successful
+     payment, so say so plainly rather than dropping them on a blank form.
+     This runs after paint(), which sets the cards from `step` and would
+     otherwise put the booking form straight back on screen. */
+  (function paidReturn() {
+    if (!/[?&]paid=/.test(location.search)) return;
+
+    var box = document.getElementById('paidBox');
+    if (!box) return;
+
+    var ref = '';
+    try { ref = sessionStorage.getItem('goaktaa.ref') || ''; } catch (e) { /* private mode */ }
+    var slot = document.getElementById('paidRef');
+    if (slot && ref) slot.textContent = ref;
+
+    step = 3;
+    paint();               /* marks the rail done, hides the booking card */
+    confirmPanel.hidden = true;   /* the slip is replaced by the paid panel */
+    box.hidden = false;
+    box.scrollIntoView({ block: 'start' });
+  }());
 }());
