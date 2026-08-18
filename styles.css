@@ -1085,3 +1085,5 @@ html[lang=ar] .exits__lab { font-family: var(--body); letter-spacing: 0; text-tr
 .foot__h { color: #fff; }
 .foot a { color: #fff; text-decoration-color: rgba(255, 255, 255, .45); }
 .foot a:hover { color: var(--amber); text-decoration-color: var(--amber); }
+/* The Saudi flag is a bitmap, not inline SVG like the other two. */
+img.flag { object-fit: cover; }
