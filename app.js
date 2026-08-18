@@ -350,6 +350,24 @@
     document.getElementById(id).textContent = value || '—';
   }
 
+  /* The booking, written out for WhatsApp. One tap by the customer puts the
+     whole ride in a thread both sides can reply in — which is also how the
+     15-minute confirmation gets sent back. */
+  function paintWaSend(ride) {
+    var link = document.getElementById('waSend');
+    if (!link || !ride) return;
+    var lines = [
+      t('r.wa.head').replace('{ref}', ride.ref),
+      t('r.pickup') + ': ' + ride.pickup,
+      t('r.dest') + ': ' + ride.dest,
+      t('r.when') + ': ' + readableWhen(),
+      t('r.pax') + ': ' + paxLabel(),
+      t('r.contact') + ': ' + ride.name + ' — ' + ride.phone
+    ];
+    if (ride.flight) lines.push(t('r.flight') + ': ' + ride.flight);
+    link.href = 'https://wa.me/31613331111?text=' + encodeURIComponent(lines.join('\n'));
+  }
+
   function renderReceipt(ride) {
     put('rRef', ride.ref);
     put('rPickup', ride.pickup + (ride.via ? ' → ' + ride.via : ''));
@@ -359,6 +377,7 @@
     put('rBags', bagsEl.value ? selectedText(bagsEl) : t('r.tbc'));
     put('rFlight', ride.flight || t('r.notgiven'));
     put('rContact', ride.name + ' · ' + ride.phone);
+    paintWaSend(ride);
   }
 
   function showReceipt(ride) {

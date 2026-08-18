@@ -137,6 +137,8 @@ window.I18N = (function () {
       'r.next2': 'Landing early or late? The flight number keeps the pickup in sync.',
       'r.next3': 'Something urgent: <a href="tel:+31613331111">+31 6 1333 1111</a>, day or night.',
       'r.again': 'Book another ride',
+      'r.wa': 'Send this on WhatsApp',
+      'r.wa.head': 'Booking {ref}',
 
       'fare.eyebrow': 'How the fare works',
       'fare.title': 'Three states of the meter.',
@@ -197,7 +199,7 @@ window.I18N = (function () {
       'foot.tagline': 'Metered airport transfers, Amsterdam Schiphol.<br>Dispatch open 24 hours.',
       'foot.reach': 'Reach us',
       'foot.legal': 'Small print',
-      'foot.small': 'KIWA taxi permit · KvK 00000000 · TX-keur.<br>Independent taxi operator. Not affiliated with Royal Schiphol Group.'
+      'foot.small': 'KIWA taxi permit · KvK 93594909 · TX-keur.<br>Independent taxi operator. Not affiliated with Royal Schiphol Group.'
     },
 
     /* ── Nederlands ──────────────────────────────────────── */
@@ -330,6 +332,8 @@ window.I18N = (function () {
       'r.next2': 'Eerder of later geland? Het vluchtnummer houdt de ophaaltijd gelijk.',
       'r.next3': 'Iets urgents: <a href="tel:+31613331111">+31 6 1333 1111</a>, dag en nacht.',
       'r.again': 'Nog een rit boeken',
+      'r.wa': 'Stuur dit via WhatsApp',
+      'r.wa.head': 'Boeking {ref}',
 
       'fare.eyebrow': 'Hoe het tarief werkt',
       'fare.title': 'Drie standen van de meter.',
@@ -390,7 +394,7 @@ window.I18N = (function () {
       'foot.tagline': 'Taxiritten op de meter, Amsterdam Schiphol.<br>Centrale 24 uur open.',
       'foot.reach': 'Bereik ons',
       'foot.legal': 'Kleine lettertjes',
-      'foot.small': 'KIWA-taxivergunning · KvK 00000000 · TX-keur.<br>Zelfstandig taxibedrijf. Niet verbonden aan Royal Schiphol Group.'
+      'foot.small': 'KIWA-taxivergunning · KvK 93594909 · TX-keur.<br>Zelfstandig taxibedrijf. Niet verbonden aan Royal Schiphol Group.'
     },
 
     /* ── العربية ─────────────────────────────────────────── */
@@ -523,6 +527,8 @@ window.I18N = (function () {
       'r.next2': 'هبطت مبكراً أو متأخراً؟ رقم الرحلة يضبط موعد الانطلاق تلقائياً.',
       'r.next3': 'لأي أمر عاجل: <a href="tel:+31613331111" dir="ltr">+31 6 1333 1111</a>، ليلاً أو نهاراً.',
       'r.again': 'احجز رحلة أخرى',
+      'r.wa': 'أرسل هذا عبر واتساب',
+      'r.wa.head': 'حجز {ref}',
 
       'fare.eyebrow': 'كيف تُحسب الأجرة',
       'fare.title': 'ثلاث حالات للعدّاد.',
@@ -583,7 +589,7 @@ window.I18N = (function () {
       'foot.tagline': 'نقل بالعدّاد من مطار أمستردام سخيبول وإليه.<br>غرفة التوزيع تعمل 24 ساعة.',
       'foot.reach': 'تواصل معنا',
       'foot.legal': 'بيانات رسمية',
-      'foot.small': 'تصريح تاكسي KIWA · KvK 00000000 · TX-keur.<br>شركة تاكسي مستقلة، وغير تابعة لمجموعة Royal Schiphol.'
+      'foot.small': 'تصريح تاكسي KIWA · KvK 93594909 · TX-keur.<br>شركة تاكسي مستقلة، وغير تابعة لمجموعة Royal Schiphol.'
     }
   };
 

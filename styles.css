@@ -980,3 +980,8 @@ html[lang="ar"] .meter__rows dt { letter-spacing: .18em; text-transform: upperca
 .lang__b:not([aria-pressed="true"]) .flag { filter: none; opacity: .78; }
 .lang__b:hover .flag { opacity: 1; }
 .lang__b[aria-pressed="true"] .flag { opacity: 1; }
+
+/* WhatsApp action on the confirmation slip. */
+.receipt__acts { display: flex; flex-wrap: wrap; gap: .75rem; }
+.btn--wa { background: #25D366; color: #fff; }
+.btn--wa:hover { background: #1EBE5A; }

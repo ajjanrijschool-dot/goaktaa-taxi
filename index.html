@@ -506,7 +506,13 @@
               <li data-i18n="r.next2">Landing early or late? The flight number keeps the pickup in sync.</li>
               <li data-i18n-html="r.next3">Something urgent: <a href="tel:+31613331111">+31 6 1333 1111</a>, day or night.</li>
             </ul>
-            <button class="btn btn--ghost" type="button" id="againBtn" data-i18n="r.again">Book another ride</button>
+            <div class="receipt__acts">
+              <!-- Opens WhatsApp with the whole booking already written out.
+                   The customer taps send, and both sides have the ride in a
+                   thread they can reply in. -->
+              <a class="btn btn--wa" id="waSend" href="#" target="_blank" rel="noopener" data-i18n="r.wa">Send this on WhatsApp</a>
+              <button class="btn btn--ghost" type="button" id="againBtn" data-i18n="r.again">Book another ride</button>
+            </div>
           </div>
         </div>
       </div>
@@ -893,7 +899,7 @@
     </div>
     <div>
       <p class="foot__h" data-i18n="foot.legal">Small print</p>
-      <p data-i18n-html="foot.small">KIWA taxi permit · KvK 00000000 · TX-keur.<br>
+      <p data-i18n-html="foot.small">KIWA taxi permit · KvK 93594909 · TX-keur.<br>
          Independent taxi operator. Not affiliated with Royal Schiphol Group.</p>
     </div>
   </div>
