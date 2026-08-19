@@ -3,36 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Page not found — Taxi Service Go Aktaa</title>
-<meta name="description" content="That page does not exist. Book a metered taxi to or from Amsterdam Schiphol.">
-
+<title>Taxi from Schiphol to The Hague — Taxi Service Go Aktaa</title>
+<meta name="description" content="Taxi between Amsterdam Schiphol and The Hague. About 40 minutes, 45 km, on the taximeter. Nothing added for the airport.">
+<link rel="canonical" href="https://taxiservicegoaktaa.nl/taxi-den-haag.html">
 
 <!-- Same page in three languages, switched in the browser. -->
-<link rel="alternate" hreflang="en" href="https://taxiservicegoaktaa.nl/">
-<link rel="alternate" hreflang="nl" href="https://taxiservicegoaktaa.nl/">
-<link rel="alternate" hreflang="ar" href="https://taxiservicegoaktaa.nl/">
-<link rel="alternate" hreflang="x-default" href="https://taxiservicegoaktaa.nl/">
+<link rel="alternate" hreflang="en" href="https://taxiservicegoaktaa.nl/taxi-den-haag.html">
+<link rel="alternate" hreflang="nl" href="https://taxiservicegoaktaa.nl/taxi-den-haag.html">
+<link rel="alternate" hreflang="ar" href="https://taxiservicegoaktaa.nl/taxi-den-haag.html">
+<link rel="alternate" hreflang="x-default" href="https://taxiservicegoaktaa.nl/taxi-den-haag.html">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="theme-color" content="#153A8A">
 
-<!-- What a shared link looks like in WhatsApp, Facebook, LinkedIn. -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Taxi Service Go Aktaa">
+<meta property="og:url" content="https://taxiservicegoaktaa.nl/taxi-den-haag.html">
+<meta property="og:title" content="Taxi from Schiphol to The Hague">
+<meta property="og:description" content="Taxi between Amsterdam Schiphol and The Hague. About 40 minutes, 45 km, on the taximeter. Nothing added for the airport.">
+<meta property="og:image" content="https://taxiservicegoaktaa.nl/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Taxi from Schiphol to The Hague">
+<meta name="twitter:description" content="Taxi between Amsterdam Schiphol and The Hague. About 40 minutes, 45 km, on the taximeter. Nothing added for the airport.">
+<meta name="twitter:image" content="https://taxiservicegoaktaa.nl/og-image.jpg">
 
 <!-- Fonts served from this domain. Loading them from Google would hand
      every visitor's IP address to Google, which a German court ruled a
@@ -40,18 +36,54 @@
 <link rel="preload" href="fonts/Archivo-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/IBMPlexSans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts.css">
-<meta name="robots" content="noindex">
+<link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="styles.css">
 
-<!-- Tells Google what this business is, so the phone number and hours
-     can appear in search. Address and rating are deliberately absent:
-     both must be real, and one is not known yet while the other is empty. -->
-
+<!-- The route as a service, so search engines can read the two ends of
+     it. Times and distances match the board on the home page. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Airport taxi transfer",
+  "name": "Taxi from Schiphol to The Hague",
+  "url": "https://taxiservicegoaktaa.nl/taxi-den-haag.html",
+  "provider": {
+    "@type": "TaxiService",
+    "name": "Taxi Service Go Aktaa",
+    "telephone": "+31613331111",
+    "url": "https://taxiservicegoaktaa.nl/",
+    "identifier": {
+      "@type": "PropertyValue",
+      "propertyID": "KvK",
+      "value": "93594909"
+    }
+  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "The Hague"
+    },
+    {
+      "@type": "Airport",
+      "name": "Amsterdam Airport Schiphol",
+      "iataCode": "AMS"
+    }
+  ],
+  "potentialAction": {
+    "@type": "ReserveAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://taxiservicegoaktaa.nl/#book"
+    }
+  }
+}
+</script>
 
 </head>
-<body data-meta="lost">
+<body data-meta="c.hag">
 
-<a class="skip" href="#lost" data-i18n="skip">Skip to booking</a>
+<a class="skip" href="index.html#book" data-i18n="skip">Skip to booking</a>
 
 <header class="masthead">
   <div class="wrap masthead__top">
@@ -65,7 +97,7 @@
          SVG is best; a PNG at least 400px wide also works. The CSS
          already sizes it, so nothing else needs changing.
          ─────────────────────────────────────────────────────────── -->
-    <a class="brand" href="#top">
+    <a class="brand" href="index.html">
       <svg class="brand__mark" viewBox="0 0 196 82" role="img" aria-label="TTAxi">
         <title>TTAxi</title>
         <!-- Roof light: the amber lamp already used across the site, sitting
@@ -147,53 +179,52 @@
       <span data-i18n="nav.menu">Menu</span>
     </button>
     <div class="mainnav__links" id="navLinks">
-      <a href="#top" class="is-here" data-i18n="nav.home">Home</a>
-    <a href="#book" data-i18n="nav.cta">Book a taxi</a>
-    <a href="#routes" data-i18n="nav.routes">Where we drive</a>
-    <a href="#fare" data-i18n="nav.fare">The fare</a>
-    <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
-    <a href="#meet" data-i18n="nav.meet">Meeting point</a>
+      <a href="index.html" data-i18n="nav.home">Home</a>
+    <a href="index.html#book" data-i18n="nav.cta">Book a taxi</a>
+    <a href="index.html#routes" data-i18n="nav.routes">Where we drive</a>
+    <a href="index.html#fare" data-i18n="nav.fare">The fare</a>
+    <a href="index.html#reviews" data-i18n="nav.reviews">Reviews</a>
+    <a href="index.html#meet" data-i18n="nav.meet">Meeting point</a>
     </div>
   </div>
 </nav>
 
-<main id="lost">
-  <section class="lost">
-    <div class="wrap lost__grid">
-      <div>
-        <p class="eyebrow" data-i18n="lost.eyebrow">Wrong turn</p>
-        <h1 class="lost__title" data-i18n="lost.title">That page isn’t here.</h1>
-        <p class="lost__lede" data-i18n="lost.lede">The address you followed doesn’t exist on this site — most
-          likely a typo, or a link that has moved. The taxi is still available.</p>
-        <div class="lost__actions">
-          <a class="btn btn--primary btn--big" href="/#book" data-i18n="cta.book">Book a taxi</a>
-          <a class="btn btn--ghost" href="tel:+31613331111" data-i18n="cta.call">Call +31 6 1333 1111</a>
-        </div>
-        <ul class="lost__links">
-          <li><a href="/" data-i18n="nav.home">Home</a></li>
-          <li><a href="/#routes" data-i18n="nav.routes">Where we drive</a></li>
-          <li><a href="/#fare" data-i18n="nav.fare">The fare</a></li>
-          <li><a href="/#meet" data-i18n="nav.meet">Meeting point</a></li>
-        </ul>
+<main id="top">
+  <section class="citypage">
+    <div class="wrap citypage__inner">
+
+      <p class="eyebrow" data-i18n="c.eyebrow">Schiphol transfer</p>
+      <h1 data-i18n="c.hag.h1">Taxi from Schiphol to The Hague</h1>
+      <p class="lede" data-i18n="c.hag.lede">Forty-five kilometres, about forty minutes. Straight down the A4, with the meter running and nothing added for the airport.</p>
+
+      <div class="hero__actions">
+        <a class="btn btn--primary btn--big" href="index.html#book" data-i18n="cta.book">Book a taxi</a>
+        <a class="btn btn--ghost" href="tel:+31613331111" data-i18n="cta.call">Call +31 6 1333 1111</a>
       </div>
 
-      <figure class="lost__meter" aria-hidden="true">
-        <div class="meter__bezel" lang="nl" dir="ltr">
-          <div class="meter__head">
-            <span>TAXAMETER</span>
-            <span class="meter__flag">VRIJ</span>
-          </div>
-          <div class="meter__readout">
-            <span class="meter__value">--.--</span>
-            <span class="meter__cur">EUR</span>
-          </div>
-          <dl class="meter__rows">
-            <div><dt>Tarief</dt><dd>404</dd></div>
-            <div><dt>Afstand</dt><dd>0.00 km</dd></div>
-            <div><dt>Tijd</dt><dd>00:00</dd></div>
-          </dl>
-        </div>
-      </figure>
+      <ul class="cityfacts">
+        <li><span data-i18n="c.time">Journey time</span><strong>40 <span data-i18n="c.min">min</span></strong></li>
+        <li><span data-i18n="c.dist">Distance</span><strong>45 <span data-i18n="c.km">km</span></strong></li>
+        <li><span data-i18n="c.meetl">Meeting point</span><strong data-i18n="c.meetv">Arrivals 4</strong></li>
+      </ul>
+
+      <img class="cityshot" src="denhaag.jpg" width="825" height="550" loading="lazy" decoding="async" alt="">
+
+      <h2 data-i18n="c.h2ride">On the road</h2>
+      <p data-i18n="c.hag.body1">Most rides here go to the embassies and the courts around Bezuidenhout, or to the hotels near the centre. Scheveningen and the beach sit a few minutes beyond that. The tram works in the city are worth mentioning to your driver, since they close streets at short notice.</p>
+
+      <h2 data-i18n="c.h2back">Going back to Schiphol</h2>
+      <p data-i18n="c.hag.body2">For the flight home we pick you up at the door. Forty minutes of road, but leave a full hour if you are travelling between seven and nine in the morning.</p>
+
+      <h2 data-i18n="c.h2pay">What you pay</h2>
+      <p data-i18n="c.pay">The ride is on the taximeter, within the national maximum tariff, and you pay what it reads at the door. The €20 booking fee is separate and is not deducted from the fare. No surge pricing, and nothing extra for night, luggage or the airport itself.</p>
+
+      <div class="hero__actions citypage__end">
+        <a class="btn btn--primary btn--big" href="index.html#book" data-i18n="cta.book">Book a taxi</a>
+      </div>
+
+      <p class="citynav"><span data-i18n="c.other">Other routes</span>: <a href="taxi-amsterdam.html" data-i18n="c.ams.name">Amsterdam</a> · <a href="taxi-rotterdam.html" data-i18n="c.rtm.name">Rotterdam</a></p>
+
     </div>
   </section>
 </main>
@@ -210,13 +241,14 @@
     </div>
     <div>
       <p class="foot__h" data-i18n="foot.legal">Small print</p>
-      <p class="foot__links"><a href="#legal" data-i18n="foot.privacy">Privacy statement</a> · <a href="#legal" data-i18n="foot.terms">Booking terms</a></p>
+      <p class="foot__links"><a href="index.html#legal" data-i18n="foot.privacy">Privacy statement</a> · <a href="index.html#legal" data-i18n="foot.terms">Booking terms</a></p>
          <p data-i18n-html="foot.small">KIWA taxi permit · KvK 93594909 · TX-keur.<br>
          Independent taxi operator. Not affiliated with Royal Schiphol Group.</p>
     </div>
   </div>
 </footer>
 
+<!-- Opens WhatsApp with the number and a first line already written. -->
 <a class="wa" id="waBtn" href="https://wa.me/31613331111" target="_blank" rel="noopener"
    aria-label="Message us on WhatsApp" data-i18n-aria="wa.label">
   <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -224,7 +256,12 @@
   </svg>
 </a>
 
+<div class="dock">
+  <a class="btn btn--ghost btn--dock" href="tel:+31613331111" data-i18n="dock.call">Call</a>
+  <a class="btn btn--primary btn--dock" href="index.html#book" data-i18n="cta.book">Book a taxi</a>
+</div>
+
 <script src="i18n.js"></script>
-<script src="lost.js"></script>
+<script src="city.js"></script>
 </body>
 </html>
