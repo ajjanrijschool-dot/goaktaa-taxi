@@ -333,11 +333,12 @@
     if (step === 2) {
       check(nameEl, nameEl.value.trim().length > 1, 'err.name');
       check(phoneEl, digits(phoneEl.value) >= 8, 'err.phone');
-      /* Optional, but a typo means the confirmation goes nowhere. */
-      if (emailEl && emailEl.value.trim()) {
-        check(emailEl, /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(emailEl.value.trim()), 'err.email');
-      } else if (emailEl) {
-        clearError(emailEl);
+      /* Required: the written confirmation has nowhere to go without it,
+         and a typo is the same as leaving it blank. */
+      if (emailEl) {
+        var mail = emailEl.value.trim();
+        check(emailEl, /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(mail),
+              mail ? 'err.email' : 'err.emailNeed');
       }
     }
 
