@@ -1390,3 +1390,63 @@ html[lang="ar"] .feebar__amt, html[lang="ar"] .paybox__h strong { font-family: v
 }
 
 .routelinks a { color: var(--navy); }
+
+/* ── FAQ ───────────────────────────────────────────────────────
+   Closed by default: sixteen open answers is a wall of text, and
+   the questions themselves are what a reader scans. */
+.qalist { margin-top: 2.5rem; border-top: 1px solid var(--line); }
+
+.qa { border-bottom: 1px solid var(--line); }
+
+.qa summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 1.1rem 2.2rem 1.1rem 0;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  color: var(--ink);
+  position: relative;
+}
+
+.qa summary::-webkit-details-marker { display: none; }
+
+/* A plus that becomes a minus, drawn rather than typed so it lines up. */
+.qa summary::after,
+.qa summary::before {
+  content: "";
+  position: absolute;
+  inset-inline-end: .35rem;
+  top: 50%;
+  width: 13px;
+  height: 2px;
+  background: var(--navy);
+  transition: transform .18s ease;
+}
+
+.qa summary::before { transform: translateY(-50%); }
+.qa summary::after { transform: translateY(-50%) rotate(90deg); }
+.qa[open] summary::after { transform: translateY(-50%) rotate(0); }
+
+.qa summary:hover { color: var(--navy); }
+
+.qa summary:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+}
+
+.qa p {
+  margin: 0;
+  padding: 0 2.2rem 1.4rem 0;
+  max-width: 60ch;
+}
+
+.faq__cta {
+  margin-top: 2.2rem;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qa summary::after,
+  .qa summary::before { transition: none; }
+}

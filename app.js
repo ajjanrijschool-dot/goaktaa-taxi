@@ -236,7 +236,7 @@
   function paintPax() {
     var n = paxCount();
     paxEl.value = String(n);
-    paxHint.hidden = n < 5;
+    paxHint.hidden = n < 5;   /* five or more needs a second car */
     form.querySelector('[data-pax="-1"]').disabled = n <= 1;
     form.querySelector('[data-pax="1"]').disabled = n >= 8;
   }
