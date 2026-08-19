@@ -554,7 +554,7 @@
   }
 
   function payload(ride) {
-    return {
+    var out = {
       _subject: 'Ride request ' + ride.ref + ' — ' + ride.date + ' ' + ride.time,
       _gotcha: trapEl.value,
       Reference: ride.ref,
@@ -570,11 +570,17 @@
       Flight: ride.flight || 'not given',
       Name: ride.name,
       Mobile: ride.phone,
-      Email: (emailEl && emailEl.value.trim()) || 'not given',
       Notes: ride.notes || '—',
       Fare: 'On the taximeter — no price quoted',
       'Reply in': ride.lang
     };
+
+    /* Lowercase and only when filled in: this is the key Formspree
+       replies to and sends its confirmation to. An address of "not
+       given" would make it try to write to nobody. */
+    if (ride.email) out.email = ride.email;
+
+    return out;
   }
 
   form.addEventListener('submit', function (event) {
