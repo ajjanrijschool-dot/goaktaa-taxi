@@ -47,7 +47,7 @@
 
      Empty means no payment step is shown at all — better a missing
      button than one that leads nowhere. */
-  var FEE = { amount: 20, currency: 'EUR', payUrl: 'https://pay.sumup.com/b2c/QR68OWBG' };
+  var FEE = { amount: 20, currency: 'EUR', payUrl: 'https://pay.sumup.com/b2c/QVN7E8LC' };
 
   function feeReady() { return /^https:\/\/.+/.test(FEE.payUrl); }
 
