@@ -35,17 +35,19 @@
 
   /* ── The booking fee ──────────────────────────────────────────
      A flat €20 per booking, paid online. Because the amount never
-     varies, this needs no server and no API key: one payment link
-     from Stripe or Mollie does it.
+     varies, this needs no server and no API key: one reusable payment
+     link does the whole job.
 
-     Stripe: Payments → Payment links → create a €20 link. It accepts
-     ?client_reference_id= so the booking reference lands in your
-     dashboard next to the payment, and ?prefilled_email= to save the
-     customer typing it again.
+     Live now: a SumUp Betaalverzoek, fixed at €20 and marked reusable,
+     offering iDEAL and card. SumUp asks the payer for their full name,
+     which is how a payment is matched back to a booking — the link
+     itself cannot carry our reference (see payLink).
+
+     A Stripe link would work here too, and does carry the reference.
 
      Empty means no payment step is shown at all — better a missing
      button than one that leads nowhere. */
-  var FEE = { amount: 20, currency: 'EUR', payUrl: '' };
+  var FEE = { amount: 20, currency: 'EUR', payUrl: 'https://pay.sumup.com/b2c/QR68OWBG' };
 
   function feeReady() { return /^https:\/\/.+/.test(FEE.payUrl); }
 
