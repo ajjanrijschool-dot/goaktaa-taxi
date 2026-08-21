@@ -477,10 +477,14 @@
   /* Hand the customer to the payment page. The reference travels with
      them so the payment arrives labelled with the ride it belongs to. */
   function payLink(ride) {
-    /* Mollie payment links take no query parameters — anything we append
-       is dropped, so send the bare link and match the payment to the
-       booking by name and time instead. Stripe does carry them. */
-    if (FEE.payUrl.indexOf('mollie.com') > -1) return FEE.payUrl;
+    /* Only Stripe reads a reference out of the URL. Mollie and SumUp
+       drop anything appended to a dashboard payment link, so they get
+       the bare link and their payments are matched to a booking by
+       name and time instead. Anything unknown is treated the same way:
+       a stray query string is more likely to break a link than help. */
+    var stripe = FEE.payUrl.indexOf('https://buy.stripe.com/') === 0
+      || FEE.payUrl.indexOf('https://checkout.stripe.com/') === 0;
+    if (!stripe) return FEE.payUrl;
 
     var url = FEE.payUrl + (FEE.payUrl.indexOf('?') < 0 ? '?' : '&')
       + 'client_reference_id=' + encodeURIComponent(ride.ref);
