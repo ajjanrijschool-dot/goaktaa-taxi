@@ -273,6 +273,9 @@ window.I18N = (function () {
       'point.3.p': 'Land early or late and the pickup moves with you. The first 30 minutes of waiting are ours.',
       'reviews.count': '{n} reviews',
       'reviews.title': 'What our passengers say',
+      'ask.h': 'Been in one of our cars?',
+      'ask.p': 'Tell people how it went. It takes a minute, and for a company this size a few honest words matter more than any advertising we could buy.',
+      'ask.cta': 'Write a review on Google',
 
       'meet.eyebrow': 'Meeting point',
       'meet.h2': 'Whichever exit you walk out of.',
@@ -564,6 +567,9 @@ window.I18N = (function () {
       'point.3.p': 'Eerder of later geland en de ophaaltijd schuift mee. De eerste 30 minuten wachten zijn voor ons.',
       'reviews.count': '{n} beoordelingen',
       'reviews.title': 'Wat onze passagiers zeggen',
+      'ask.h': 'Al eens met ons meegereden?',
+      'ask.p': 'Laat weten hoe het ging. Het kost een minuut, en voor een bedrijf van deze omvang wegen een paar eerlijke woorden zwaarder dan welke advertentie ook.',
+      'ask.cta': 'Schrijf een review op Google',
 
       'meet.eyebrow': 'Ontmoetingspunt',
       'meet.h2': 'Bij welke uitgang je ook naar buiten komt.',
@@ -855,6 +861,9 @@ window.I18N = (function () {
       'point.3.p': 'هبطت مبكراً أو متأخراً وموعد الانطلاق يتحرك معك. وأول 30 دقيقة انتظار على حسابنا.',
       'reviews.count': '{n} تقييماً',
       'reviews.title': 'ماذا يقول ركّابنا',
+      'ask.h': 'هل ركبت معنا من قبل؟',
+      'ask.p': 'أخبر الناس كيف كانت الرحلة. لن يستغرق الأمر أكثر من دقيقة، وبضع كلمات صادقة تعني لشركة بحجمنا أكثر من أي إعلان نشتريه.',
+      'ask.cta': 'اكتب تقييماً على جوجل',
 
       'meet.eyebrow': 'نقطة اللقاء',
       'meet.h2': 'من أي مخرج تخرج، نكون هناك.',

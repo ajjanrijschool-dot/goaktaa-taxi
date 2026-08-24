@@ -979,11 +979,6 @@
        one <li> per review, using the customer's own words. Do not
        invent them: a review nobody wrote is worth less than no review.
        ───────────────────────────────────────────────────────── -->
-  <!-- ── Reviews ───────────────────────────────────────────────
-       Customers write one here and it arrives by mail like a booking.
-       Publish the good ones by adding an <li class="review"> to the list
-       below — real words, real names, nothing invented.
-       ───────────────────────────────────────────────────────── -->
   <section class="reviews" id="reviews">
     <div class="wrap">
 
@@ -1051,6 +1046,23 @@
 
       </div>
     </div>
+
+      <!-- Asking for the review. Hidden until a Google review link is
+           set in app.js: a button that leads nowhere is worse than no
+           button, and the profile is not verified yet. -->
+      <div class="askrev" id="askRev" hidden>
+        <div class="askrev__copy">
+          <p class="askrev__h" data-i18n="ask.h">Been in one of our cars?</p>
+          <p class="askrev__p" data-i18n="ask.p">Tell people how it went. It takes a minute, and for a company
+             this size a few honest words matter more than any advertising we could buy.</p>
+        </div>
+        <a class="btn btn--google" id="askRevBtn" target="_blank" rel="noopener">
+          <span class="btn__g" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.2a5.3 5.3 0 0 1-2.3 3.4v2.9h3.7c2.2-2 3.4-5 3.4-8.5z"/><path fill="#34A853" d="M12 24c3.1 0 5.7-1 7.6-2.8l-3.7-2.9c-1 .7-2.3 1.1-3.9 1.1-3 0-5.5-2-6.4-4.7H1.8v3C3.7 21.4 7.6 24 12 24z"/><path fill="#FBBC05" d="M5.6 14.7a7.2 7.2 0 0 1 0-4.6v-3H1.8a12 12 0 0 0 0 10.6l3.8-3z"/><path fill="#EA4335" d="M12 4.8c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.7 1.2 15.1 0 12 0 7.6 0 3.7 2.6 1.8 6.1l3.8 3C6.5 6.7 9 4.8 12 4.8z"/></svg>
+          </span>
+          <span data-i18n="ask.cta">Write a review on Google</span>
+        </a>
+      </div>
   </section>
 
   <!-- ── Meeting point ────────────────────────────────────── -->

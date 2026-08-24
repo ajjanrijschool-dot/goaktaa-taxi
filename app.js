@@ -815,6 +815,24 @@
        count:  how many reviews, e.g. '37'                       */
   var GOOGLE = { url: '', rating: '', count: '' };
 
+  /* ── Asking for a review ──────────────────────────────────────
+     Google gives every verified business a short link that opens the
+     review box directly: Business Profile → Ask for reviews → copy
+     the link. It looks like https://g.page/r/XXXXXXXX/review.
+
+     Empty until the profile is verified, and the panel stays hidden
+     until then rather than showing a button that goes nowhere. */
+  var REVIEW = { url: '' };
+
+  (function askForReviews() {
+    var box = document.getElementById('askRev');
+    var btn = document.getElementById('askRevBtn');
+    if (!box || !btn) return;
+    if (!/^https:\/\/.+/.test(REVIEW.url)) return;   /* stays hidden */
+    btn.href = REVIEW.url;
+    box.hidden = false;
+  }());
+
   (function googleBadge() {
     var el = document.getElementById('gBadge');
     if (!el) return;

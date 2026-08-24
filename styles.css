@@ -1450,3 +1450,63 @@ html[lang="ar"] .feebar__amt, html[lang="ar"] .paybox__h strong { font-family: v
   .qa summary::after,
   .qa summary::before { transition: none; }
 }
+
+/* ── Asking for a review ───────────────────────────────────────
+   Sits under the reviews, on paper, so it reads as an invitation
+   rather than an advert shouting from the side of the page. */
+.askrev {
+  margin-top: 2.5rem;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--amber);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem 2rem;
+  justify-content: space-between;
+}
+
+.askrev__copy { flex: 1 1 22rem; }
+
+.askrev__h {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin: 0 0 .35em;
+}
+
+.askrev__p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .97rem;
+  line-height: 1.6;
+  max-width: 46ch;
+}
+
+/* Google's own colours on a white button: recognised instantly, and
+   it sets the expectation that the click leaves for Google. */
+.btn--google {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  white-space: nowrap;
+}
+
+.btn--google:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.btn__g {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+}
+
+.btn__g svg { width: 100%; height: 100%; }
