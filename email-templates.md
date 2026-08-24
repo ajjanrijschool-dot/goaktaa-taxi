@@ -163,6 +163,12 @@ booking back.
 Set it on the form that receives the bookings — endpoint `mkjwqpkk` —
 under **Workflow → Autoresponse**.
 
+**Live version is English only.** The Dutch and Arabic blocks below are
+kept for reference: paste them back in if enough customers book in those
+languages to justify a longer email. The manual confirmation you send
+afterwards is the one that should match the customer's language — the
+booking mail names it on the **Reply in** line.
+
 **From name:** `Taxi Service Go Aktaa`
 
 **Subject:** `We have your booking request`
