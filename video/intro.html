@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TTAxi intro — 15s</title>
+<link rel="stylesheet" href="../fonts.css">
+<style>
+  body { background: #111; margin: 0; display: grid; place-items: center; min-height: 100vh; }
+  canvas { width: 90vw; max-width: 960px; height: auto; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+/* Fifteen seconds of motion graphics for the rear screen of the car.
+   Drawn as a pure function of time so every frame can be rendered
+   deterministically and handed to ffmpeg — no recording, no dropped
+   frames, no timing drift.
+
+   Audience: a passenger already sitting in the back. So it does not
+   sell the ride they are on; it ends on a QR code for the next one,
+   held long enough to actually be scanned. Silent by design. */
+
+const W = 1280, H = 720;
+const NAVY = '#153A8A', DEEP = '#0E244F', AMBER = '#F5B02E', LAMP = '#D8961F';
+const PAPER = '#FFFFFF', MIST = 'rgba(255,255,255,.62)';
+
+const c = document.getElementById('c');
+const x = c.getContext('2d');
+
+let qrImg = null;
+window.VIDEO_READY = false;
+
+/* ── easing ─────────────────────────────────────────────────── */
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+
+/* 0→1 across [a,b] seconds */
+function span(t, a, b) { return clamp((t - a) / (b - a), 0, 1); }
+function easeOut(p) { return 1 - Math.pow(1 - p, 3); }
+function easeInOut(p) { return p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }
+/* rises, holds, falls — for elements that come and go */
+function pulse(t, inA, inB, outA, outB) {
+  return clamp(span(t, inA, inB) - span(t, outA, outB), 0, 1);
+}
+
+function alpha(a, fn) { x.save(); x.globalAlpha = clamp(a, 0, 1); fn(); x.restore(); }
+
+/* ── pieces ─────────────────────────────────────────────────── */
+
+/* the roof light from the logo */
+function lamp(cx, cy, w, glow) {
+  const h = w * 0.52;
+  x.fillStyle = AMBER;
+  x.beginPath();
+  x.moveTo(cx - w / 2, cy + h / 2);
+  x.lineTo(cx - w / 2 + w * 0.13, cy - h / 2);
+  x.lineTo(cx + w / 2 - w * 0.13, cy - h / 2);
+  x.lineTo(cx + w / 2, cy + h / 2);
+  x.closePath();
+  if (glow) { x.shadowColor = 'rgba(245,176,46,.75)'; x.shadowBlur = w * 0.5; }
+  x.fill();
+  x.shadowBlur = 0;
+  x.fillStyle = LAMP;
+  x.beginPath();
+  x.roundRect(cx - w / 2 - w * 0.04, cy + h / 2 - h * 0.14, w * 1.08, h * 0.3, h * 0.15);
+  x.fill();
+}
+
+/* a saloon car, seen from the side, driving right */
+function car(cx, cy, s) {
+  x.save();
+  x.translate(cx, cy);
+  x.scale(s, s);
+
+  /* body */
+  x.fillStyle = PAPER;
+  x.beginPath();
+  x.moveTo(-120, 10);
+  x.quadraticCurveTo(-118, -18, -86, -22);
+  x.lineTo(-52, -50);
+  x.quadraticCurveTo(-44, -58, -28, -58);
+  x.lineTo(30, -58);
+  x.quadraticCurveTo(46, -58, 56, -48);
+  x.lineTo(86, -22);
+  x.quadraticCurveTo(120, -18, 122, 10);
+  x.quadraticCurveTo(122, 22, 108, 22);
+  x.lineTo(-106, 22);
+  x.quadraticCurveTo(-120, 22, -120, 10);
+  x.closePath();
+  x.fill();
+
+  /* windows */
+  x.fillStyle = NAVY;
+  x.beginPath();
+  x.moveTo(-46, -26); x.lineTo(-22, -50); x.lineTo(-4, -50); x.lineTo(-4, -26);
+  x.closePath(); x.fill();
+  x.beginPath();
+  x.moveTo(6, -26); x.lineTo(6, -50); x.lineTo(28, -50); x.lineTo(50, -26);
+  x.closePath(); x.fill();
+
+  lamp(-6, -68, 54, false);
+
+  /* wheels */
+  x.fillStyle = DEEP;
+  [-66, 68].forEach(function (wx) {
+    x.beginPath(); x.arc(wx, 22, 22, 0, Math.PI * 2); x.fill();
+  });
+  x.fillStyle = PAPER;
+  [-66, 68].forEach(function (wx) {
+    x.beginPath(); x.arc(wx, 22, 8, 0, Math.PI * 2); x.fill();
+  });
+  x.restore();
+}
+
+/* a traveller: geometry, not caricature */
+function traveller(cx, cy, s, walk) {
+  x.save();
+  x.translate(cx, cy);
+  x.scale(s, s);
+  const sway = Math.sin(walk * Math.PI * 2) * 5;
+
+  x.strokeStyle = PAPER;
+  x.lineWidth = 9;
+  x.lineCap = 'round';
+
+  /* legs */
+  x.beginPath();
+  x.moveTo(0, 6); x.lineTo(-10 + sway, 44);
+  x.moveTo(0, 6); x.lineTo(10 - sway, 44);
+  x.stroke();
+
+  /* body */
+  x.beginPath(); x.moveTo(0, -30); x.lineTo(0, 8); x.stroke();
+
+  /* arm to the case */
+  x.beginPath(); x.moveTo(0, -22); x.lineTo(22, -4); x.stroke();
+
+  /* head */
+  x.fillStyle = PAPER;
+  x.beginPath(); x.arc(0, -44, 13, 0, Math.PI * 2); x.fill();
+
+  /* suitcase, rolling */
+  x.fillStyle = AMBER;
+  x.beginPath(); x.roundRect(22, -2, 30, 34, 4); x.fill();
+  x.strokeStyle = PAPER; x.lineWidth = 4;
+  x.beginPath(); x.moveTo(28, -2); x.lineTo(28, -14); x.lineTo(44, -14); x.stroke();
+  x.restore();
+}
+
+/* an aircraft on approach */
+function plane(cx, cy, s, tilt) {
+  x.save();
+  x.translate(cx, cy);
+  x.rotate(tilt);
+  x.scale(s, s);
+  x.fillStyle = MIST;
+  x.beginPath();
+  x.moveTo(-60, 0);
+  x.quadraticCurveTo(-40, -9, 34, -8);
+  x.quadraticCurveTo(58, -8, 62, 0);
+  x.quadraticCurveTo(58, 8, 34, 8);
+  x.quadraticCurveTo(-40, 9, -60, 0);
+  x.closePath(); x.fill();
+  /* wings */
+  x.beginPath();
+  x.moveTo(6, -4); x.lineTo(-16, -34); x.lineTo(2, -34); x.lineTo(24, -4);
+  x.closePath(); x.fill();
+  x.beginPath();
+  x.moveTo(6, 4); x.lineTo(-16, 34); x.lineTo(2, 34); x.lineTo(24, 4);
+  x.closePath(); x.fill();
+  /* tail */
+  x.beginPath();
+  x.moveTo(-46, -2); x.lineTo(-58, -24); x.lineTo(-48, -24); x.lineTo(-34, -2);
+  x.closePath(); x.fill();
+  x.restore();
+}
+
+/* the meter, showing that a number is climbing honestly */
+function meter(cx, cy, s, value, a) {
+  x.save();
+  x.globalAlpha = a;
+  x.translate(cx, cy);
+  x.scale(s, s);
+
+  x.fillStyle = DEEP;
+  x.beginPath(); x.roundRect(-130, -60, 260, 120, 10); x.fill();
+  x.strokeStyle = 'rgba(255,255,255,.18)'; x.lineWidth = 2;
+  x.beginPath(); x.roundRect(-130, -60, 260, 120, 10); x.stroke();
+
+  x.fillStyle = '#FFB223';
+  /* 52, not 62: at two figures the fare touched the edge of the case */
+  x.font = '700 52px "IBM Plex Mono", monospace';
+  x.textAlign = 'center';
+  x.textBaseline = 'middle';
+  x.fillText('€ ' + value.toFixed(2), 0, -6);
+
+  x.fillStyle = 'rgba(255,255,255,.5)';
+  x.font = '500 20px "IBM Plex Sans", sans-serif';
+  x.fillText('TARIEF 1', 0, 38);
+  x.restore();
+}
+
+/* dashes on the road, moving with the car */
+function road(t, a) {
+  x.save();
+  x.globalAlpha = a;
+  x.strokeStyle = 'rgba(255,255,255,.28)';
+  x.lineWidth = 5;
+  x.lineCap = 'round';
+  const y = 560;
+  const shift = (t * 420) % 120;
+  for (let i = -1; i < 13; i++) {
+    const px = i * 120 - shift;
+    x.beginPath(); x.moveTo(px, y); x.lineTo(px + 60, y); x.stroke();
+  }
+  x.restore();
+}
+
+function wordmark(cx, cy, size, a) {
+  x.save();
+  x.globalAlpha = a;
+  x.fillStyle = PAPER;
+  x.font = '700 ' + size + 'px Archivo, Helvetica, Arial, sans-serif';
+  x.textAlign = 'center';
+  x.textBaseline = 'alphabetic';
+  x.fillText('TTAxi', cx, cy);
+  x.restore();
+}
+
+function line(text, cx, cy, size, a, colour, weight, family, spacing) {
+  x.save();
+  x.globalAlpha = a;
+  x.fillStyle = colour || PAPER;
+  x.font = (weight || '700') + ' ' + size + 'px ' + (family || 'Archivo, Helvetica, Arial, sans-serif');
+  if ('letterSpacing' in x && spacing) x.letterSpacing = spacing;
+  x.textAlign = 'center';
+  x.textBaseline = 'middle';
+  x.fillText(text, cx, cy);
+  x.restore();
+}
+
+/* ── the film ───────────────────────────────────────────────── */
+function draw(t) {
+  /* ground */
+  const g = x.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, DEEP);
+  g.addColorStop(1, NAVY);
+  x.fillStyle = g;
+  x.fillRect(0, 0, W, H);
+
+  /* ── 0.0–3.0  the mark ── */
+  const openIn = easeOut(span(t, .15, 1.1));
+  const openOut = span(t, 2.6, 3.1);
+  if (openIn > 0 && openOut < 1) {
+    const a = openIn * (1 - openOut);
+    const rise = lerp(40, 0, openIn) - openOut * 40;
+    alpha(a, function () {
+      lamp(W / 2, 265 + rise, lerp(60, 190, openIn), true);
+      wordmark(W / 2, 440 + rise, 128, easeOut(span(t, .55, 1.4)));
+      line('SCHIPHOL TRANSFERS', W / 2, 500 + rise, 27,
+        easeOut(span(t, .9, 1.7)), MIST, '500', '"IBM Plex Sans", sans-serif', '9px');
+    });
+  }
+
+  /* the mark parks itself top-left for the rest of the film */
+  const corner = pulse(t, 3.0, 3.5, 13.6, 14.2);
+  if (corner > 0) {
+    alpha(corner, function () {
+      lamp(96, 62, 54, false);
+      wordmark(96, 118, 42, 1);
+    });
+  }
+
+  /* ── 3.0–7.2  landing, and being met ── */
+  const sceneB = pulse(t, 3.1, 3.7, 6.9, 7.4);
+  if (sceneB > 0) {
+    const p = span(t, 3.1, 7.4);
+    alpha(sceneB, function () {
+      /* the aircraft keeps to the top band: it used to descend straight
+         through the headline */
+      plane(lerp(-160, W + 160, p), lerp(92, 178, easeInOut(p)), 1.15, .16);
+      line('We are already parked when you land.', W / 2, 300, 44, sceneB, PAPER, '700');
+    });
+    road(t, sceneB * .8);
+    alpha(sceneB, function () {
+      traveller(lerp(-120, 470, easeOut(span(t, 3.6, 6.6))), 520, 1.1, t * 1.6);
+      car(lerp(W + 220, 800, easeOut(span(t, 3.9, 6.4))), 512, 1.0);
+    });
+  }
+
+  /* ── 7.2–11.0  the meter decides ── */
+  const sceneC = pulse(t, 7.3, 7.9, 10.6, 11.1);
+  if (sceneC > 0) {
+    road(t, sceneC * .8);
+    alpha(sceneC, function () { car(lerp(240, 420, span(t, 7.3, 11.1)), 512, 1.0); });
+    const climb = span(t, 7.9, 10.4);
+    meter(920, 300, 1, 8.4 + climb * 34.6, sceneC);
+    line('The meter decides the fare.', W / 2, 150, 44, sceneC, PAPER, '700');
+    line('No surge pricing. Ever.', W / 2, 205, 26, sceneC * span(t, 8.4, 9.2),
+      MIST, '500', '"IBM Plex Sans", sans-serif');
+  }
+
+  /* ── 11.0–15.0  the ask ── */
+  const end = span(t, 11.0, 11.7);
+  if (end > 0) {
+    const e = easeOut(end);
+    if (qrImg) {
+      const s = 320;
+      const qx = 250, qy = 226 + lerp(30, 0, e);
+      alpha(e, function () {
+        x.fillStyle = PAPER;
+        x.beginPath(); x.roundRect(qx - 18, qy - 18, s + 36, s + 36, 14); x.fill();
+        x.drawImage(qrImg, qx, qy, s, s);
+      });
+    }
+    const tx = 800;
+    line('Book your next ride', tx, 292 + lerp(24, 0, e), 46, e, PAPER, '700');
+    line('taxiservicegoaktaa.nl', tx, 364 + lerp(24, 0, e), 38, easeOut(span(t, 11.3, 12.0)),
+      AMBER, '700');
+    line('+31 6 1333 1111', tx, 434 + lerp(24, 0, e), 30, easeOut(span(t, 11.6, 12.3)),
+      MIST, '500', '"IBM Plex Sans", sans-serif');
+    line('KIWA taxi permit  ·  KvK 93594909', tx, 512, 20,
+      easeOut(span(t, 11.9, 12.6)), 'rgba(255,255,255,.45)', '500',
+      '"IBM Plex Sans", sans-serif');
+  }
+
+  /* fade the last moment to the same ground the film opens on, so the
+     loop has no seam */
+  const seam = span(t, 14.6, 15.0);
+  if (seam > 0) {
+    x.save();
+    x.globalAlpha = seam;
+    x.fillStyle = DEEP;
+    x.fillRect(0, 0, W, H);
+    x.restore();
+  }
+}
+
+/* ── boot ───────────────────────────────────────────────────── */
+(async function () {
+  const img = new Image();
+  img.src = '../qr/qr-clean-plain.svg';
+  await img.decode();
+  qrImg = img;
+
+  await document.fonts.load('700 128px Archivo');
+  await document.fonts.load('500 27px "IBM Plex Sans"');
+  await document.fonts.load('700 62px "IBM Plex Mono"');
+  await document.fonts.ready;
+
+  window.drawFrame = draw;
+  window.VIDEO_READY = true;
+
+  /* preview it live while a human is looking */
+  const t0 = performance.now();
+  (function loop() {
+    if (!window.RENDERING) {
+      draw(((performance.now() - t0) / 1000) % 15);
+      requestAnimationFrame(loop);
+    }
+  }());
+}());
+</script>
+</body>
+</html>
