@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TTAxi — the whole journey, 40s</title>
+<link rel="stylesheet" href="../fonts.css">
+<style>
+  body { background: #111; margin: 0; display: grid; place-items: center; min-height: 100vh; }
+  canvas { width: 90vw; max-width: 960px; height: auto; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+/* Forty seconds: booking, the flight being watched, the meeting at
+   Arrivals, the bags, the ride, the meter, and the QR for next time.
+
+   Same discipline as the fifteen second cut — a pure function of time,
+   so every frame is reproducible and ffmpeg never sees a dropped one. */
+
+const W = 1280, H = 720;
+const NAVY = '#153A8A', DEEP = '#0E244F', AMBER = '#F5B02E', LAMP = '#D8961F';
+const PAPER = '#FFFFFF', MIST = 'rgba(255,255,255,.62)', FAINT = 'rgba(255,255,255,.38)';
+const DUR = 40;
+
+const c = document.getElementById('c');
+const x = c.getContext('2d');
+let qrImg = null;
+window.VIDEO_READY = false;
+
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const span = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+const easeOut = p => 1 - Math.pow(1 - p, 3);
+const easeInOut = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+const pulse = (t, a, b, cc, d) => clamp(span(t, a, b) - span(t, cc, d), 0, 1);
+function alpha(a, fn) { x.save(); x.globalAlpha = clamp(a, 0, 1); fn(); x.restore(); }
+
+function text(s, cx, cy, size, a, colour, weight, family, spacing, align) {
+  x.save();
+  x.globalAlpha = clamp(a, 0, 1);
+  x.fillStyle = colour || PAPER;
+  x.font = (weight || '700') + ' ' + size + 'px ' + (family || 'Archivo, Helvetica, Arial, sans-serif');
+  if ('letterSpacing' in x) x.letterSpacing = spacing || '0px';
+  x.textAlign = align || 'center';
+  x.textBaseline = 'middle';
+  x.fillText(s, cx, cy);
+  x.restore();
+}
+
+/* headline that rises into place and leaves the same way */
+function headline(s, t, inA, outB, y, sub) {
+  const a = pulse(t, inA, inA + .55, outB - .45, outB);
+  if (a <= 0) return;
+  const rise = lerp(22, 0, easeOut(span(t, inA, inA + .7)));
+  text(s, W / 2, (y || 150) + rise, 44, a, PAPER, '700');
+  if (sub) text(sub, W / 2, (y || 150) + 52 + rise, 25, a * span(t, inA + .4, inA + 1.1),
+    MIST, '500', '"IBM Plex Sans", sans-serif');
+}
+
+/* ── pieces ─────────────────────────────────────────────────── */
+function lamp(cx, cy, w, glow) {
+  const h = w * 0.52;
+  x.fillStyle = AMBER;
+  x.beginPath();
+  x.moveTo(cx - w / 2, cy + h / 2);
+  x.lineTo(cx - w / 2 + w * 0.13, cy - h / 2);
+  x.lineTo(cx + w / 2 - w * 0.13, cy - h / 2);
+  x.lineTo(cx + w / 2, cy + h / 2);
+  x.closePath();
+  if (glow) { x.shadowColor = 'rgba(245,176,46,.75)'; x.shadowBlur = w * 0.5; }
+  x.fill();
+  x.shadowBlur = 0;
+  x.fillStyle = LAMP;
+  x.beginPath();
+  x.roundRect(cx - w / 2 - w * 0.04, cy + h / 2 - h * 0.14, w * 1.08, h * 0.3, h * 0.15);
+  x.fill();
+}
+
+function car(cx, cy, s, bootOpen) {
+  x.save(); x.translate(cx, cy); x.scale(s, s);
+  x.fillStyle = PAPER;
+  x.beginPath();
+  x.moveTo(-120, 10);
+  x.quadraticCurveTo(-118, -18, -86, -22);
+  x.lineTo(-52, -50);
+  x.quadraticCurveTo(-44, -58, -28, -58);
+  x.lineTo(30, -58);
+  x.quadraticCurveTo(46, -58, 56, -48);
+  x.lineTo(86, -22);
+  x.quadraticCurveTo(120, -18, 122, 10);
+  x.quadraticCurveTo(122, 22, 108, 22);
+  x.lineTo(-106, 22);
+  x.quadraticCurveTo(-120, 22, -120, 10);
+  x.closePath(); x.fill();
+
+  x.fillStyle = NAVY;
+  x.beginPath(); x.moveTo(-46, -26); x.lineTo(-22, -50); x.lineTo(-4, -50); x.lineTo(-4, -26);
+  x.closePath(); x.fill();
+  x.beginPath(); x.moveTo(6, -26); x.lineTo(6, -50); x.lineTo(28, -50); x.lineTo(50, -26);
+  x.closePath(); x.fill();
+
+  /* the boot lid lifts when the bags go in */
+  if (bootOpen > 0) {
+    x.save();
+    x.translate(-86, -22);
+    x.rotate(-bootOpen * 0.9);
+    x.fillStyle = PAPER;
+    x.beginPath(); x.roundRect(-34, -8, 40, 12, 5); x.fill();
+    x.restore();
+  }
+
+  lamp(-6, -68, 54, false);
+  x.fillStyle = DEEP;
+  [-66, 68].forEach(w => { x.beginPath(); x.arc(w, 22, 22, 0, Math.PI * 2); x.fill(); });
+  x.fillStyle = PAPER;
+  [-66, 68].forEach(w => { x.beginPath(); x.arc(w, 22, 8, 0, Math.PI * 2); x.fill(); });
+  x.restore();
+}
+
+function figure(cx, cy, s, walk, opts) {
+  const o = opts || {};
+  x.save(); x.translate(cx, cy); x.scale(s, s);
+  const sway = Math.sin(walk * Math.PI * 2) * (o.still ? 0 : 5);
+
+  x.strokeStyle = o.colour || PAPER;
+  x.lineWidth = 9; x.lineCap = 'round';
+  x.beginPath();
+  x.moveTo(0, 6); x.lineTo(-10 + sway, 44);
+  x.moveTo(0, 6); x.lineTo(10 - sway, 44);
+  x.stroke();
+  x.beginPath(); x.moveTo(0, -30); x.lineTo(0, 8); x.stroke();
+
+  if (o.arm !== false) {
+    x.beginPath(); x.moveTo(0, -22); x.lineTo(22 * (o.armDir || 1), o.armUp ? -40 : -4); x.stroke();
+  }
+  x.fillStyle = o.colour || PAPER;
+  x.beginPath(); x.arc(0, -44, 13, 0, Math.PI * 2); x.fill();
+
+  /* a name card, the thing every passenger looks for */
+  if (o.card) {
+    x.save();
+    x.translate(26, -34);
+    x.fillStyle = PAPER;
+    x.beginPath(); x.roundRect(0, -20, 74, 46, 4); x.fill();
+    x.fillStyle = NAVY;
+    x.font = '700 15px Archivo, sans-serif';
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillText(o.card, 37, 3);
+    x.restore();
+  }
+
+  if (o.bag) {
+    x.fillStyle = AMBER;
+    x.beginPath(); x.roundRect(22, -2, 30, 34, 4); x.fill();
+    x.strokeStyle = o.colour || PAPER; x.lineWidth = 4;
+    x.beginPath(); x.moveTo(28, -2); x.lineTo(28, -14); x.lineTo(44, -14); x.stroke();
+  }
+  x.restore();
+}
+
+function suitcase(cx, cy, s, tilt) {
+  x.save(); x.translate(cx, cy); x.rotate(tilt || 0); x.scale(s, s);
+  x.fillStyle = AMBER;
+  x.beginPath(); x.roundRect(-15, -17, 30, 34, 4); x.fill();
+  x.strokeStyle = PAPER; x.lineWidth = 4;
+  x.beginPath(); x.moveTo(-9, -17); x.lineTo(-9, -29); x.lineTo(7, -29); x.stroke();
+  x.restore();
+}
+
+function plane(cx, cy, s, tilt, a) {
+  x.save(); x.globalAlpha = clamp(a === undefined ? 1 : a, 0, 1);
+  x.translate(cx, cy); x.rotate(tilt); x.scale(s, s);
+  x.fillStyle = MIST;
+  x.beginPath();
+  x.moveTo(-60, 0);
+  x.quadraticCurveTo(-40, -9, 34, -8);
+  x.quadraticCurveTo(58, -8, 62, 0);
+  x.quadraticCurveTo(58, 8, 34, 8);
+  x.quadraticCurveTo(-40, 9, -60, 0);
+  x.closePath(); x.fill();
+  x.beginPath(); x.moveTo(6, -4); x.lineTo(-16, -34); x.lineTo(2, -34); x.lineTo(24, -4);
+  x.closePath(); x.fill();
+  x.beginPath(); x.moveTo(6, 4); x.lineTo(-16, 34); x.lineTo(2, 34); x.lineTo(24, 4);
+  x.closePath(); x.fill();
+  x.beginPath(); x.moveTo(-46, -2); x.lineTo(-58, -24); x.lineTo(-48, -24); x.lineTo(-34, -2);
+  x.closePath(); x.fill();
+  x.restore();
+}
+
+/* the phone, booking itself */
+function phone(cx, cy, s, p, a) {
+  x.save(); x.globalAlpha = a; x.translate(cx, cy); x.scale(s, s);
+
+  x.fillStyle = '#0A1730';
+  x.beginPath(); x.roundRect(-115, -215, 230, 430, 30); x.fill();
+  x.strokeStyle = 'rgba(255,255,255,.22)'; x.lineWidth = 3;
+  x.beginPath(); x.roundRect(-115, -215, 230, 430, 30); x.stroke();
+
+  x.fillStyle = PAPER;
+  x.beginPath(); x.roundRect(-100, -190, 200, 380, 16); x.fill();
+
+  /* brand bar */
+  x.fillStyle = NAVY;
+  x.beginPath(); x.roundRect(-100, -190, 200, 42, { tl: 16, tr: 16, br: 0, bl: 0 }); x.fill();
+  x.fillStyle = PAPER;
+  x.font = '700 19px Archivo, sans-serif';
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillText('TTAxi', 0, -168);
+
+  /* three fields filling in, one after another */
+  const rows = [
+    ['Pick-up', 'Schiphol, Arrivals 4'],
+    ['Destination', 'Amsterdam Centraal'],
+    ['When', 'Today  ·  14:35']
+  ];
+  rows.forEach(function (r, i) {
+    const y = -120 + i * 74;
+    const fill = clamp((p - i * 0.22) / 0.2, 0, 1);
+    x.fillStyle = '#EBEFF3';
+    x.beginPath(); x.roundRect(-82, y, 164, 52, 6); x.fill();
+    x.fillStyle = '#55606D';
+    x.font = '500 12px "IBM Plex Sans", sans-serif';
+    x.textAlign = 'left';
+    x.fillText(r[0], -72, y + 15);
+    x.fillStyle = '#14181D';
+    x.font = '600 14px "IBM Plex Sans", sans-serif';
+    /* typing on, letter by letter */
+    x.fillText(r[1].slice(0, Math.round(r[1].length * fill)), -72, y + 36);
+  });
+
+  /* the button, and the tap */
+  const tap = clamp((p - 0.74) / 0.12, 0, 1);
+  x.fillStyle = tap > 0 ? '#0E244F' : NAVY;
+  x.beginPath(); x.roundRect(-82, 118, 164, 46, 6); x.fill();
+  x.fillStyle = PAPER;
+  x.font = '700 15px Archivo, sans-serif';
+  x.textAlign = 'center';
+  x.fillText('Book a taxi', 0, 141);
+
+  if (tap > 0) {
+    x.strokeStyle = 'rgba(245,176,46,' + (1 - tap) + ')';
+    x.lineWidth = 4;
+    x.beginPath(); x.arc(0, 141, 20 + tap * 46, 0, Math.PI * 2); x.stroke();
+  }
+  x.restore();
+}
+
+/* the flight, being watched */
+function flightStrip(cx, cy, s, landed, a) {
+  x.save(); x.globalAlpha = a; x.translate(cx, cy); x.scale(s, s);
+  x.fillStyle = DEEP;
+  x.beginPath(); x.roundRect(-190, -52, 380, 104, 10); x.fill();
+  x.strokeStyle = 'rgba(255,255,255,.18)'; x.lineWidth = 2;
+  x.beginPath(); x.roundRect(-190, -52, 380, 104, 10); x.stroke();
+
+  x.textAlign = 'left'; x.textBaseline = 'middle';
+  x.fillStyle = MIST;
+  x.font = '500 17px "IBM Plex Sans", sans-serif';
+  x.fillText('FLIGHT', -160, -24);
+  x.fillStyle = PAPER;
+  x.font = '700 34px "IBM Plex Mono", monospace';
+  x.fillText('KL 1421', -160, 12);
+
+  x.textAlign = 'right';
+  x.fillStyle = MIST;
+  x.font = '500 17px "IBM Plex Sans", sans-serif';
+  x.fillText('PICK-UP', 160, -24);
+  x.fillStyle = landed > .5 ? '#5BD08A' : '#FFB223';
+  x.font = '700 34px "IBM Plex Mono", monospace';
+  x.fillText(landed > .5 ? '14:55' : '14:20', 160, 12);
+
+  x.textAlign = 'center';
+  x.fillStyle = landed > .5 ? '#5BD08A' : MIST;
+  x.font = '600 16px "IBM Plex Sans", sans-serif';
+  x.fillText(landed > .5 ? 'LANDED  ·  35 MIN LATE  ·  PICK-UP MOVED' : 'TRACKING', 0, 38);
+  x.restore();
+}
+
+/* the exits at Schiphol */
+function arrivalsSign(cx, cy, s, a, lit) {
+  x.save(); x.globalAlpha = a; x.translate(cx, cy); x.scale(s, s);
+  x.fillStyle = DEEP;
+  x.beginPath(); x.roundRect(-230, -46, 460, 92, 8); x.fill();
+  x.fillStyle = MIST;
+  x.font = '700 26px Archivo, sans-serif';
+  x.textAlign = 'left'; x.textBaseline = 'middle';
+  x.fillText('ARRIVALS', -206, 0);
+  ['1', '2', '3', '4'].forEach(function (n, i) {
+    const bx = -32 + i * 62;
+    const on = lit === i;
+    x.fillStyle = on ? AMBER : 'rgba(255,255,255,.13)';
+    x.beginPath(); x.roundRect(bx, -26, 50, 52, 6); x.fill();
+    x.fillStyle = on ? '#3A2A05' : MIST;
+    x.font = '700 27px Archivo, sans-serif';
+    x.textAlign = 'center';
+    x.fillText(n, bx + 25, 1);
+  });
+  x.restore();
+}
+
+function road(t, a, speed) {
+  x.save(); x.globalAlpha = a;
+  x.strokeStyle = 'rgba(255,255,255,.28)';
+  x.lineWidth = 5; x.lineCap = 'round';
+  const shift = (t * (speed || 420)) % 120;
+  for (let i = -1; i < 13; i++) {
+    x.beginPath(); x.moveTo(i * 120 - shift, 590); x.lineTo(i * 120 - shift + 60, 590); x.stroke();
+  }
+  x.restore();
+}
+
+function meter(cx, cy, s, value, a) {
+  x.save(); x.globalAlpha = a; x.translate(cx, cy); x.scale(s, s);
+  x.fillStyle = DEEP;
+  x.beginPath(); x.roundRect(-130, -60, 260, 120, 10); x.fill();
+  x.strokeStyle = 'rgba(255,255,255,.18)'; x.lineWidth = 2;
+  x.beginPath(); x.roundRect(-130, -60, 260, 120, 10); x.stroke();
+  x.fillStyle = '#FFB223';
+  x.font = '700 52px "IBM Plex Mono", monospace';
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillText('€ ' + value.toFixed(2), 0, -6);
+  x.fillStyle = 'rgba(255,255,255,.5)';
+  x.font = '500 20px "IBM Plex Sans", sans-serif';
+  x.fillText('TARIEF 1', 0, 38);
+  x.restore();
+}
+
+/* ── the film ───────────────────────────────────────────────── */
+function draw(t) {
+  const g = x.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, DEEP); g.addColorStop(1, NAVY);
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+
+  /* 0.0–3.2  the mark */
+  const openIn = easeOut(span(t, .15, 1.1));
+  const openOut = span(t, 2.7, 3.2);
+  if (openIn > 0 && openOut < 1) {
+    const a = openIn * (1 - openOut);
+    const rise = lerp(40, 0, openIn) - openOut * 40;
+    alpha(a, function () {
+      lamp(W / 2, 265 + rise, lerp(60, 190, openIn), true);
+      text('TTAxi', W / 2, 405 + rise, 128, easeOut(span(t, .55, 1.4)), PAPER, '700');
+      text('SCHIPHOL TRANSFERS', W / 2, 500 + rise, 27, easeOut(span(t, .9, 1.7)),
+        MIST, '500', '"IBM Plex Sans", sans-serif', '9px');
+    });
+  }
+
+  /* the mark, parked in the corner for the rest */
+  const corner = pulse(t, 3.1, 3.6, 38.6, 39.2);
+  if (corner > 0) alpha(corner, function () {
+    lamp(96, 62, 54, false);
+    text('TTAxi', 96, 118, 42, 1, PAPER, '700');
+  });
+
+  /* 3.2–9.0  booking it */
+  const s1 = pulse(t, 3.3, 3.9, 8.5, 9.0);
+  if (s1 > 0) {
+    headline('Book it in under a minute.', t, 3.5, 8.9, 148,
+      'Three lines. No account, no app.');
+    phone(W / 2, 440, 0.96, span(t, 4.0, 8.2), s1);
+  }
+
+  /* 9.0–15.0  the flight is watched */
+  const s2 = pulse(t, 9.0, 9.6, 14.5, 15.0);
+  if (s2 > 0) {
+    const landed = span(t, 11.8, 12.0);
+    headline('Late flight? The car waits.', t, 9.2, 14.9, 148,
+      'We track the flight number you gave us.');
+    plane(lerp(-140, W / 2, easeOut(span(t, 9.3, 12.0))),
+      lerp(300, 430, easeInOut(span(t, 9.3, 12.0))), 1.15, .2, s2 * (1 - landed));
+    flightStrip(W / 2, 470, 1, landed, s2 * span(t, 10.2, 10.9));
+  }
+
+  /* 15.0–21.5  met at the exit you chose */
+  const s3 = pulse(t, 15.0, 15.6, 21.0, 21.5);
+  if (s3 > 0) {
+    headline('Your driver is standing there.', t, 15.2, 21.4, 130,
+      'At the exit you picked, holding your name.');
+    alpha(s3, function () {
+      arrivalsSign(W / 2, 300, 1, 1, 3);
+      /* the passenger walks to the driver, who is already waiting */
+      figure(lerp(120, 520, easeOut(span(t, 15.8, 19.6))), 540, 1.15,
+        t * 1.6, { bag: true });
+      figure(700, 540, 1.15, 0, { still: true, card: 'DE VRIES', armDir: 1 });
+    });
+  }
+
+  /* 21.5–28.0  bags in, door shut, away */
+  const s4 = pulse(t, 21.5, 22.1, 27.5, 28.0);
+  if (s4 > 0) {
+    headline('We take the bags.', t, 21.7, 27.9, 130,
+      'Door to door, not kerb to kerb.');
+    const load = span(t, 22.4, 24.4);
+    const board = span(t, 24.6, 25.6);
+    const away = easeInOut(span(t, 25.8, 27.9));
+    road(t, s4 * .55, 260);
+    alpha(s4, function () {
+      const cx = lerp(600, W + 320, away);
+
+      /* Drawn before the car, so both the case and the passenger pass
+         behind it and are simply gone: a lid hinging open at this size
+         read as a glitch, and this reads as loading. */
+      if (away === 0) {
+        /* lands inside the car's outline, not under it, so being drawn
+           behind the body actually hides it */
+        suitcase(lerp(cx - 262, cx - 104, easeInOut(load)),
+          lerp(556, 498, load) - Math.sin(load * Math.PI) * 74, 1.0, load * 1.1);
+        figure(lerp(cx - 340, cx - 132, easeInOut(board)), 540, 1.15,
+          t * 1.5, { bag: false, armDir: 1 });
+      }
+
+      car(cx, 512, 1.0, 0);
+    });
+  }
+
+  /* 28.0–34.0  what it costs */
+  const s5 = pulse(t, 28.0, 28.6, 33.5, 34.0);
+  if (s5 > 0) {
+    road(t, s5 * .8);
+    headline('The meter decides the fare.', t, 28.2, 33.9, 148,
+      'Within the national maximum tariff. No surge pricing.');
+    alpha(s5, function () { car(lerp(230, 430, span(t, 28.0, 34.0)), 512, 1.0, 0); });
+    meter(920, 330, 1, 8.4 + span(t, 28.6, 33.2) * 34.6, s5);
+  }
+
+  /* 34.0–40.0  the ask */
+  const end = span(t, 34.0, 34.8);
+  if (end > 0) {
+    const e = easeOut(end);
+    if (qrImg) {
+      const s = 320, qx = 250, qy = 226 + lerp(30, 0, e);
+      alpha(e, function () {
+        x.fillStyle = PAPER;
+        x.beginPath(); x.roundRect(qx - 18, qy - 18, s + 36, s + 36, 14); x.fill();
+        x.drawImage(qrImg, qx, qy, s, s);
+      });
+    }
+    const tx = 800;
+    text('Book your next ride', tx, 292 + lerp(24, 0, e), 46, e, PAPER, '700');
+    text('taxiservicegoaktaa.nl', tx, 364 + lerp(24, 0, e), 38,
+      easeOut(span(t, 34.3, 35.0)), AMBER, '700');
+    text('+31 6 1333 1111', tx, 434 + lerp(24, 0, e), 30,
+      easeOut(span(t, 34.6, 35.3)), MIST, '500', '"IBM Plex Sans", sans-serif');
+    text('KIWA taxi permit  ·  KvK 93594909', tx, 512, 20,
+      easeOut(span(t, 34.9, 35.6)), FAINT, '500', '"IBM Plex Sans", sans-serif');
+  }
+
+  /* seamless loop */
+  const seam = span(t, DUR - .4, DUR);
+  if (seam > 0) {
+    x.save(); x.globalAlpha = seam; x.fillStyle = DEEP;
+    x.fillRect(0, 0, W, H); x.restore();
+  }
+}
+
+(async function () {
+  const img = new Image();
+  img.src = '../qr/qr-clean-plain.svg';
+  await img.decode();
+  qrImg = img;
+
+  await document.fonts.load('700 128px Archivo');
+  await document.fonts.load('500 27px "IBM Plex Sans"');
+  await document.fonts.load('700 34px "IBM Plex Mono"');
+  await document.fonts.ready;
+
+  window.drawFrame = draw;
+  window.DURATION = DUR;
+  window.VIDEO_READY = true;
+
+  const t0 = performance.now();
+  (function loop() {
+    if (!window.RENDERING) {
+      draw(((performance.now() - t0) / 1000) % DUR);
+      requestAnimationFrame(loop);
+    }
+  }());
+}());
+</script>
+</body>
+</html>
