@@ -377,8 +377,14 @@ function draw(t) {
   if (s3 > 0) {
     headline('Your driver is standing there.', t, 15.2, 21.4, 130,
       'At the exit you picked, holding your name.');
+    /* Run along all four exits before settling on the chosen one: the
+       point of the scene is that the passenger picks the door, and a
+       single lit number never said that. */
+    const scan = span(t, 15.7, 18.1);
+    const lit = Math.min(3, Math.floor(scan * 4));   /* one pass, 0.6s each */
+
     alpha(s3, function () {
-      arrivalsSign(W / 2, 300, 1, 1, 3);
+      arrivalsSign(W / 2, 300, 1, 1, lit);
       /* the passenger walks to the driver, who is already waiting */
       figure(lerp(120, 520, easeOut(span(t, 15.8, 19.6))), 540, 1.15,
         t * 1.6, { bag: true });
