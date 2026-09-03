@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Review card</title>
+<link rel="stylesheet" href="../fonts.css">
+<style>body{background:#333;margin:0;display:grid;place-items:center;min-height:100vh}
+canvas{width:min(90vw,520px);height:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* The card that sits in the back seat. Drawn on canvas rather than
+   written as SVG text so it uses the site's own fonts, and rendered at
+   a whole number of pixels per QR module so the code stays crisp —
+   a soft QR is a QR nobody scans.
+
+   Three languages, because the passenger who just got out of the car
+   might be reading any of them. */
+window.CARD_READY = false;
+
+(async function () {
+  const img = new Image();
+  img.src = 'qr-review-plain.svg';
+  await img.decode();
+  await document.fonts.load('700 64px Archivo');
+  await document.fonts.load('500 34px "IBM Plex Sans"');
+  await document.fonts.ready;
+
+  /* 37 modules plus a 2-module quiet zone each side = 41 across, which
+     is what the SVG actually measures. Drawing it at 37 x 24 squeezed
+     41 modules into 888px, put every edge on a fraction, and the code
+     stopped reading at full size. */
+  const Q = 41 * 20;                 /* 820 */
+  const W = 1240, H = 1748;          /* A6 at 300dpi, portrait */
+  const c = document.getElementById('c');
+  c.width = W; c.height = H;
+  const x = c.getContext('2d');
+
+  const NAVY = '#153A8A', DEEP = '#0E244F', AMBER = '#F5B02E', LAMP = '#D8961F';
+
+  const g = x.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, DEEP); g.addColorStop(1, NAVY);
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+
+  /* roof light */
+  (function lamp(cx, cy, w) {
+    const h = w * 0.52;
+    x.fillStyle = AMBER;
+    x.beginPath();
+    x.moveTo(cx - w / 2, cy + h / 2);
+    x.lineTo(cx - w / 2 + w * 0.13, cy - h / 2);
+    x.lineTo(cx + w / 2 - w * 0.13, cy - h / 2);
+    x.lineTo(cx + w / 2, cy + h / 2);
+    x.closePath(); x.fill();
+    x.fillStyle = LAMP;
+    x.beginPath();
+    x.roundRect(cx - w / 2 - w * 0.04, cy + h / 2 - h * 0.14, w * 1.08, h * 0.3, h * 0.15);
+    x.fill();
+  }(W / 2, 150, 150));
+
+  x.textAlign = 'center';
+
+  x.fillStyle = '#FFFFFF';
+  x.font = '700 76px Archivo, Helvetica, Arial, sans-serif';
+  x.textBaseline = 'alphabetic';
+  x.fillText('TTAxi', W / 2, 300);
+
+  /* the ask, in the three languages the site speaks */
+  x.font = '700 62px Archivo, Helvetica, Arial, sans-serif';
+  x.fillText('How was the ride?', W / 2, 430);
+
+  x.fillStyle = 'rgba(255,255,255,.72)';
+  x.font = '500 44px "IBM Plex Sans", Helvetica, Arial, sans-serif';
+  x.fillText('Hoe was de rit?', W / 2, 500);
+  x.fillText('كيف كانت الرحلة؟', W / 2, 570);
+
+  /* the code, on white so the camera has maximum contrast */
+  const qx = (W - Q) / 2, qy = 630;
+  x.fillStyle = '#FFFFFF';
+  x.beginPath(); x.roundRect(qx - 26, qy - 26, Q + 52, Q + 52, 18); x.fill();
+  x.imageSmoothingEnabled = false;
+  x.drawImage(img, qx, qy, Q, Q);
+
+  /* what the code does */
+  x.fillStyle = '#FFFFFF';
+  x.font = '700 50px Archivo, Helvetica, Arial, sans-serif';
+  x.fillText('Scan to leave a Google review', W / 2, qy + Q + 118);
+
+  x.fillStyle = 'rgba(255,255,255,.62)';
+  x.font = '500 36px "IBM Plex Sans", Helvetica, Arial, sans-serif';
+  x.fillText('It takes half a minute, and it helps a lot.', W / 2, qy + Q + 176);
+
+  /* who to tell instead, if it went badly — better in our inbox than
+     on the listing */
+  x.fillStyle = 'rgba(255,255,255,.5)';
+  x.font = '500 32px "IBM Plex Sans", Helvetica, Arial, sans-serif';
+  x.fillText('Something not right? Call +31 6 1333 1111', W / 2, H - 88);
+  x.fillText('taxiservicegoaktaa.nl', W / 2, H - 40);
+
+  window.CARD_READY = true;
+}());
+</script>
+</body>
+</html>

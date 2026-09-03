@@ -277,7 +277,7 @@ pushy, and they have nothing to say yet.
 Only send it to people the ride actually went well for. A blanket send
 collects the complaints too, and on Google those are permanent.
 
-Replace `[REVIEW LINK]` with the Google review link from your Business
+Replace `https://g.page/r/CfMrc8M9BhvcEBM/review` with the Google review link from your Business
 Profile — **Ask for reviews** gives you a short one like
 `https://g.page/r/XXXXXXXX/review`. Until the profile is verified there
 is no link, and this template cannot be used.
@@ -300,7 +300,7 @@ If you have half a minute, a review on Google would genuinely help.
 For a small company like ours, a few honest words from real
 passengers matter more than any advertising we could buy.
 
-  [REVIEW LINK]
+  https://g.page/r/CfMrc8M9BhvcEBM/review
 
 If anything was not right, reply to this email instead and tell me.
 I would rather hear it from you than read it later.
@@ -326,7 +326,7 @@ Heb je een halve minuut? Een review op Google helpt ons echt.
 Voor een klein bedrijf als het onze wegen een paar eerlijke woorden
 van echte passagiers zwaarder dan welke advertentie ook.
 
-  [REVIEW LINK]
+  https://g.page/r/CfMrc8M9BhvcEBM/review
 
 Ging er iets niet goed? Antwoord dan op deze mail en laat het me
 weten. Ik hoor het liever van jou dan dat ik het later ergens lees.
@@ -352,7 +352,7 @@ Taxi Service Go Aktaa
 فبضع كلمات صادقة من ركّاب حقيقيين تعني لشركة صغيرة مثلنا أكثر
 من أي إعلان نشتريه.
 
-  [REVIEW LINK]
+  https://g.page/r/CfMrc8M9BhvcEBM/review
 
 وإن كان هناك ما لم يكن على ما يرام، فالرجاء الرد على هذا البريد
 وإخباري. أفضّل أن أسمعه منك على أن أقرأه لاحقاً في مكان آخر.

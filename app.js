@@ -822,7 +822,7 @@
 
      Empty until the profile is verified, and the panel stays hidden
      until then rather than showing a button that goes nowhere. */
-  var REVIEW = { url: '' };
+  var REVIEW = { url: 'https://g.page/r/CfMrc8M9BhvcEBM/review' };
 
   (function askForReviews() {
     var box = document.getElementById('askRev');
