@@ -889,40 +889,6 @@
     });
   }());
 
-  /* ── Sections arrive rather than appear ─────────────────────
-     Quiet on purpose: a short rise and fade, once, never repeated.
-     The hiding is applied by script, so if the script never runs the
-     page is simply all visible — content is never hidden by CSS alone.
-     Anyone who asks for reduced motion gets none of it. */
-  (function reveal() {
-    var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (calm || !("IntersectionObserver" in window)) return;
-
-    var targets = document.querySelectorAll(
-      ".svcs__title, .svc, .board__title, .board__panel, .fare__title, .state," +
-      " .reviews__title, .point, .meet__copy > *, .plaza, .legal__title, .legal__item," +
-      " .gbadge__row"
-    );
-    if (!targets.length) return;
-
-    document.documentElement.classList.add("reveal-on");
-    [].forEach.call(targets, function (el, i) {
-      el.classList.add("reveal");
-      /* neighbours follow each other in, but the stagger is capped so a
-         long row never leaves the last card lagging behind the scroll */
-      el.style.setProperty("--reveal-delay", Math.min(i % 4, 3) * 70 + "ms");
-    });
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-in");
-        io.unobserve(entry.target);
-      });
-    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 });
-
-    [].forEach.call(targets, function (el) { io.observe(el); });
-  }());
 
   /* Most of our rides start at the airport, so start there. */
   if (!pickup.value) pickup.value = SCHIPHOL_IN;

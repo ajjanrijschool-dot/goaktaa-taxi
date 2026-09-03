@@ -1189,9 +1189,9 @@ html { font-size: 106.25%; }                 /* 17px base, all rem sizes follow 
    script that reveals it is running. No script, no hiding. */
 .reveal-on .reveal {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity .55s cubic-bezier(.22, .61, .36, 1) var(--reveal-delay, 0ms),
-              transform .55s cubic-bezier(.22, .61, .36, 1) var(--reveal-delay, 0ms);
+  transform: translateY(26px);
+  transition: opacity .7s cubic-bezier(.22, .61, .36, 1) var(--reveal-delay, 0ms),
+              transform .7s cubic-bezier(.22, .61, .36, 1) var(--reveal-delay, 0ms);
 }
 .reveal-on .reveal.is-in {
   opacity: 1;
