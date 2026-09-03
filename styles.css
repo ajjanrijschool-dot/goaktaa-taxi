@@ -774,8 +774,7 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
     display: grid; grid-template-columns: auto 1fr; gap: .625rem;
     padding: .625rem .875rem calc(.625rem + env(safe-area-inset-bottom));
-    background: rgba(255, 255, 255, .94);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, .97);
     border-top: 1px solid var(--line);
   }
   .btn--dock { padding: .9375rem 1.25rem; }
@@ -1193,12 +1192,10 @@ html { font-size: 106.25%; }                 /* 17px base, all rem sizes follow 
   transform: translateY(14px);
   transition: opacity .55s cubic-bezier(.22, .61, .36, 1) var(--reveal-delay, 0ms),
               transform .55s cubic-bezier(.22, .61, .36, 1) var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
 }
 .reveal-on .reveal.is-in {
   opacity: 1;
   transform: none;
-  will-change: auto;
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal-on .reveal { opacity: 1; transform: none; transition: none; }
@@ -1235,11 +1232,18 @@ html { font-size: 106.25%; }                 /* 17px base, all rem sizes follow 
    The page was one flat grey throughout. This is a very quiet vertical
    lift behind the light sections — enough that the white cards sit on
    something, not enough to read as a gradient. */
-body {
-  background:
-    radial-gradient(1200px 600px at 50% -10%, #F4F7FA 0%, rgba(244, 247, 250, 0) 60%),
-    var(--concrete);
-  background-attachment: fixed;
+body { background: var(--concrete); }
+
+/* The lift used to be a fixed background image on <body>, which forced a
+   full repaint of the background on every scrolled frame. As its own
+   fixed layer it is composited instead: same picture, none of the work. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(1200px 600px at 50% -10%, #F4F7FA 0%, rgba(244, 247, 250, 0) 60%);
 }
 .svcs, .reviews { background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 40%); }
 
@@ -1251,7 +1255,7 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .pane { animation: none; }
-  body { background-attachment: scroll; }
+  body::before { position: absolute; }
 }
 
 /* ── Booking fee ───────────────────────────────────────────
