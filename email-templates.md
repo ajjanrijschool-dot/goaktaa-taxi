@@ -268,6 +268,113 @@ in `app.js`, and this autoresponse.
 
 ---
 
+## Asking for a review, after the ride
+
+Send this the evening of the ride, or the morning after. Not sooner —
+a review request that arrives before the passenger is home reads as
+pushy, and they have nothing to say yet.
+
+Only send it to people the ride actually went well for. A blanket send
+collects the complaints too, and on Google those are permanent.
+
+Replace `[REVIEW LINK]` with the Google review link from your Business
+Profile — **Ask for reviews** gives you a short one like
+`https://g.page/r/XXXXXXXX/review`. Until the profile is verified there
+is no link, and this template cannot be used.
+
+Keep it short. Every extra sentence costs you replies.
+
+---
+
+### English
+
+**Subject:** Thanks for riding with us
+
+```
+Hello [NAME],
+
+Thanks for choosing us for your ride [TO / FROM] Schiphol yesterday.
+I hope it was an easy one.
+
+If you have half a minute, a review on Google would genuinely help.
+For a small company like ours, a few honest words from real
+passengers matter more than any advertising we could buy.
+
+  [REVIEW LINK]
+
+If anything was not right, reply to this email instead and tell me.
+I would rather hear it from you than read it later.
+
+Thanks,
+Taxi Service Go Aktaa
++31 6 1333 1111
+```
+
+---
+
+### Nederlands
+
+**Subject:** Bedankt voor je rit
+
+```
+Hallo [NAAM],
+
+Bedankt dat je gisteren met ons meereed [NAAR / VAN] Schiphol.
+Ik hoop dat het een prettige rit was.
+
+Heb je een halve minuut? Een review op Google helpt ons echt.
+Voor een klein bedrijf als het onze wegen een paar eerlijke woorden
+van echte passagiers zwaarder dan welke advertentie ook.
+
+  [REVIEW LINK]
+
+Ging er iets niet goed? Antwoord dan op deze mail en laat het me
+weten. Ik hoor het liever van jou dan dat ik het later ergens lees.
+
+Bedankt,
+Taxi Service Go Aktaa
++31 6 1333 1111
+```
+
+---
+
+### العربية
+
+**Subject:** شكراً لاختيارك رحلتنا
+
+```
+مرحباً [الاسم]،
+
+شكراً لاختيارك رحلتنا أمس [إلى / من] مطار سخيبول. أرجو أن تكون
+قد كانت رحلة مريحة.
+
+إن كان لديك نصف دقيقة، فإن تقييماً على جوجل سيساعدنا فعلاً.
+فبضع كلمات صادقة من ركّاب حقيقيين تعني لشركة صغيرة مثلنا أكثر
+من أي إعلان نشتريه.
+
+  [REVIEW LINK]
+
+وإن كان هناك ما لم يكن على ما يرام، فالرجاء الرد على هذا البريد
+وإخباري. أفضّل أن أسمعه منك على أن أقرأه لاحقاً في مكان آخر.
+
+شكراً لك،
+Taxi Service Go Aktaa
+‎+31 6 1333 1111
+```
+
+---
+
+**The line about complaints is deliberate.** Offering an unhappy
+passenger a private reply first catches the one-star review before it is
+written, and costs you nothing when the ride went well.
+
+**Better than any of this: the card in the back seat.** A passenger with
+their phone already in their hand, five minutes from home, converts far
+better than an inbox two days later. Ask for the QR card once the
+profile is verified.
+
+---
+
 ## Saving these in Gmail
 
 1. Gmail → gear icon → **See all settings** → **Advanced** → set
