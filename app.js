@@ -813,7 +813,11 @@
        url:    your Google profile or review link
        rating: what Google actually shows, e.g. '4.8'
        count:  how many reviews, e.g. '37'                       */
-  var GOOGLE = { url: '', rating: '', count: '' };
+  var GOOGLE = {
+    url: 'https://g.page/r/CfMrc8M9BhvcEBM',
+    rating: '5.0',
+    count: '12'
+  };
 
   /* ── Asking for a review ──────────────────────────────────────
      Google gives every verified business a short link that opens the
@@ -833,7 +837,7 @@
     box.hidden = false;
   }());
 
-  (function googleBadge() {
+  function paintGoogleBadge() {
     var el = document.getElementById('gBadge');
     if (!el) return;
     if (!GOOGLE.url || !GOOGLE.rating || !GOOGLE.count) return;   /* stays hidden */
@@ -847,7 +851,13 @@
       t('reviews.count').replace('{n}', GOOGLE.count);
     el.href = GOOGLE.url;
     el.hidden = false;
-  }());
+  }
+
+  paintGoogleBadge();
+  /* The count is the one part of the badge made of words, so it has to
+     be repainted when the reader switches language — everything else on
+     the page already does. */
+  document.addEventListener('ml:lang', paintGoogleBadge);
 
 
   /* ── The mobile menu ───────────────────────────────────────── */
