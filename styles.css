@@ -1520,3 +1520,38 @@ html[lang="ar"] .feebar__amt, html[lang="ar"] .paybox__h strong { font-family: v
 }
 
 .btn__g svg { width: 100%; height: 100%; }
+
+/* ── Inside the car ────────────────────────────────────────────
+   Three photographs under the claim they support. Portrait, because
+   that is how a phone holds a car interior, and a row of three fits
+   a desktop without any of them being too small to read. */
+.inside {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.inside li { margin: 0; }
+
+.inside img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+}
+
+.inside span {
+  display: block;
+  margin-top: .6rem;
+  font-size: .85rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 640px) {
+  .inside { grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .inside li:last-child { grid-column: 1 / -1; max-width: 60%; }
+}
