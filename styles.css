@@ -797,7 +797,13 @@ section[id], main[id] { scroll-margin-top: 5.5rem; }
 [dir="rtl"] #pickup,
 [dir="rtl"] #dest { direction: ltr; text-align: right; }
 [dir="rtl"] .receipt__stamp { transform: rotate(1.2deg); }
-/* Terminal signage keeps its own reading order inside the drawings. */
+/* Latin lettering drawn inside SVG keeps its own reading order. In RTL
+   the text anchor flips, so a <text> at x=8 is drawn leftwards from 8 and
+   lands outside the viewBox entirely — which is how the TTAxi wordmark
+   went missing from the Arabic masthead while its lamp stayed put.
+   None of this lettering is ever translated: it is the logo and the
+   terminal signage in the drawings. */
+[dir="rtl"] .brand__mark,
 [dir="rtl"] .hero__art svg,
 [dir="rtl"] .plaza svg { direction: ltr; }
 
